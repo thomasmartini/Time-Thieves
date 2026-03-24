@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Cesium + Vite</title>
+    <style>
+        html,
+        body,
+        #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+<script type='text/javascript'
+    src='https://raw.githack.com/AR-js-org/AR.js/3.4.7/three.js/build/ar-threex-location-only.js'></script>
+<script type='text/javascript' src='https://raw.githack.com/AR-js-org/AR.js/3.4.7/aframe/build/aframe-ar.js'></script>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <div id="gamePanel"
+        style="position:absolute;left:12px;top:12px;z-index:999;background:rgba(0,0,0,0.55);color:white;padding:10px;border-radius:8px;font-family:Verdana,Arial,sans-serif;box-shadow:0 0 12px rgba(0,0,0,0.5)">
+        <div style="font-weight:700;font-size:16px;margin-bottom:6px;">Rotterdam Score Game</div>
+        <div>Score: <span id="scoreValue">0</span></div>
+        <div>Goal: <span id="goalValue">100</span></div>
+        <div>Items clicked: <span id="clickCount">0</span></div>
+        <div id="gameMessage" style="margin-top:6px;font-size:13px;color:#b8f5c0"></div>
+    </div>
+    <!--- <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
+        renderer='antialias: true; alpha: true'>
+        <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>
+        <a-entity material='color: red' geometry='primitive: box'
+            gps-new-entity-place="latitude: <add-your-latitude>; longitude: <add-your-longitude>"
+            scale="10 10 10"></a-entity>
+    </a-scene> -->
+    <script type="module" src="/main.js"></script>
+
+</body>
+
+</html>
