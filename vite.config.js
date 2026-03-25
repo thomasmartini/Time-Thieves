@@ -1,16 +1,28 @@
-import { defineConfig } from 'vite';
-import cesium from 'vite-plugin-cesium';
+import { defineConfig } from "vite";
+import cesium from "vite-plugin-cesium";
+import basicSsl from "@vitejs/plugin-basic-ssl";
 
 export default defineConfig({
-    plugins: [cesium()],
-    base: '/',
+    plugins: [
+        cesium(),
+        basicSsl()
+    ],
+
+    base: "/",
+
     resolve: {
         alias: {
-            // ensure imports of "cesium" resolve correctly
-            cesium: 'cesium',
+            cesium: "cesium",
         },
     },
+
     optimizeDeps: {
-        include: ['cesium'],
+        include: ["cesium"],
     },
+
+    server: {
+        host: true,        // zodat telefoon kan verbinden
+        https: true,       // HTTPS inschakelen
+        port: 5173
+    }
 });

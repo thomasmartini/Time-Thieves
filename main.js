@@ -1,15 +1,12 @@
 import * as Cesium from "cesium";
-// Styles so the widgets look correct
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
-// where to load Cesium static assets from (workers, widgets, etc.)
 window.CESIUM_BASE_URL = "/cesium";
 
-// Ion access token (hard‑coded as requested)
 Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkNDU5MGU2OC1kNDUyLTQ4YTktYTNjYS03YzNkMTU5ZmEzZDQiLCJpZCI6NDAxNzY3LCJpYXQiOjE3NzMyMjA1MjB9.LU9uXSoprPYPO_V_hITQNf6oeeFaanNlNKMuSzecrq4";
 
-// create the viewer with high‑precision world terrain and lighting enabled
 let viewer;
+
 try {
     viewer = new Cesium.Viewer("cesiumContainer", {
         terrainProvider: Cesium.createWorldTerrain({
@@ -22,83 +19,129 @@ try {
         animation: false,
         shadows: true,
     });
-    // improve globe realism
+
     viewer.scene.globe.enableLighting = true;
     viewer.scene.globe.depthTestAgainstTerrain = true;
 
-    // configure shadow map for the scene
     viewer.scene.shadowMap = new Cesium.ShadowMap({
         context: viewer.scene.context,
         lightSource: viewer.scene.lightSource,
         enabled: true,
     });
 
-    console.log("Viewer successfully created with shadows", viewer);
+    console.log("Viewer created");
 } catch (e) {
-    console.error("Failed to create Cesium viewer, falling back to basic viewer", e);
+    console.error("Fallback viewer", e);
     viewer = new Cesium.Viewer("cesiumContainer");
 }
 
-// move to user location if available, otherwise default to Rotterdam
-async function gotoInitialLocation() {
-    const fallback = {
-        lon: 4.47917,
-        lat: 51.9225,
-        height: 80,
-    };
+//////////////////////////////////////////////////////////
+// 🦆 USER DUCK
+//////////////////////////////////////////////////////////
 
-    if (!navigator.geolocation) {
-        console.warn("Geolocation not supported, using fallback location.");
-        viewer.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(fallback.lon, fallback.lat, fallback.height),
-            orientation: {
-                heading: Cesium.Math.toRadians(0.0),
-                pitch: Cesium.Math.toRadians(-30.0),
-                roll: 0.0,
-            },
+let currentLon = 4.47917;
+let currentLat = 51.9225;
 
-        });
+let userDuck = viewer.entities.add({
+    position: new Cesium.CallbackProperty(function () {
+        return Cesium.Cartesian3.fromDegrees(currentLon, currentLat, 2);
+    }, false),
+    model: {
+        uri: "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf",
+        minimumPixelSize: 64,
+        maximumScale: 100,
+    },
+    label: {
+        text: "You 🦆",
+        font: "bold 14px Arial",
+        fillColor: Cesium.Color.YELLOW,
+        outlineColor: Cesium.Color.BLACK,
+        outlineWidth: 2,
+        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+        pixelOffset: new Cesium.Cartesian2(0, -30),
+    },
+});
 
-        return;
+//////////////////////////////////////////////////////////
+// 📍 GPS TRACKING + CAMERA FOLLOW
+//////////////////////////////////////////////////////////
+
+let cameraFollow = true;
+let touchStartX = 0;
+let touchStartY = 0;
+let isDragging = false;
+
+const canvas = viewer.scene.canvas;
+
+// touch drag detectie
+canvas.addEventListener("touchstart", (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    isDragging = false;
+});
+
+canvas.addEventListener("touchmove", (e) => {
+    const moveX = e.touches[0].clientX;
+    const moveY = e.touches[0].clientY;
+    const dx = Math.abs(moveX - touchStartX);
+    const dy = Math.abs(moveY - touchStartY);
+    if (dx > 10 || dy > 10) {
+        isDragging = true;
+        cameraFollow = false;
+        viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
     }
+});
 
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
-            const lon = position.coords.longitude;
-            const lat = position.coords.latitude;
-            const height = 5;
+canvas.addEventListener("dblclick", () => {
+    cameraFollow = true;
+});
 
-            viewer.camera.flyTo({
-                destination: Cesium.Cartesian3.fromDegrees(lon, lat, height),
-                orientation: {
-                    heading: Cesium.Math.toRadians(90.0),
-                    pitch: Cesium.Math.toRadians(1.0),
-                    roll: 0.0,
-                },
-                duration: 2,
+navigator.geolocation.watchPosition(
+    (position) => {
+        currentLon = position.coords.longitude;
+        currentLat = position.coords.latitude;
 
-            });
-        },
-        (error) => {
-            console.warn("Geolocation failed, falling back to Rotterdam.", error);
-            viewer.camera.flyTo({
-                destination: Cesium.Cartesian3.fromDegrees(fallback.lon, fallback.lat, fallback.height),
-                orientation: {
-                    heading: Cesium.Math.toRadians(90.0),
-                    pitch: Cesium.Math.toRadians(-75.0),
-                    roll: 0.0,
-                },
-                duration: 2,
-            });
-        },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 60000 }
-    );
+        const heading = position.coords.heading || 0;
 
-}
+        const duckPosition = Cesium.Cartesian3.fromDegrees(
+            currentLon,
+            currentLat,
+            2
+        );
 
-gotoInitialLocation();
+        const offset = new Cesium.HeadingPitchRange(
+            Cesium.Math.toRadians(heading),
+            Cesium.Math.toRadians(-35),
+            50
+        );
 
-// simple score gamification
+        // duck richting
+        userDuck.orientation = Cesium.Transforms.headingPitchRollQuaternion(
+            duckPosition,
+            new Cesium.HeadingPitchRoll(
+                Cesium.Math.toRadians(heading),
+                0,
+                0
+            )
+        );
+
+        if (cameraFollow) {
+            viewer.camera.lookAt(duckPosition, offset);
+        }
+    },
+    (error) => {
+        console.warn("GPS error, using fallback Rotterdam", error);
+        currentLon = 4.47917;
+        currentLat = 51.9225;
+    },
+    { enableHighAccuracy: true, maximumAge: 1000, timeout: 5000 }
+);
+
+//////////////////////////////////////////////////////////
+// 🎮 SCORE GAME
+//////////////////////////////////////////////////////////
+
 let score = 0;
 let clickCount = 0;
 const scoreGoal = 100;
@@ -149,23 +192,22 @@ const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 handler.setInputAction(function (click) {
     const picked = viewer.scene.pick(click.position);
     if (Cesium.defined(picked)) {
-        clickCount += 1;
+        clickCount++;
         score += 10;
-        const message = score >= scoreGoal ? "🎉 Goal reached! You won the Rotterdam score game." : "Nice click!";
+        const message = score >= scoreGoal
+            ? "🎉 Goal reached! You won the Rotterdam score game."
+            : "Nice click!";
         updateScoreUI(message);
-        if (score >= scoreGoal) {
-            viewer.scene.requestRender();
-        }
     }
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
 updateScoreUI("Click objects to earn points.");
-
-// add random objects in Rotterdam bounds (lon/lat area)
 spawnRandomObjectsInArea(25, 4.42, 51.9, 4.52, 51.96);
 
-// fetch and display the Rotterdam 3D-tiles from the provided URL
-// the API call is simply a fetch to get the JSON, but Cesium can load it directly
+//////////////////////////////////////////////////////////
+// 🏙️ ROTTERDAM 3D TILES
+//////////////////////////////////////////////////////////
+
 (async function () {
     const urls = [
         "https://www.3drotterdam.nl/datasource-data/69926a30-444d-46bb-995e-bb14b151d3ab/tileset.json",
@@ -176,35 +218,34 @@ spawnRandomObjectsInArea(25, 4.42, 51.9, 4.52, 51.96);
     for (const url of urls) {
         try {
             const tileset = await Cesium.Cesium3DTileset.fromUrl(url);
-            // enable shadows and clamp tiles to terrain
             tileset.shadows = Cesium.ShadowMode.ENABLED;
             tileset.clampToGround = true;
             viewer.scene.primitives.add(tileset);
             await tileset.readyPromise;
-            // apply a slight downward shift to align with ground
             const translation = Cesium.Cartesian3.fromElements(0, 0, -5);
             const transform = Cesium.Matrix4.fromTranslation(translation);
-            tileset.modelMatrix = Cesium.Matrix4.multiply(tileset.modelMatrix, transform, new Cesium.Matrix4());
-            console.log("Rotterdam tileset loaded", url, tileset);
-            // optionally fly to the first one only
-            if (url === urls[0]) {
-                viewer.zoomTo(tileset);
-            }
+            tileset.modelMatrix = Cesium.Matrix4.multiply(
+                tileset.modelMatrix,
+                transform,
+                new Cesium.Matrix4()
+            );
+            if (url === urls[0]) viewer.zoomTo(tileset);
         } catch (err) {
-            console.error("Failed to load Rotterdam tileset", url, err);
+            console.error("Tileset error", url, err);
         }
     }
 })();
 
-// --- load all logical datasets from Clearly hub (GeoJSON) ---
+//////////////////////////////////////////////////////////
+// 🗺️ CLEARLY DATASETS
+//////////////////////////////////////////////////////////
+
 (async function () {
     try {
         const resp = await fetch("https://hub.clearly.app/datasets");
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const datasets = await resp.json();
-        console.log("datasets list", datasets);
         for (const ds of datasets) {
-            // only load GeoJSON datasets hosted by Rotterdam (url contains 'rotterdam')
             if (
                 ds.format &&
                 ds.format.toLowerCase().includes("geojson") &&
@@ -212,17 +253,14 @@ spawnRandomObjectsInArea(25, 4.42, 51.9, 4.52, 51.96);
                 ds.url.toLowerCase().includes("rotterdam")
             ) {
                 try {
-                    const gj = await Cesium.GeoJsonDataSource.load(ds.url, {
-                        clampToGround: true,
-                    });
+                    const gj = await Cesium.GeoJsonDataSource.load(ds.url, { clampToGround: true });
                     viewer.dataSources.add(gj);
-                    console.log("loaded Rotterdam dataset", ds.id, ds.name);
                 } catch (e) {
-                    console.error("failed to load Rotterdam dataset", ds.id, e);
+                    console.error("GeoJSON error", ds.id);
                 }
             }
         }
     } catch (e) {
-        console.error("error fetching datasets list", e);
+        console.error("Dataset fetch error", e);
     }
 })();

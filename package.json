@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
     "cesium": "^1.139.1"
   },
   "devDependencies": {
