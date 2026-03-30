@@ -36,15 +36,50 @@ try {
 }
 
 //////////////////////////////////////////////////////////
-// 🦆 USER DUCK
+// USER POSITION SYSTEM (HIGH ACCURACY TRACKING)
 //////////////////////////////////////////////////////////
 
 let currentLon = 4.47917;
 let currentLat = 51.9225;
+let currentAlt = 2;
+
+let smoothLon = currentLon;
+let smoothLat = currentLat;
+
+const smoothingFactor = 0.12;
+let lastHeading = 0;
+const minDuckHeightAboveGround = 2;
+const maxDuckHeightAboveGround = 8;
+const altitudeSmoothingFactor = 0.2;
+
+let baselineGpsAltitude = null;
+let smoothAltitudeOffset = minDuckHeightAboveGround;
+
+function smoothPosition(newLon, newLat) {
+    smoothLon = smoothLon + (newLon - smoothLon) * smoothingFactor;
+    smoothLat = smoothLat + (newLat - smoothLat) * smoothingFactor;
+}
+
+async function getTerrainHeight(lon, lat) {
+    try {
+        const cartographic = Cesium.Cartographic.fromDegrees(lon, lat);
+        const updated = await Cesium.sampleTerrainMostDetailed(
+            viewer.terrainProvider,
+            [cartographic]
+        );
+        return updated[0].height || 2;
+    } catch {
+        return 2;
+    }
+}
+
+//////////////////////////////////////////////////////////
+// 🦆 USER DUCK
+//////////////////////////////////////////////////////////
 
 let userDuck = viewer.entities.add({
-    position: new Cesium.CallbackProperty(function () {
-        return Cesium.Cartesian3.fromDegrees(currentLon, currentLat, 2);
+    position: new Cesium.CallbackProperty(() => {
+        return Cesium.Cartesian3.fromDegrees(currentLon, currentLat, currentAlt);
     }, false),
     model: {
         uri: "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf",
@@ -64,7 +99,7 @@ let userDuck = viewer.entities.add({
 });
 
 //////////////////////////////////////////////////////////
-// 📍 GPS TRACKING + CAMERA FOLLOW
+// CAMERA FOLLOW SYSTEM
 //////////////////////////////////////////////////////////
 
 let cameraFollow = true;
@@ -74,7 +109,6 @@ let isDragging = false;
 
 const canvas = viewer.scene.canvas;
 
-// touch drag detectie
 canvas.addEventListener("touchstart", (e) => {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
@@ -98,25 +132,84 @@ canvas.addEventListener("dblclick", () => {
 });
 
 navigator.geolocation.watchPosition(
-    (position) => {
-        currentLon = position.coords.longitude;
-        currentLat = position.coords.latitude;
+    async (position) => {
+        const accuracy = position.coords.accuracy;
 
-        const heading = position.coords.heading || 0;
+        if (accuracy > 30) return;
+
+        const lon = position.coords.longitude;
+        const lat = position.coords.latitude;
+
+        smoothPosition(lon, lat);
+
+        currentLon = smoothLon;
+        currentLat = smoothLat;
+
+        const gpsAltitude = position.coords.altitude ?? 0;
+        const gpsAltitudeAccuracy = position.coords.altitudeAccuracy;
+        const terrainHeight = await getTerrainHeight(currentLon, currentLat);
+
+        const hasReliableGpsAltitude =
+            Number.isFinite(gpsAltitude) &&
+            Number.isFinite(gpsAltitudeAccuracy) &&
+            gpsAltitudeAccuracy <= 20;
+
+        if (hasReliableGpsAltitude && baselineGpsAltitude === null) {
+            baselineGpsAltitude = gpsAltitude;
+        }
+
+        let targetAltitudeOffset = minDuckHeightAboveGround;
+        if (hasReliableGpsAltitude && baselineGpsAltitude !== null) {
+            const relativeAltitudeChange = gpsAltitude - baselineGpsAltitude;
+            const normalizedOffset = minDuckHeightAboveGround + relativeAltitudeChange;
+
+            targetAltitudeOffset = Cesium.Math.clamp(
+                normalizedOffset,
+                minDuckHeightAboveGround,
+                maxDuckHeightAboveGround
+            );
+        }
+
+        smoothAltitudeOffset =
+            smoothAltitudeOffset +
+            (targetAltitudeOffset - smoothAltitudeOffset) * altitudeSmoothingFactor;
+
+        currentAlt = terrainHeight + smoothAltitudeOffset;
+
+        let heading = position.coords.heading;
+        if (heading === null || Number.isNaN(heading)) {
+            heading = lastHeading;
+        } else {
+            lastHeading = heading;
+        }
+
+        const speed = position.coords.speed || 0;
+        const predictionTime = 0.4;
+        const predictedDistance = speed * predictionTime;
+
+        const headingRad = Cesium.Math.toRadians(heading);
+
+        const predictedLon =
+            currentLon +
+            (predictedDistance * Math.cos(headingRad)) / 111320;
+
+        const predictedLat =
+            currentLat +
+            (predictedDistance * Math.sin(headingRad)) /
+                (111320 * Math.cos(Cesium.Math.toRadians(currentLat)));
 
         const duckPosition = Cesium.Cartesian3.fromDegrees(
-            currentLon,
-            currentLat,
-            2
+            predictedLon,
+            predictedLat,
+            currentAlt
         );
 
         const offset = new Cesium.HeadingPitchRange(
             Cesium.Math.toRadians(heading),
             Cesium.Math.toRadians(-35),
-            50
+            45
         );
 
-        // duck richting
         userDuck.orientation = Cesium.Transforms.headingPitchRollQuaternion(
             duckPosition,
             new Cesium.HeadingPitchRoll(
@@ -131,11 +224,13 @@ navigator.geolocation.watchPosition(
         }
     },
     (error) => {
-        console.warn("GPS error, using fallback Rotterdam", error);
-        currentLon = 4.47917;
-        currentLat = 51.9225;
+        console.warn("GPS error, fallback location", error);
     },
-    { enableHighAccuracy: true, maximumAge: 1000, timeout: 5000 }
+    {
+        enableHighAccuracy: true,
+        maximumAge: 0,
+        timeout: 10000,
+    }
 );
 
 //////////////////////////////////////////////////////////
@@ -174,16 +269,6 @@ function spawnRandomObjectsInArea(count, west, south, east, north) {
                 minimumPixelSize: 32,
                 maximumScale: 50,
             },
-            label: {
-                text: `Duck ${i + 1}`,
-                font: "bold 12px Arial",
-                fillColor: Cesium.Color.WHITE,
-                outlineColor: Cesium.Color.BLACK,
-                outlineWidth: 2,
-                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                pixelOffset: new Cesium.Cartesian2(0, -24),
-            },
         });
     }
 }
@@ -194,9 +279,11 @@ handler.setInputAction(function (click) {
     if (Cesium.defined(picked)) {
         clickCount++;
         score += 10;
+
         const message = score >= scoreGoal
-            ? "🎉 Goal reached! You won the Rotterdam score game."
+            ? "🎉 Goal reached!"
             : "Nice click!";
+
         updateScoreUI(message);
     }
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
