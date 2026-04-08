@@ -35,10 +35,7 @@ try {
     viewer = new Cesium.Viewer("cesiumContainer");
 }
 
-//////////////////////////////////////////////////////////
-// 🦆 USER DUCK
-//////////////////////////////////////////////////////////
-
+// USER LOCATION + MODEL
 let currentLon = 4.47917;
 let currentLat = 51.9225;
 
@@ -63,10 +60,7 @@ let userDuck = viewer.entities.add({
     },
 });
 
-//////////////////////////////////////////////////////////
-// 📍 GPS TRACKING + CAMERA FOLLOW
-//////////////////////////////////////////////////////////
-
+// GPS TRACKING + CAMERA FOLLOW
 let cameraFollow = true;
 let touchStartX = 0;
 let touchStartY = 0;
@@ -74,7 +68,7 @@ let isDragging = false;
 
 const canvas = viewer.scene.canvas;
 
-// touch drag detectie
+// touch drag detection to disable camera follow
 canvas.addEventListener("touchstart", (e) => {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
@@ -138,10 +132,7 @@ navigator.geolocation.watchPosition(
     { enableHighAccuracy: true, maximumAge: 1000, timeout: 5000 }
 );
 
-//////////////////////////////////////////////////////////
-// 🎮 SCORE GAME
-//////////////////////////////////////////////////////////
-
+// SCORE 
 let score = 0;
 let clickCount = 0;
 const scoreGoal = 100;
@@ -204,10 +195,7 @@ handler.setInputAction(function (click) {
 updateScoreUI("Click objects to earn points.");
 spawnRandomObjectsInArea(25, 4.42, 51.9, 4.52, 51.96);
 
-//////////////////////////////////////////////////////////
-// 🏙️ ROTTERDAM 3D TILES
-//////////////////////////////////////////////////////////
-
+// OUP TILES
 (async function () {
     const urls = [
         "https://www.3drotterdam.nl/datasource-data/69926a30-444d-46bb-995e-bb14b151d3ab/tileset.json",
@@ -236,10 +224,7 @@ spawnRandomObjectsInArea(25, 4.42, 51.9, 4.52, 51.96);
     }
 })();
 
-//////////////////////////////////////////////////////////
-// 🗺️ CLEARLY DATASETS
-//////////////////////////////////////////////////////////
-
+// CLEARLY DATASETS
 (async function () {
     try {
         const resp = await fetch("https://hub.clearly.app/datasets");
