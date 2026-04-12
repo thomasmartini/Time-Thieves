@@ -368,10 +368,10 @@ function updateZoneButtonsVisibility() {
 
     if (infoEl) {
         if (visibleCount > 0) {
-            infoEl.textContent = "Je bent dichtbij een monument. Activeer AR met de zichtbare knop.";
+            infoEl.textContent = "Je bent dichtbij een monument. Activeer AR.";
             infoEl.style.color = "#b8f5c0";
         } else {
-            infoEl.textContent = "Beweeg dichterbij een monument om AR-knoppen te zien.";
+            infoEl.textContent = "Beweeg dichterbij een monument om AR te activeren.";
             infoEl.style.color = "#f4b8b8";
         }
     }
