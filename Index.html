@@ -31,6 +31,13 @@
         <div>Items clicked: <span id="clickCount">0</span></div>
         <div id="gameMessage" style="margin-top:6px;font-size:13px;color:#b8f5c0"></div>
     </div>
+    <div id="zonePanel"
+        style="position:absolute;left:12px;top:190px;z-index:999;background:rgba(0,0,0,0.55);color:white;padding:10px;border-radius:8px;font-family:Verdana,Arial,sans-serif;box-shadow:0 0 12px rgba(0,0,0,0.5);max-width:260px;max-height:380px;overflow:auto;">
+        <div style="font-weight:700;font-size:16px;margin-bottom:6px;">AR Monumentzones</div>
+        <div style="font-size:13px;margin-bottom:10px;">Druk op een knop om AR te activeren wanneer je binnen 20 meter
+            bent.</div>
+        <div id="zoneMessage" style="font-size:13px;color:#b8f5c0"></div>
+    </div>
     <!--- <a-scene vr-mode-ui='enabled: false' arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
         renderer='antialias: true; alpha: true'>
         <a-camera gps-new-camera='gpsMinDistance: 5'></a-camera>

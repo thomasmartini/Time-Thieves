@@ -3,8 +3,7 @@ import "cesium/Build/Cesium/Widgets/widgets.css";
 
 window.CESIUM_BASE_URL = "/cesium";
 
-Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkNDU5MGU2OC1kNDUyLTQ4YTktYTNjYS03YzNkMTU5ZmEzZDQiLCJpZCI6NDAxNzY3LCJpYXQiOjE3NzMyMjA1MjB9.LU9uXSoprPYPO_V_hITQNf6oeeFaanNlNKMuSzecrq4";
-
+Cesium.Ion.defaultAccessToken = import.meta.env.VITE_CESIUM_TOKEN
 let viewer;
 
 try {
@@ -48,16 +47,6 @@ let userDuck = viewer.entities.add({
         minimumPixelSize: 64,
         maximumScale: 100,
     },
-    label: {
-        text: "You 🦆",
-        font: "bold 14px Arial",
-        fillColor: Cesium.Color.YELLOW,
-        outlineColor: Cesium.Color.BLACK,
-        outlineWidth: 2,
-        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-        pixelOffset: new Cesium.Cartesian2(0, -30),
-    },
 });
 
 // GPS TRACKING + CAMERA FOLLOW
@@ -68,7 +57,7 @@ let isDragging = false;
 
 const canvas = viewer.scene.canvas;
 
-// touch drag detection to disable camera follow
+// Touch drag detection to disable camera follow
 canvas.addEventListener("touchstart", (e) => {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
@@ -110,7 +99,7 @@ navigator.geolocation.watchPosition(
             50
         );
 
-        // duck richting
+        // Player direction based on GPS heading
         userDuck.orientation = Cesium.Transforms.headingPitchRollQuaternion(
             duckPosition,
             new Cesium.HeadingPitchRoll(
@@ -123,11 +112,13 @@ navigator.geolocation.watchPosition(
         if (cameraFollow) {
             viewer.camera.lookAt(duckPosition, offset);
         }
+        updateZoneButtonsVisibility();
     },
     (error) => {
         console.warn("GPS error, using fallback Rotterdam", error);
         currentLon = 4.47917;
         currentLat = 51.9225;
+        updateZoneButtonsVisibility();
     },
     { enableHighAccuracy: true, maximumAge: 1000, timeout: 5000 }
 );
@@ -179,6 +170,44 @@ function spawnRandomObjectsInArea(count, west, south, east, north) {
     }
 }
 
+function spawnDucksInMonumentZones() {
+    const modelUrl = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf";
+    const ducksPerZone = 5;
+    let duckIndex = 1;
+
+    for (const zone of monumentZones) {
+        const { metersPerDegLat, metersPerDegLon } = getMetersPerDegree(zone.lon, zone.lat);
+        const deltaLon = zone.radius / metersPerDegLon;
+        const deltaLat = zone.radius / metersPerDegLat;
+
+        for (let i = 0; i < ducksPerZone; i++) {
+            const lon = randomInRange(zone.lon - deltaLon, zone.lon + deltaLon);
+            const lat = randomInRange(zone.lat - deltaLat, zone.lat + deltaLat);
+            const alt = 0;
+
+            viewer.entities.add({
+                position: Cesium.Cartesian3.fromDegrees(lon, lat, alt),
+                model: {
+                    uri: modelUrl,
+                    minimumPixelSize: 16,
+                    maximumScale: 25,
+                },
+                label: {
+                    text: `Duck ${duckIndex}`,
+                    font: "bold 10px Arial",
+                    fillColor: Cesium.Color.WHITE,
+                    outlineColor: Cesium.Color.BLACK,
+                    outlineWidth: 1,
+                    style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                    verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                    pixelOffset: new Cesium.Cartesian2(0, -16),
+                },
+            });
+            duckIndex++;
+        }
+    }
+}
+
 const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
 handler.setInputAction(function (click) {
     const picked = viewer.scene.pick(click.position);
@@ -186,15 +215,202 @@ handler.setInputAction(function (click) {
         clickCount++;
         score += 10;
         const message = score >= scoreGoal
-            ? "🎉 Goal reached! You won the Rotterdam score game."
+            ? "🎉 Goal reached! The Time Thieves are beat"
             : "Nice click!";
         updateScoreUI(message);
     }
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
 updateScoreUI("Click objects to earn points.");
-spawnRandomObjectsInArea(25, 4.42, 51.9, 4.52, 51.96);
+// Monument Zones
+const monumentZones = [
+    {
+        name: "De Verwoeste Stad",
+        lon: 4.4830665,
+        lat: 51.9176368,
+        radius: 20,
+        color: Cesium.Color.ORANGE.withAlpha(0.35),
+    },
+    {
+        name: "De Boeg",
+        lon: 4.4845575,
+        lat: 51.9122727,
+        radius: 20,
+        color: Cesium.Color.CYAN.withAlpha(0.35),
+    },
+    {
+        name: "Erasmusbeeld",
+        lon: 4.4843267,
+        lat: 51.9215122,
+        radius: 20,
+        color: Cesium.Color.LIME.withAlpha(0.35),
+    },
+    {
+        name: "Monument voor alle gevallen",
+        lon: 4.4779143,
+        lat: 51.9224434,
+        radius: 20,
+        color: Cesium.Color.MAGENTA.withAlpha(0.35),
+    },
+    {
+        name: "Calandmonument",
+        lon: 4.4797535,
+        lat: 51.9080186,
+        radius: 20,
+        color: Cesium.Color.YELLOW.withAlpha(0.35),
+    },
+];
 
+let currentActiveMonument = null;
+
+function kilometersToMeters(km) {
+    return km * 1000;
+}
+
+function getMetersPerDegree(longitude, latitude) {
+    const latRad = Cesium.Math.toRadians(latitude);
+    const metersPerDegLat = 111132.92 - 559.82 * Math.cos(2 * latRad) + 1.175 * Math.cos(4 * latRad);
+    const metersPerDegLon = (Math.PI / 180) * Cesium.Ellipsoid.WGS84.maximumRadius * Math.cos(latRad);
+    return { metersPerDegLat, metersPerDegLon };
+}
+
+function getSquareCorners(zone) {
+    const { metersPerDegLat, metersPerDegLon } = getMetersPerDegree(zone.lon, zone.lat);
+    const deltaLon = zone.radius / metersPerDegLon;
+    const deltaLat = zone.radius / metersPerDegLat;
+    return [
+        Cesium.Cartesian3.fromDegrees(zone.lon - deltaLon, zone.lat - deltaLat, 0),
+        Cesium.Cartesian3.fromDegrees(zone.lon + deltaLon, zone.lat - deltaLat, 0),
+        Cesium.Cartesian3.fromDegrees(zone.lon + deltaLon, zone.lat + deltaLat, 0),
+        Cesium.Cartesian3.fromDegrees(zone.lon - deltaLon, zone.lat + deltaLat, 0),
+    ];
+}
+
+function isInZone(zone) {
+    const { metersPerDegLat, metersPerDegLon } = getMetersPerDegree(currentLon, currentLat);
+    const deltaLon = Math.abs(currentLon - zone.lon) * metersPerDegLon;
+    const deltaLat = Math.abs(currentLat - zone.lat) * metersPerDegLat;
+    return deltaLon <= zone.radius && deltaLat <= zone.radius;
+}
+
+function distanceToZone(zone) {
+    const userPosition = Cesium.Cartesian3.fromDegrees(currentLon, currentLat, 0);
+    const zonePosition = Cesium.Cartesian3.fromDegrees(zone.lon, zone.lat, 0);
+    return Cesium.Cartesian3.distance(userPosition, zonePosition);
+}
+
+function createMonumentZones() {
+    for (const zone of monumentZones) {
+        viewer.entities.add({
+            name: zone.name,
+            position: Cesium.Cartesian3.fromDegrees(zone.lon, zone.lat, 0.1),
+            polygon: {
+                hierarchy: new Cesium.PolygonHierarchy(getSquareCorners(zone)),
+                material: zone.color,
+                outline: true,
+                outlineColor: Cesium.Color.WHITE,
+                height: 0.1,
+            },
+            label: {
+                text: zone.name,
+                font: "bold 14px Arial",
+                fillColor: Cesium.Color.WHITE,
+                outlineColor: Cesium.Color.BLACK,
+                outlineWidth: 2,
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                pixelOffset: new Cesium.Cartesian2(0, -30),
+            },
+        });
+    }
+}
+
+function setGameMessage(message, color = "#b8f5c0") {
+    const msgEl = document.getElementById("gameMessage");
+    if (msgEl) {
+        msgEl.textContent = message;
+        msgEl.style.color = color;
+    }
+}
+
+function activateAR(zone) {
+    if (isInZone(zone)) {
+        currentActiveMonument = zone.name;
+        setGameMessage(`AR geactiveerd voor ${zone.name}!`, "#8efc8e");
+        const infoEl = document.getElementById("zoneMessage");
+        if (infoEl) {
+            infoEl.textContent = `Je bevindt je binnen ${zone.radius} meter van ${zone.name}. AR is nu actief.`;
+        }
+        console.log(`AR activated for ${zone.name}`);
+    } else {
+        setGameMessage(`Je moet dichter bij ${zone.name} zijn om AR te activeren.`, "#f4b8b8");
+        const infoEl = document.getElementById("zoneMessage");
+        if (infoEl) {
+            const distance = Math.round(distanceToZone(zone));
+            infoEl.textContent = `Je bent ${distance} meter van ${zone.name}. Beweeg dichterbij en probeer het opnieuw.`;
+        }
+    }
+}
+
+function updateZoneButtonsVisibility() {
+    const infoEl = document.getElementById("zoneMessage");
+    let visibleCount = 0;
+
+    monumentZones.forEach((zone) => {
+        if (!zone.rowElement) return;
+        if (isInZone(zone)) {
+            zone.rowElement.style.display = "block";
+            visibleCount++;
+        } else {
+            zone.rowElement.style.display = "none";
+        }
+    });
+
+    if (infoEl) {
+        if (visibleCount > 0) {
+            infoEl.textContent = "Je bent dichtbij een monument. Activeer AR met de zichtbare knop.";
+            infoEl.style.color = "#b8f5c0";
+        } else {
+            infoEl.textContent = "Beweeg dichterbij een monument om AR-knoppen te zien.";
+            infoEl.style.color = "#f4b8b8";
+        }
+    }
+}
+
+function createZoneButtons() {
+    const panel = document.getElementById("zonePanel");
+    if (!panel) return;
+    monumentZones.forEach((zone) => {
+        const row = document.createElement("div");
+        row.style.marginBottom = "8px";
+        row.style.display = "none";
+
+        const label = document.createElement("div");
+        label.textContent = `${zone.name} — radius ${zone.radius} m`;
+        label.style.fontSize = "13px";
+        label.style.marginBottom = "4px";
+        row.appendChild(label);
+
+        const button = document.createElement("button");
+        button.textContent = "Activeer AR";
+        button.style.padding = "6px 10px";
+        button.style.border = "none";
+        button.style.borderRadius = "4px";
+        button.style.background = "#24a0ff";
+        button.style.color = "white";
+        button.style.cursor = "pointer";
+        button.addEventListener("click", () => activateAR(zone));
+        row.appendChild(button);
+
+        panel.appendChild(row);
+        zone.rowElement = row;
+    });
+}
+
+createMonumentZones();
+createZoneButtons();
+updateZoneButtonsVisibility();
+spawnDucksInMonumentZones();
 // OUP TILES
 (async function () {
     const urls = [
