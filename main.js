@@ -1,8 +1,6 @@
 import * as Cesium from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
-window.CESIUM_BASE_URL = "/cesium";
-
 Cesium.Ion.defaultAccessToken = import.meta.env.VITE_CESIUM_TOKEN
 let viewer;
 

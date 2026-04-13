@@ -8,7 +8,7 @@ export default defineConfig({
         basicSsl()
     ],
 
-    base: "/",
+    base: "/1013596/CesiumJS/",
 
     resolve: {
         alias: {
