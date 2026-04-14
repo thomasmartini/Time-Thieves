@@ -23,6 +23,14 @@ export default defineConfig({
     server: {
         host: true,        // zodat telefoon kan verbinden
         https: true,       // HTTPS inschakelen
-        port: 5173
+        port: 5173,
+        proxy: {
+            "/ar": {
+                target: "https://arousal-scuba-pacify.ngrok-free.dev",
+                changeOrigin: true,
+                secure: false,
+                rewrite: (path) => path.replace(/^\/ar/, ""),
+            },
+        },
     }
 });

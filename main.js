@@ -224,13 +224,15 @@ updateScoreUI("Click objects to earn points.");
 const monumentZones = [
     {
         name: "De Verwoeste Stad",
+        slug: "de-verwoeste-stad",
         lon: 4.4830665,
         lat: 51.9176368,
-        radius: 20,
+        radius: 100,
         color: Cesium.Color.ORANGE.withAlpha(0.35),
     },
     {
         name: "De Boeg",
+        slug: "de-boeg",
         lon: 4.4845575,
         lat: 51.9122727,
         radius: 20,
@@ -238,6 +240,7 @@ const monumentZones = [
     },
     {
         name: "Erasmusbeeld",
+        slug: "erasmusbeeld",
         lon: 4.4843267,
         lat: 51.9215122,
         radius: 20,
@@ -245,6 +248,7 @@ const monumentZones = [
     },
     {
         name: "Monument voor alle gevallen",
+        slug: "monument-voor-alle-gevallen",
         lon: 4.4779143,
         lat: 51.9224434,
         radius: 20,
@@ -252,6 +256,7 @@ const monumentZones = [
     },
     {
         name: "Calandmonument",
+        slug: "calandmonument",
         lon: 4.4797535,
         lat: 51.9080186,
         radius: 20,
@@ -331,15 +336,85 @@ function setGameMessage(message, color = "#b8f5c0") {
     }
 }
 
+const eighthWallSceneUrl = import.meta.env.VITE_8THWALL_SCENE_URL || "/ar/";
+let arOverlayEl = null;
+let arFrameEl = null;
+
+function getArUrlForZone(zone) {
+    const url = new URL(zone.arUrl || eighthWallSceneUrl, window.location.href);
+
+    // Without a trailing slash, relative assets (bundle.js, ./external/...) resolve to the app root.
+    if (url.origin === window.location.origin && url.pathname === "/ar") {
+        url.pathname = "/ar/";
+    }
+
+    return url.toString();
+}
+
+function ensureArOverlay() {
+    if (arOverlayEl && arFrameEl) {
+        return;
+    }
+
+    arOverlayEl = document.createElement("div");
+    arOverlayEl.id = "arOverlay";
+    arOverlayEl.style.position = "fixed";
+    arOverlayEl.style.inset = "0";
+    arOverlayEl.style.zIndex = "3000";
+    arOverlayEl.style.background = "rgba(0, 0, 0, 0.92)";
+    arOverlayEl.style.display = "none";
+
+    const closeButton = document.createElement("button");
+    closeButton.textContent = "Terug naar kaart";
+    closeButton.style.position = "absolute";
+    closeButton.style.top = "14px";
+    closeButton.style.right = "14px";
+    closeButton.style.zIndex = "3001";
+    closeButton.style.padding = "10px 14px";
+    closeButton.style.border = "none";
+    closeButton.style.borderRadius = "8px";
+    closeButton.style.background = "#1f8fff";
+    closeButton.style.color = "#fff";
+    closeButton.style.cursor = "pointer";
+    closeButton.addEventListener("click", () => {
+        if (!arOverlayEl || !arFrameEl) return;
+        arOverlayEl.style.display = "none";
+        arFrameEl.src = "about:blank";
+        setGameMessage("Terug in Cesium.", "#b8f5c0");
+    });
+
+    arFrameEl = document.createElement("iframe");
+    arFrameEl.id = "arFrame";
+    arFrameEl.style.width = "100%";
+    arFrameEl.style.height = "100%";
+    arFrameEl.style.border = "0";
+    arFrameEl.style.background = "#000";
+    arFrameEl.allow = "camera; microphone; geolocation; accelerometer; gyroscope; magnetometer; xr-spatial-tracking";
+    arFrameEl.setAttribute("allowfullscreen", "true");
+
+    arOverlayEl.appendChild(closeButton);
+    arOverlayEl.appendChild(arFrameEl);
+    document.body.appendChild(arOverlayEl);
+}
+
+function open8thWallScene(zone, source = "manual") {
+    const targetUrl = getArUrlForZone(zone);
+    ensureArOverlay();
+    currentActiveMonument = zone.name;
+    setGameMessage(`8th Wall start voor ${zone.name}...`, "#8efc8e");
+    const infoEl = document.getElementById("zoneMessage");
+    if (infoEl) {
+        infoEl.textContent = `Je bent in de zone van ${zone.name}. AR wordt in de app geopend.`;
+        infoEl.style.color = "#b8f5c0";
+    }
+    console.log(`Opening embedded 8th Wall scene for ${zone.name} via ${source}: ${targetUrl}`);
+    arFrameEl.src = targetUrl;
+    arOverlayEl.style.display = "block";
+}
+
 function activateAR(zone) {
     if (isInZone(zone)) {
-        currentActiveMonument = zone.name;
-        setGameMessage(`AR geactiveerd voor ${zone.name}!`, "#8efc8e");
-        const infoEl = document.getElementById("zoneMessage");
-        if (infoEl) {
-            infoEl.textContent = `Je bevindt je binnen ${zone.radius} meter van ${zone.name}. AR is nu actief.`;
-        }
-        console.log(`AR activated for ${zone.name}`);
+        open8thWallScene(zone, "manual");
     } else {
         setGameMessage(`Je moet dichter bij ${zone.name} zijn om AR te activeren.`, "#f4b8b8");
         const infoEl = document.getElementById("zoneMessage");
