@@ -13,8 +13,9 @@ try {
         imageryProvider: new Cesium.IonImageryProvider({ assetId: 2 }),
         baseLayerPicker: false,
         timeline: false,
-        animation: false,
+        animation: true,
         shadows: true,
+        shouldAnimate: true,
     });
 
     viewer.scene.globe.enableLighting = true;
@@ -29,7 +30,21 @@ try {
     console.log("Viewer created");
 } catch (e) {
     console.error("Fallback viewer", e);
-    viewer = new Cesium.Viewer("cesiumContainer");
+    viewer = new Cesium.Viewer("cesiumContainer", {
+        animation: false,
+        timeline: false,
+        baseLayerPicker: false,
+        geocoder: false,
+        homeButton: false,
+        sceneModePicker: false,
+        navigationHelpButton: false,
+        infoBox: false,
+        selectionIndicator: false,
+        fullscreenButton: false,
+        shadows: true,
+        shouldAnimate: true,
+
+    });
 }
 
 // USER LOCATION + MODEL
@@ -38,10 +53,10 @@ let currentLat = 51.9225;
 
 let userDuck = viewer.entities.add({
     position: new Cesium.CallbackProperty(function () {
-        return Cesium.Cartesian3.fromDegrees(currentLon, currentLat, 2);
+        return Cesium.Cartesian3.fromDegrees(currentLon, currentLat, 0);
     }, false),
     model: {
-        uri: "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf",
+        uri: "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/CesiumMan/glTF-Embedded/CesiumMan.gltf",
         minimumPixelSize: 64,
         maximumScale: 100,
     },
@@ -93,8 +108,8 @@ navigator.geolocation.watchPosition(
 
         const offset = new Cesium.HeadingPitchRange(
             Cesium.Math.toRadians(heading),
-            Cesium.Math.toRadians(-35),
-            50
+            Cesium.Math.toRadians(-15),
+            20
         );
 
         // Player direction based on GPS heading
@@ -142,7 +157,7 @@ function randomInRange(min, max) {
 }
 
 function spawnRandomObjectsInArea(count, west, south, east, north) {
-    const modelUrl = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf";
+    const modelUrl = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/AnimatedCube/glTF/AnimatedCube.gltf";
     for (let i = 0; i < count; i++) {
         const lon = randomInRange(west, east);
         const lat = randomInRange(south, north);
@@ -169,7 +184,7 @@ function spawnRandomObjectsInArea(count, west, south, east, north) {
 }
 
 function spawnDucksInMonumentZones() {
-    const modelUrl = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf";
+    const modelUrl = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/AnimatedCube/glTF/AnimatedCube.gltf";
     const ducksPerZone = 5;
     let duckIndex = 1;
 
@@ -181,7 +196,7 @@ function spawnDucksInMonumentZones() {
         for (let i = 0; i < ducksPerZone; i++) {
             const lon = randomInRange(zone.lon - deltaLon, zone.lon + deltaLon);
             const lat = randomInRange(zone.lat - deltaLat, zone.lat + deltaLat);
-            const alt = 0;
+            const alt = -1;
 
             zone.ducks.push({ lon, lat, alt });
 
@@ -191,6 +206,7 @@ function spawnDucksInMonumentZones() {
                     uri: modelUrl,
                     minimumPixelSize: 16,
                     maximumScale: 25,
+                    runAnimations: true,
                 },
                 label: {
                     text: `Duck ${duckIndex}`,
