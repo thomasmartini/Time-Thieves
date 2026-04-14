@@ -183,6 +183,8 @@ function spawnDucksInMonumentZones() {
             const lat = randomInRange(zone.lat - deltaLat, zone.lat + deltaLat);
             const alt = 0;
 
+            zone.ducks.push({ lon, lat, alt });
+
             viewer.entities.add({
                 position: Cesium.Cartesian3.fromDegrees(lon, lat, alt),
                 model: {
@@ -226,8 +228,9 @@ const monumentZones = [
         name: "De Verwoeste Stad",
         lon: 4.4830665,
         lat: 51.9176368,
-        radius: 20,
+        radius: 80,
         color: Cesium.Color.ORANGE.withAlpha(0.35),
+        ducks: [],
     },
     {
         name: "De Boeg",
@@ -235,6 +238,7 @@ const monumentZones = [
         lat: 51.9122727,
         radius: 20,
         color: Cesium.Color.CYAN.withAlpha(0.35),
+        ducks: [],
     },
     {
         name: "Erasmusbeeld",
@@ -242,6 +246,7 @@ const monumentZones = [
         lat: 51.9215122,
         radius: 20,
         color: Cesium.Color.LIME.withAlpha(0.35),
+        ducks: [],
     },
     {
         name: "Monument voor alle gevallen",
@@ -249,6 +254,7 @@ const monumentZones = [
         lat: 51.9224434,
         radius: 20,
         color: Cesium.Color.MAGENTA.withAlpha(0.35),
+        ducks: [],
     },
     {
         name: "Calandmonument",
@@ -256,6 +262,7 @@ const monumentZones = [
         lat: 51.9080186,
         radius: 20,
         color: Cesium.Color.YELLOW.withAlpha(0.35),
+        ducks: [],
     },
 ];
 
@@ -340,6 +347,7 @@ function activateAR(zone) {
             infoEl.textContent = `Je bevindt je binnen ${zone.radius} meter van ${zone.name}. AR is nu actief.`;
         }
         console.log(`AR activated for ${zone.name}`);
+        startAR(zone);
     } else {
         setGameMessage(`Je moet dichter bij ${zone.name} zijn om AR te activeren.`, "#f4b8b8");
         const infoEl = document.getElementById("zoneMessage");
@@ -348,6 +356,76 @@ function activateAR(zone) {
             infoEl.textContent = `Je bent ${distance} meter van ${zone.name}. Beweeg dichterbij en probeer het opnieuw.`;
         }
     }
+}
+
+function startAR(zone) {
+    // Verberg Cesium
+    document.getElementById('cesiumContainer').style.display = 'none';
+    document.getElementById('gamePanel').style.display = 'none';
+    document.getElementById('zonePanel').style.display = 'none';
+
+    // Maak AR scène
+    const arScene = document.createElement('a-scene');
+    arScene.setAttribute('vr-mode-ui', 'enabled: false');
+    arScene.setAttribute('arjs', 'sourceType: webcam; videoTexture: true; debugUIEnabled: false');
+    arScene.setAttribute('renderer', 'antialias: true; alpha: true');
+    arScene.style.width = '100%';
+    arScene.style.height = '100%';
+    arScene.style.position = 'absolute';
+    arScene.style.top = '0';
+    arScene.style.left = '0';
+
+    // Camera
+    const camera = document.createElement('a-camera');
+    camera.setAttribute('gps-new-camera', 'gpsMinDistance: 5');
+    arScene.appendChild(camera);
+
+    // Entity voor het monument
+    const entity = document.createElement('a-entity');
+    entity.setAttribute('material', 'color: red');
+    entity.setAttribute('geometry', 'primitive: box');
+    entity.setAttribute('gps-new-entity-place', `latitude: ${zone.lat}; longitude: ${zone.lon}`);
+    arScene.appendChild(entity);
+
+    // Entities voor de ducks in de zone
+    zone.ducks.forEach((duck, index) => {
+        const duckEntity = document.createElement('a-entity');
+        duckEntity.setAttribute('gltf-model', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf');
+        duckEntity.setAttribute('gps-new-entity-place', `latitude: ${duck.lat}; longitude: ${duck.lon}`);
+        arScene.appendChild(duckEntity);
+    });
+
+    // Terug knop
+    const backButton = document.createElement('button');
+    backButton.id = 'arBackButton';
+    backButton.textContent = 'Terug naar 3D';
+    backButton.style.position = 'absolute';
+    backButton.style.top = '20px';
+    backButton.style.right = '20px';
+    backButton.style.zIndex = '1000';
+    backButton.style.padding = '10px';
+    backButton.style.background = '#24a0ff';
+    backButton.style.color = 'white';
+    backButton.style.border = 'none';
+    backButton.style.borderRadius = '4px';
+    backButton.style.cursor = 'pointer';
+    backButton.addEventListener('click', stopAR);
+    document.body.appendChild(backButton);
+
+    document.body.appendChild(arScene);
+}
+
+function stopAR() {
+    // Verwijder AR scène en terug knop
+    const arScene = document.querySelector('a-scene');
+    if (arScene) document.body.removeChild(arScene);
+    const backButton = document.getElementById('arBackButton');
+    if (backButton) document.body.removeChild(backButton);
+
+    // Toon Cesium weer
+    document.getElementById('cesiumContainer').style.display = 'block';
+    document.getElementById('gamePanel').style.display = 'block';
+    document.getElementById('zonePanel').style.display = 'block';
 }
 
 function updateZoneButtonsVisibility() {
