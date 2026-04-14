@@ -57,7 +57,7 @@ let userDuck = viewer.entities.add({
     }, false),
     model: {
         uri: "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/CesiumMan/glTF-Embedded/CesiumMan.gltf",
-        minimumPixelSize: 64,
+        minimumPixelSize: 500,
         maximumScale: 100,
     },
 });
@@ -103,7 +103,7 @@ navigator.geolocation.watchPosition(
         const duckPosition = Cesium.Cartesian3.fromDegrees(
             currentLon,
             currentLat,
-            2
+            5
         );
 
         const offset = new Cesium.HeadingPitchRange(
@@ -116,7 +116,7 @@ navigator.geolocation.watchPosition(
         userDuck.orientation = Cesium.Transforms.headingPitchRollQuaternion(
             duckPosition,
             new Cesium.HeadingPitchRoll(
-                Cesium.Math.toRadians(heading),
+                Cesium.Math.toRadians(heading - 90),
                 0,
                 0
             )
@@ -183,7 +183,7 @@ function spawnRandomObjectsInArea(count, west, south, east, north) {
     }
 }
 
-function spawnDucksInMonumentZones() {
+function spawnObjectsInMonumentZones() {
     const modelUrl = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/AnimatedCube/glTF/AnimatedCube.gltf";
     const ducksPerZone = 5;
     let duckIndex = 1;
@@ -244,7 +244,7 @@ const monumentZones = [
         name: "De Verwoeste Stad",
         lon: 4.4830665,
         lat: 51.9176368,
-        radius: 80,
+        radius: 20,
         color: Cesium.Color.ORANGE.withAlpha(0.35),
         ducks: [],
     },
@@ -406,7 +406,7 @@ function startAR(zone) {
     // Entities voor de ducks in de zone
     zone.ducks.forEach((duck, index) => {
         const duckEntity = document.createElement('a-entity');
-        duckEntity.setAttribute('gltf-model', 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf');
+        duckEntity.setAttribute('gltf-model', "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/AnimatedCube/glTF/AnimatedCube.gltf");
         duckEntity.setAttribute('gps-new-entity-place', `latitude: ${duck.lat}; longitude: ${duck.lon}`);
         arScene.appendChild(duckEntity);
     });
@@ -502,7 +502,7 @@ function createZoneButtons() {
 createMonumentZones();
 createZoneButtons();
 updateZoneButtonsVisibility();
-spawnDucksInMonumentZones();
+spawnObjectsInMonumentZones();
 // OUP TILES
 (async function () {
     const urls = [
@@ -529,31 +529,5 @@ spawnDucksInMonumentZones();
         } catch (err) {
             console.error("Tileset error", url, err);
         }
-    }
-})();
-
-// CLEARLY DATASETS
-(async function () {
-    try {
-        const resp = await fetch("https://hub.clearly.app/datasets");
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        const datasets = await resp.json();
-        for (const ds of datasets) {
-            if (
-                ds.format &&
-                ds.format.toLowerCase().includes("geojson") &&
-                ds.url &&
-                ds.url.toLowerCase().includes("rotterdam")
-            ) {
-                try {
-                    const gj = await Cesium.GeoJsonDataSource.load(ds.url, { clampToGround: true });
-                    viewer.dataSources.add(gj);
-                } catch (e) {
-                    console.error("GeoJSON error", ds.id);
-                }
-            }
-        }
-    } catch (e) {
-        console.error("Dataset fetch error", e);
     }
 })();
