@@ -45,15 +45,15 @@
       "material": null,
       "name": "Camera",
       "position": [
-        0.971203788338506,
-        1.8345977515930576,
-        3.929535720306417
+        1.3,
+        1.35,
+        3
       ],
       "rotation": [
-        -0.0009561431502932011,
-        0.9937700088753519,
-        -0.11111765238843778,
-        -0.008551174062167625
+        0,
+        -1,
+        0,
+        6.123233995736766e-17
       ],
       "scale": [
         0.9999998646558023,
@@ -61,7 +61,8 @@
         0.9999998715044741
       ],
       "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
-      "order": 1.0308214152219775
+      "order": 1.0308214152219775,
+      "hidden": false
     },
     "ac1989e3-3b71-49e2-a05f-e682aeb18c36": {
       "components": {},
@@ -92,39 +93,6 @@
       "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
       "order": 0.6644431107322474
     },
-    "12c7f0b9-c61a-4855-a64b-b9f6dfbe5212": {
-      "id": "12c7f0b9-c61a-4855-a64b-b9f6dfbe5212",
-      "position": [
-        0,
-        0,
-        0
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        3,
-        3,
-        3
-      ],
-      "geometry": null,
-      "material": null,
-      "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
-      "components": {},
-      "gltfModel": {
-        "src": {
-          "type": "asset",
-          "asset": "assets/tiny_planet_friends_3d-defective-product-4083.glb"
-        },
-        "animationClip": "",
-        "loop": true
-      },
-      "name": "tiny_planet_friends_3d-defective-product-4083.glb",
-      "order": 2.3926102010925447
-    },
     "1c452cfb-3688-48ef-b86c-f16b852add8e": {
       "id": "1c452cfb-3688-48ef-b86c-f16b852add8e",
       "position": [
@@ -145,7 +113,7 @@
       ],
       "geometry": null,
       "material": null,
-      "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
+      "parentId": "7811f203-bbc5-436c-ae08-67cf92e7b935",
       "components": {},
       "ui": {
         "background": "#737373",
@@ -159,12 +127,12 @@
         "ignoreRaycast": false
       },
       "name": "Text",
-      "order": 4.345876698765554
+      "order": 5.152820033599735
     },
     "37b5ea5f-e8f0-4731-831b-2e6804073531": {
       "id": "37b5ea5f-e8f0-4731-831b-2e6804073531",
       "position": [
-        1.7995548797719723,
+        1.7691959759737876,
         0.9648262436412107,
         0.3
       ],
@@ -181,12 +149,18 @@
       ],
       "geometry": null,
       "material": null,
-      "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
+      "parentId": "7811f203-bbc5-436c-ae08-67cf92e7b935",
       "components": {
         "2519ad27-1ed2-4c5e-a2ec-ed7db9fbffc7": {
           "id": "2519ad27-1ed2-4c5e-a2ec-ed7db9fbffc7",
           "name": "TapToStart",
-          "parameters": {}
+          "parameters": {
+            "npcId": "de-verwoeste-stad",
+            "conversationRoot": {
+              "type": "entity",
+              "id": "7811f203-bbc5-436c-ae08-67cf92e7b935"
+            }
+          }
         }
       },
       "ui": {
@@ -237,12 +211,12 @@
       },
       "order": 1.2410879928430152
     },
-    "13914ec4-4973-4f23-858e-ebdc19e0781f": {
-      "id": "13914ec4-4973-4f23-858e-ebdc19e0781f",
+    "7811f203-bbc5-436c-ae08-67cf92e7b935": {
+      "id": "7811f203-bbc5-436c-ae08-67cf92e7b935",
       "position": [
-        1.8506448553402075,
         0,
-        0.3
+        1.1102230246251565e-16,
+        0
       ],
       "rotation": [
         0,
@@ -259,28 +233,249 @@
       "material": null,
       "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
       "components": {
-        "20f80b66-b50a-4592-b376-42f081358889": {
-          "id": "20f80b66-b50a-4592-b376-42f081358889",
+        "7778daf6-ac84-4f90-8211-7b0c35295887": {
+          "id": "7778daf6-ac84-4f90-8211-7b0c35295887",
           "name": "TapToStart",
           "parameters": {
-            "targetImageUrl": "https://cdn.8thwall.com/web/assets/sprites/white_gray_tiles-m8f52fip.png"
+            "npcId": "de-verwoeste-stad",
+            "conversationRoot": {
+              "type": "entity",
+              "id": "7811f203-bbc5-436c-ae08-67cf92e7b935"
+            }
           }
         }
       },
+      "name": "De verwoeste stad",
+      "order": 7.413174840900628,
+      "hidden": false
+    },
+    "61e2282c-0968-4da9-8083-2bae9065e15d": {
+      "id": "61e2282c-0968-4da9-8083-2bae9065e15d",
+      "position": [
+        0.7561918396040485,
+        1.5,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "7811f203-bbc5-436c-ae08-67cf92e7b935",
+      "components": {},
       "ui": {
         "type": "3d",
-        "width": 200,
+        "width": 100,
         "height": 100,
         "image": {
-          "type": "url",
-          "url": "https://images.nu.nl/m/bauxq2vavwtd_wd854/0/79/1518/854/rick-astley.jpg"
+          "type": "asset",
+          "asset": "assets/Photographer.png"
         },
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
       "name": "Image",
-      "order": 8.289570868610406,
-      "hidden": true
+      "order": 2.441345942890808
+    },
+    "84f53e8b-a83e-43d7-88e7-de488cac605a": {
+      "id": "84f53e8b-a83e-43d7-88e7-de488cac605a",
+      "position": [
+        0,
+        1.1102230246251565e-16,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
+      "components": {
+        "527e15b5-def6-4362-bd9c-802ca5050739": {
+          "id": "527e15b5-def6-4362-bd9c-802ca5050739",
+          "name": "TapToStart",
+          "parameters": {
+            "npcId": "de-boeg",
+            "conversationRoot": {
+              "type": "entity",
+              "id": "84f53e8b-a83e-43d7-88e7-de488cac605a"
+            }
+          }
+        }
+      },
+      "name": "De boeg",
+      "order": 9.025220839621644,
+      "hidden": false
+    },
+    "8d3f0e75-ec70-4e1c-a1b1-1e5da6d4d028": {
+      "id": "8d3f0e75-ec70-4e1c-a1b1-1e5da6d4d028",
+      "position": [
+        1.7478202603532804,
+        1.5046544858476856,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "84f53e8b-a83e-43d7-88e7-de488cac605a",
+      "components": {},
+      "ui": {
+        "background": "#737373",
+        "backgroundOpacity": 0.5,
+        "width": 100,
+        "height": 45,
+        "text": "Ik ben Spyro en ik heet jullie van harte welkom bij de TimeThieves!",
+        "color": "#ffffff",
+        "fontSize": 12,
+        "type": "3d",
+        "ignoreRaycast": false
+      },
+      "name": "Text",
+      "order": 5.152820033599735
+    },
+    "eb8f54d8-6762-4b8c-a80e-0596aa3114e6": {
+      "id": "eb8f54d8-6762-4b8c-a80e-0596aa3114e6",
+      "position": [
+        1.7691959759737876,
+        0.9648262436412107,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "84f53e8b-a83e-43d7-88e7-de488cac605a",
+      "components": {
+        "2519ad27-1ed2-4c5e-a2ec-ed7db9fbffc7": {
+          "id": "2519ad27-1ed2-4c5e-a2ec-ed7db9fbffc7",
+          "name": "TapToStart",
+          "parameters": {
+            "npcId": "de-boeg",
+            "conversationRoot": {
+              "type": "entity",
+              "id": "84f53e8b-a83e-43d7-88e7-de488cac605a"
+            }
+          }
+        }
+      },
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 40,
+        "background": "#525dff",
+        "borderRadius": 18,
+        "flexDirection": "row",
+        "backgroundOpacity": 1,
+        "padding": "10",
+        "gap": "6",
+        "alignItems": "center",
+        "justifyContent": "center"
+      },
+      "name": "Button",
+      "order": 6.297444596661108
+    },
+    "462baa66-766c-43ca-a6ad-7ee671f7b42d": {
+      "id": "462baa66-766c-43ca-a6ad-7ee671f7b42d",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "eb8f54d8-6762-4b8c-a80e-0596aa3114e6",
+      "components": {},
+      "name": "Text",
+      "ui": {
+        "width": 60,
+        "height": 14,
+        "text": "Klik hier",
+        "color": "#ffffff",
+        "fontSize": 16
+      },
+      "order": 1.2410879928430152
+    },
+    "5056118f-d4f0-458a-868b-15a0dded8130": {
+      "id": "5056118f-d4f0-458a-868b-15a0dded8130",
+      "position": [
+        0.7561918396040485,
+        1.5,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "84f53e8b-a83e-43d7-88e7-de488cac605a",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/Student.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Image",
+      "order": 2.441345942890808
     }
   },
   "spaces": {
