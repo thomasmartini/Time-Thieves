@@ -229,6 +229,7 @@ const monumentZones = [
     lat: 51.9122727,
     radius: 20,
     color: Cesium.Color.CYAN.withAlpha(0.35),
+    objects: [],
   },
   {
     name: "Erasmusbeeld",
