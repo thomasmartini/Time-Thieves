@@ -292,26 +292,18 @@ function setTextVisibility(entity: ecs.Entity | null, isVisible: boolean) {
   }
 }
 
-function isAdvanceButtonEntity(world: ecs.World, eid: bigint): boolean {
+function isPrimaryConversationController(
+  world: ecs.World,
+  eid: bigint,
+  configuredRootEid?: bigint,
+): boolean {
   if (!world.eidToEntity.has(eid)) {
     return false;
   }
 
   const entity = world.getEntity(eid);
-  if (!entity.has(ecs.Ui)) {
-    return false;
-  }
-
-  const ui = entity.get(ecs.Ui);
-  const runtimeName = (entity as unknown as { name?: string }).name;
-  const entityName = (runtimeName || "").toLowerCase().trim();
-
-  if (entityName === "button") {
-    return true;
-  }
-
-  // Generic fallback for button-like UI blocks.
-  return Boolean(ui.background && !ui.image && !ui.text);
+  const rootEntity = getConversationRoot(world, entity, configuredRootEid);
+  return Boolean(rootEntity && rootEntity.eid === eid);
 }
 
 function showOnlyActiveConversation(activeRoot: ecs.Entity) {
@@ -485,17 +477,20 @@ ecs.registerComponent({
         currentDialogueIndex = dialogue.length > 1 ? 1 : 0;
       })
       .onEvent(ecs.input.SCREEN_TOUCH_START, "touched", {
-        target: eid,
+        target: world.events.globalId,
       });
 
     ecs
       .defineState("touched")
       .onEnter(() => {
-        if (!isAdvanceButtonEntity(world, eid)) {
+        const schema = schemaAttribute.get(eid);
+
+        if (
+          !isPrimaryConversationController(world, eid, schema.conversationRoot)
+        ) {
           return;
         }
 
-        const schema = schemaAttribute.get(eid);
         const componentNpcId = schema.npcId;
         const activeNpcId = requestedSceneId || componentNpcId;
         const dialogue = getDialogueForNpc(activeNpcId);
@@ -513,7 +508,7 @@ ecs.registerComponent({
         currentDialogueIndex = (currentDialogueIndex + 1) % dialogue.length;
       })
       .onEvent(ecs.input.SCREEN_TOUCH_END, "default", {
-        target: eid,
+        target: world.events.globalId,
       });
   },
 });
