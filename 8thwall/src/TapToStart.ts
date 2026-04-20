@@ -23,10 +23,52 @@ const npcDialogues: Record<string, DialogueTurn[]> = {
     { speaker: "player", text: "Top, we gaan op pad." },
   ],
   student: [
-    { speaker: "npc", text: "Hoi! Ik ben de student van de TimeThieves." },
-    { speaker: "player", text: "Heb jij een hint voor ons?" },
-    { speaker: "npc", text: "Kijk goed om je heen en volg de route." },
-    { speaker: "player", text: "Duidelijk, dankjewel!" },
+    {
+      speaker: "player",
+      text: "Hello ma'am, may I ask what you're doing here?",
+    },
+    {
+      speaker: "npc",
+      text: "Oh hi! My name is Leya, I'm a historic photographer. I'm not really sure why, but this statue here caught my attention.",
+    },
+    {
+      speaker: "player",
+      text: "I think I know why this statue here caught your attention.",
+    },
+    {
+      speaker: "player",
+      text: "You see, I believe this statue, and many others around the city, hold memories of important historic events.",
+    },
+    { speaker: "player", text: "What do you know about this one?" },
+    {
+      speaker: "npc",
+      text: "Well... my grandmother told me some stories about the war and what it was like during that time.",
+    },
+    {
+      speaker: "npc",
+      text: "She told me that a big part of the city got destroyed and many people died... It was devastating...",
+    },
+    {
+      speaker: "npc",
+      text: "I remember a picture my grandmother took during the war. The war changed Rotterdam a lot. It left a scar right in the heart of the city.",
+    },
+    {
+      speaker: "player",
+      text: "It sounds like your grandmother went through a lot.",
+    },
+    {
+      speaker: "player",
+      text: "Do you remember any other historic events about Rotterdam?",
+    },
+    {
+      speaker: "npc",
+      text: "It feels like I should know more, but for some reason I can't remember. So I'm sorry but I don't.",
+    },
+    {
+      speaker: "player",
+      text: "Don't worry about it. Thanks for sharing your grandmothers story.",
+    },
+    { speaker: "npc", text: "You're welcome!" },
   ],
 };
 
@@ -250,6 +292,28 @@ function setTextVisibility(entity: ecs.Entity | null, isVisible: boolean) {
   }
 }
 
+function isAdvanceButtonEntity(world: ecs.World, eid: bigint): boolean {
+  if (!world.eidToEntity.has(eid)) {
+    return false;
+  }
+
+  const entity = world.getEntity(eid);
+  if (!entity.has(ecs.Ui)) {
+    return false;
+  }
+
+  const ui = entity.get(ecs.Ui);
+  const runtimeName = (entity as unknown as { name?: string }).name;
+  const entityName = (runtimeName || "").toLowerCase().trim();
+
+  if (entityName === "button") {
+    return true;
+  }
+
+  // Generic fallback for button-like UI blocks.
+  return Boolean(ui.background && !ui.image && !ui.text);
+}
+
 function showOnlyActiveConversation(activeRoot: ecs.Entity) {
   // Always unhide and enable the selected root first, even during early scene init.
   setConversationInteractionState(activeRoot, true);
@@ -427,6 +491,10 @@ ecs.registerComponent({
     ecs
       .defineState("touched")
       .onEnter(() => {
+        if (!isAdvanceButtonEntity(world, eid)) {
+          return;
+        }
+
         const schema = schemaAttribute.get(eid);
         const componentNpcId = schema.npcId;
         const activeNpcId = requestedSceneId || componentNpcId;
