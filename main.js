@@ -13,8 +13,9 @@ try {
     imageryProvider: new Cesium.IonImageryProvider({ assetId: 2 }),
     baseLayerPicker: false,
     timeline: false,
-    animation: false,
+    animation: true,
     shadows: true,
+    shouldAnimate: true,
   });
 
   viewer.scene.globe.enableLighting = true;
@@ -29,21 +30,34 @@ try {
   console.log("Viewer created");
 } catch (e) {
   console.error("Fallback viewer", e);
-  viewer = new Cesium.Viewer("cesiumContainer");
+  viewer = new Cesium.Viewer("cesiumContainer", {
+    animation: false,
+    timeline: false,
+    baseLayerPicker: false,
+    geocoder: false,
+    homeButton: false,
+    sceneModePicker: false,
+    navigationHelpButton: false,
+    infoBox: false,
+    selectionIndicator: false,
+    fullscreenButton: false,
+    shadows: true,
+    shouldAnimate: true,
+  });
 }
 
 // USER LOCATION + MODEL
 let currentLon = 4.47917;
 let currentLat = 51.9225;
 
-let userDuck = viewer.entities.add({
+let userPlayer = viewer.entities.add({
   position: new Cesium.CallbackProperty(function () {
-    return Cesium.Cartesian3.fromDegrees(currentLon, currentLat, 2);
+    return Cesium.Cartesian3.fromDegrees(currentLon, currentLat, 0);
   }, false),
   model: {
-    uri: "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf",
-    minimumPixelSize: 64,
-    maximumScale: 100,
+    uri: "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/CesiumMan/glTF-Embedded/CesiumMan.gltf",
+    minimumPixelSize: 500,
+    maximumScale: 2,
   },
 });
 
@@ -80,31 +94,31 @@ canvas.addEventListener("dblclick", () => {
 
 navigator.geolocation.watchPosition(
   (position) => {
-    currentLon = 4.4845575;
-    currentLat = 51.9122727;
+    currentLon = position.coords.longitude;
+    currentLat = position.coords.latitude;
 
     const heading = position.coords.heading || 0;
 
-    const duckPosition = Cesium.Cartesian3.fromDegrees(
+    const playerPosition = Cesium.Cartesian3.fromDegrees(
       currentLon,
       currentLat,
-      2,
+      5,
     );
 
     const offset = new Cesium.HeadingPitchRange(
       Cesium.Math.toRadians(heading),
-      Cesium.Math.toRadians(-35),
-      50,
+      Cesium.Math.toRadians(-15),
+      20,
     );
 
     // Player direction based on GPS heading
-    userDuck.orientation = Cesium.Transforms.headingPitchRollQuaternion(
-      duckPosition,
-      new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(heading), 0, 0),
+    userPlayer.orientation = Cesium.Transforms.headingPitchRollQuaternion(
+      playerPosition,
+      new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(heading - 90), 0, 0),
     );
 
     if (cameraFollow) {
-      viewer.camera.lookAt(duckPosition, offset);
+      viewer.camera.lookAt(playerPosition, offset);
     }
     updateZoneButtonsVisibility();
   },
@@ -137,39 +151,10 @@ function randomInRange(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-function spawnRandomObjectsInArea(count, west, south, east, north) {
-  const modelUrl =
-    "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf";
-  for (let i = 0; i < count; i++) {
-    const lon = randomInRange(west, east);
-    const lat = randomInRange(south, north);
-    const alt = randomInRange(1, 20);
-    viewer.entities.add({
-      position: Cesium.Cartesian3.fromDegrees(lon, lat, alt),
-      model: {
-        uri: modelUrl,
-        minimumPixelSize: 32,
-        maximumScale: 50,
-      },
-      label: {
-        text: `Duck ${i + 1}`,
-        font: "bold 12px Arial",
-        fillColor: Cesium.Color.WHITE,
-        outlineColor: Cesium.Color.BLACK,
-        outlineWidth: 2,
-        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-        pixelOffset: new Cesium.Cartesian2(0, -24),
-      },
-    });
-  }
-}
-
-function spawnDucksInMonumentZones() {
-  const modelUrl =
-    "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf";
-  const ducksPerZone = 5;
-  let duckIndex = 1;
+function spawnObjectsInMonumentZones() {
+  const imageUrl = "images/image27.png";
+  const objectsPerZone = 5;
+  let objectIndex = 1;
 
   for (const zone of monumentZones) {
     const { metersPerDegLat, metersPerDegLon } = getMetersPerDegree(
@@ -179,20 +164,22 @@ function spawnDucksInMonumentZones() {
     const deltaLon = zone.radius / metersPerDegLon;
     const deltaLat = zone.radius / metersPerDegLat;
 
-    for (let i = 0; i < ducksPerZone; i++) {
+    for (let i = 0; i < objectsPerZone; i++) {
       const lon = randomInRange(zone.lon - deltaLon, zone.lon + deltaLon);
       const lat = randomInRange(zone.lat - deltaLat, zone.lat + deltaLat);
-      const alt = 0;
+      const alt = 1;
+
+      zone.objects.push({ lon, lat, alt });
 
       viewer.entities.add({
         position: Cesium.Cartesian3.fromDegrees(lon, lat, alt),
-        model: {
-          uri: modelUrl,
-          minimumPixelSize: 16,
-          maximumScale: 25,
+        billboard: {
+          image: imageUrl,
+          width: 48,
+          height: 48,
         },
         label: {
-          text: `Duck ${duckIndex}`,
+          text: `Object ${objectIndex}`,
           font: "bold 10px Arial",
           fillColor: Cesium.Color.WHITE,
           outlineColor: Cesium.Color.BLACK,
@@ -202,7 +189,7 @@ function spawnDucksInMonumentZones() {
           pixelOffset: new Cesium.Cartesian2(0, -16),
         },
       });
-      duckIndex++;
+      objectIndex++;
     }
   }
 }
@@ -215,13 +202,13 @@ handler.setInputAction(function (click) {
     score += 10;
     const message =
       score >= scoreGoal
-        ? "🎉 Goal reached! The Time Thieves are beat"
-        : "Nice click!";
+        ? "🎉 Doel bereikt! De Time Thieves zijn verslagen!"
+        : "Ga door om het doel te bereiken.";
     updateScoreUI(message);
   }
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-updateScoreUI("Click objects to earn points.");
+updateScoreUI("klik op de objecten om punten te verdienen!");
 // Monument Zones
 const monumentZones = [
   {
@@ -232,6 +219,7 @@ const monumentZones = [
     lat: 51.9176368,
     radius: 100,
     color: Cesium.Color.ORANGE.withAlpha(0.35),
+    objects: [],
   },
   {
     name: "De Boeg",
@@ -250,6 +238,7 @@ const monumentZones = [
     lat: 51.9215122,
     radius: 20,
     color: Cesium.Color.LIME.withAlpha(0.35),
+    objects: [],
   },
   {
     name: "Monument voor alle gevallen",
@@ -259,6 +248,7 @@ const monumentZones = [
     lat: 51.9224434,
     radius: 20,
     color: Cesium.Color.MAGENTA.withAlpha(0.35),
+     objects: [],
   },
   {
     name: "Calandmonument",
@@ -268,6 +258,7 @@ const monumentZones = [
     lat: 51.9080186,
     radius: 20,
     color: Cesium.Color.YELLOW.withAlpha(0.35),
+     objects: [],
   },
 ];
 
@@ -454,6 +445,125 @@ function updateZoneButtonsVisibility() {
   const infoEl = document.getElementById("zoneMessage");
   let visibleCount = 0;
 
+    currentActiveMonument = zone.name;
+    setGameMessage(`AR geactiveerd voor ${zone.name}!`, "#8efc8e");
+    const infoEl = document.getElementById("zoneMessage");
+    if (infoEl) {
+      infoEl.textContent = `Je bevindt je binnen ${zone.radius} meter van ${zone.name}. AR is nu actief.`;
+    }
+    console.log(`AR activated for ${zone.name}`);
+    startAR(zone);
+  } else {
+    setGameMessage(
+      `Je moet dichter bij ${zone.name} zijn om AR te activeren.`,
+      "#f4b8b8",
+    );
+    const infoEl = document.getElementById("zoneMessage");
+    if (infoEl) {
+      const distance = Math.round(distanceToZone(zone));
+      infoEl.textContent = `Je bent ${distance} meter van ${zone.name}. Beweeg dichterbij en probeer het opnieuw.`;
+    }
+  }
+}
+
+function startAR(zone) {
+  // hide Cesium view and UI
+  document.getElementById("cesiumContainer").style.display = "none";
+  document.getElementById("gamePanel").style.display = "none";
+  document.getElementById("zonePanel").style.display = "none";
+
+  // create AR scene
+  const arScene = document.createElement("a-scene");
+  arScene.setAttribute("vr-mode-ui", "enabled: false");
+  arScene.setAttribute(
+    "arjs",
+    "sourceType: webcam; videoTexture: true; debugUIEnabled: false",
+  );
+  arScene.setAttribute("renderer", "antialias: true; alpha: true");
+  arScene.style.width = "100%";
+  arScene.style.height = "100%";
+  arScene.style.position = "absolute";
+  arScene.style.top = "0";
+  arScene.style.left = "0";
+
+  // Camera
+  const camera = document.createElement("a-camera");
+  camera.setAttribute("gps-new-camera", "gpsMinDistance: 5");
+  arScene.appendChild(camera);
+
+  // Entity for the zone center (for testing)
+  const entity = document.createElement("a-entity");
+  entity.setAttribute("material", "color: red");
+  entity.setAttribute("geometry", "primitive: box");
+  entity.setAttribute(
+    "gps-new-entity-place",
+    `latitude: ${zone.lat}; longitude: ${zone.lon}`,
+  );
+  arScene.appendChild(entity);
+
+  const arImageUrl = "/images/image27.png";
+
+  // Entities for objects in the zone
+  zone.objects.forEach((obj, index) => {
+    const objectEntity = document.createElement("a-entity");
+    objectEntity.setAttribute(
+      "geometry",
+      "primitive: plane; width: 1; height: 1",
+    );
+    objectEntity.setAttribute(
+      "material",
+      `src: ${arImageUrl}; transparent: true; opacity: 1`,
+    );
+    objectEntity.setAttribute(
+      "gps-new-entity-place",
+      `latitude: ${obj.lat}; longitude: ${obj.lon}`,
+    );
+    objectEntity.addEventListener("click", () => {
+      score += 10;
+      updateScoreUI(`Je hebt op een AR element geklikt!`);
+      if (objectEntity.parentNode) {
+        objectEntity.parentNode.removeChild(objectEntity);
+      }
+    });
+    arScene.appendChild(objectEntity);
+  });
+
+  const backButton = document.createElement("button");
+  backButton.id = "arBackButton";
+  backButton.textContent = "Terug naar 3D";
+  backButton.style.position = "absolute";
+  backButton.style.top = "20px";
+  backButton.style.right = "20px";
+  backButton.style.zIndex = "1000";
+  backButton.style.padding = "10px";
+  backButton.style.background = "#24a0ff";
+  backButton.style.color = "white";
+  backButton.style.border = "none";
+  backButton.style.borderRadius = "4px";
+  backButton.style.cursor = "pointer";
+  backButton.addEventListener("click", stopAR);
+  document.body.appendChild(backButton);
+
+  document.body.appendChild(arScene);
+}
+
+function stopAR() {
+  // Remove AR scene and back button
+  const arScene = document.querySelector("a-scene");
+  if (arScene) document.body.removeChild(arScene);
+  const backButton = document.getElementById("arBackButton");
+  if (backButton) document.body.removeChild(backButton);
+
+  // Go back to Cesium view
+  document.getElementById("cesiumContainer").style.display = "block";
+  document.getElementById("gamePanel").style.display = "block";
+  document.getElementById("zonePanel").style.display = "block";
+}
+
+function updateZoneButtonsVisibility() {
+  const infoEl = document.getElementById("zoneMessage");
+  let visibleCount = 0;
+
   monumentZones.forEach((zone) => {
     if (!zone.rowElement) return;
     if (isInZone(zone)) {
@@ -508,7 +618,7 @@ function createZoneButtons() {
 createMonumentZones();
 createZoneButtons();
 updateZoneButtonsVisibility();
-spawnDucksInMonumentZones();
+spawnObjectsInMonumentZones();
 // OUP TILES
 (async function () {
   const urls = [
@@ -535,33 +645,5 @@ spawnDucksInMonumentZones();
     } catch (err) {
       console.error("Tileset error", url, err);
     }
-  }
-})();
-
-// CLEARLY DATASETS
-(async function () {
-  try {
-    const resp = await fetch("https://hub.clearly.app/datasets");
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const datasets = await resp.json();
-    for (const ds of datasets) {
-      if (
-        ds.format &&
-        ds.format.toLowerCase().includes("geojson") &&
-        ds.url &&
-        ds.url.toLowerCase().includes("rotterdam")
-      ) {
-        try {
-          const gj = await Cesium.GeoJsonDataSource.load(ds.url, {
-            clampToGround: true,
-          });
-          viewer.dataSources.add(gj);
-        } catch (e) {
-          console.error("GeoJSON error", ds.id);
-        }
-      }
-    }
-  } catch (e) {
-    console.error("Dataset fetch error", e);
   }
 })();
