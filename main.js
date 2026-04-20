@@ -47,8 +47,8 @@ try {
 }
 
 // USER LOCATION + MODEL
-let currentLon = 4.47917;
-let currentLat = 51.9225;
+let currentLon = 4.4845575;
+let currentLat = 51.9122727;
 
 let userPlayer = viewer.entities.add({
   position: new Cesium.CallbackProperty(function () {
@@ -217,7 +217,7 @@ const monumentZones = [
     sceneId: "de-verwoeste-stad",
     lon: 4.4830665,
     lat: 51.9176368,
-    radius: 100,
+    radius: 20,
     color: Cesium.Color.ORANGE.withAlpha(0.35),
     objects: [],
   },
@@ -248,7 +248,7 @@ const monumentZones = [
     lat: 51.9224434,
     radius: 20,
     color: Cesium.Color.MAGENTA.withAlpha(0.35),
-     objects: [],
+    objects: [],
   },
   {
     name: "Calandmonument",
@@ -258,7 +258,7 @@ const monumentZones = [
     lat: 51.9080186,
     radius: 20,
     color: Cesium.Color.YELLOW.withAlpha(0.35),
-     objects: [],
+    objects: [],
   },
 ];
 
@@ -427,32 +427,13 @@ function open8thWallScene(zone, source = "manual") {
 
 function activateAR(zone) {
   if (isInZone(zone)) {
-    open8thWallScene(zone, "manual");
-  } else {
-    setGameMessage(
-      `Je moet dichter bij ${zone.name} zijn om AR te activeren.`,
-      "#f4b8b8",
-    );
-    const infoEl = document.getElementById("zoneMessage");
-    if (infoEl) {
-      const distance = Math.round(distanceToZone(zone));
-      infoEl.textContent = `Je bent ${distance} meter van ${zone.name}. Beweeg dichterbij en probeer het opnieuw.`;
-    }
-  }
-}
-
-function updateZoneButtonsVisibility() {
-  const infoEl = document.getElementById("zoneMessage");
-  let visibleCount = 0;
-
-    currentActiveMonument = zone.name;
-    setGameMessage(`AR geactiveerd voor ${zone.name}!`, "#8efc8e");
-    const infoEl = document.getElementById("zoneMessage");
-    if (infoEl) {
-      infoEl.textContent = `Je bevindt je binnen ${zone.radius} meter van ${zone.name}. AR is nu actief.`;
-    }
-    console.log(`AR activated for ${zone.name}`);
     startAR(zone);
+    setGameMessage(`AR.js geactiveerd voor ${zone.name}!`, "#8efc8e");
+    const infoEl = document.getElementById("zoneMessage");
+    if (infoEl) {
+      infoEl.textContent = `Je bevindt je binnen ${zone.radius} meter van ${zone.name}. AR.js is nu actief.`;
+    }
+    console.log(`AR.js activated for ${zone.name}`);
   } else {
     setGameMessage(
       `Je moet dichter bij ${zone.name} zijn om AR te activeren.`,
@@ -489,6 +470,7 @@ function startAR(zone) {
   // Camera
   const camera = document.createElement("a-camera");
   camera.setAttribute("gps-new-camera", "gpsMinDistance: 5");
+  camera.setAttribute("cursor", "rayOrigin: mouse; fuse: false");
   arScene.appendChild(camera);
 
   // Entity for the zone center (for testing)
@@ -501,14 +483,14 @@ function startAR(zone) {
   );
   arScene.appendChild(entity);
 
-  const arImageUrl = "/images/image27.png";
+  const arImageUrl = "images/image27.png";
 
   // Entities for objects in the zone
   zone.objects.forEach((obj, index) => {
     const objectEntity = document.createElement("a-entity");
     objectEntity.setAttribute(
       "geometry",
-      "primitive: plane; width: 1; height: 1",
+      "primitive: plane; width: 5; height: 5",
     );
     objectEntity.setAttribute(
       "material",
@@ -520,10 +502,10 @@ function startAR(zone) {
     );
     objectEntity.addEventListener("click", () => {
       score += 10;
-      updateScoreUI(`Je hebt op een AR element geklikt!`);
-      if (objectEntity.parentNode) {
-        objectEntity.parentNode.removeChild(objectEntity);
-      }
+      console.log(`AR object ${index + 1} in ${zone.name} clicked!`);
+      updateScoreUI(`Je hebt op een AR element geklikt! Switching to 8th Wall...`);
+      stopAR();
+      open8thWallScene(zone);
     });
     arScene.appendChild(objectEntity);
   });
