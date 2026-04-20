@@ -126,7 +126,7 @@
         "type": "3d",
         "ignoreRaycast": false
       },
-      "name": "Text",
+      "name": "Tekst npc",
       "order": 5.152820033599735
     },
     "37b5ea5f-e8f0-4731-831b-2e6804073531": {
@@ -159,6 +159,14 @@
             "conversationRoot": {
               "type": "entity",
               "id": "7811f203-bbc5-436c-ae08-67cf92e7b935"
+            },
+            "npcTextTarget": {
+              "type": "entity",
+              "id": "1c452cfb-3688-48ef-b86c-f16b852add8e"
+            },
+            "playerTextTarget": {
+              "type": "entity",
+              "id": "45bca7ae-2a9c-4d11-a33f-bf28e9d1b468"
             }
           }
         }
@@ -241,13 +249,21 @@
             "conversationRoot": {
               "type": "entity",
               "id": "7811f203-bbc5-436c-ae08-67cf92e7b935"
+            },
+            "npcTextTarget": {
+              "type": "entity",
+              "id": "1c452cfb-3688-48ef-b86c-f16b852add8e"
+            },
+            "playerTextTarget": {
+              "type": "entity",
+              "id": "45bca7ae-2a9c-4d11-a33f-bf28e9d1b468"
             }
           }
         }
       },
       "name": "De verwoeste stad",
       "order": 7.413174840900628,
-      "hidden": false
+      "hidden": true
     },
     "61e2282c-0968-4da9-8083-2bae9065e15d": {
       "id": "61e2282c-0968-4da9-8083-2bae9065e15d",
@@ -315,6 +331,14 @@
             "conversationRoot": {
               "type": "entity",
               "id": "84f53e8b-a83e-43d7-88e7-de488cac605a"
+            },
+            "npcTextTarget": {
+              "type": "entity",
+              "id": "8d3f0e75-ec70-4e1c-a1b1-1e5da6d4d028"
+            },
+            "playerTextTarget": {
+              "type": "entity",
+              "id": "7d4ac714-e775-4ba8-85ac-fdfcac57dc41"
             }
           }
         }
@@ -356,7 +380,7 @@
         "type": "3d",
         "ignoreRaycast": false
       },
-      "name": "Text",
+      "name": "Tekst npc",
       "order": 5.152820033599735
     },
     "eb8f54d8-6762-4b8c-a80e-0596aa3114e6": {
@@ -389,6 +413,14 @@
             "conversationRoot": {
               "type": "entity",
               "id": "84f53e8b-a83e-43d7-88e7-de488cac605a"
+            },
+            "npcTextTarget": {
+              "type": "entity",
+              "id": "8d3f0e75-ec70-4e1c-a1b1-1e5da6d4d028"
+            },
+            "playerTextTarget": {
+              "type": "entity",
+              "id": "7d4ac714-e775-4ba8-85ac-fdfcac57dc41"
             }
           }
         }
@@ -476,6 +508,72 @@
       },
       "name": "Image",
       "order": 2.441345942890808
+    },
+    "7d4ac714-e775-4ba8-85ac-fdfcac57dc41": {
+      "id": "7d4ac714-e775-4ba8-85ac-fdfcac57dc41",
+      "position": [
+        1.1413963474934194,
+        0.2999999999999999,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "84f53e8b-a83e-43d7-88e7-de488cac605a",
+      "components": {},
+      "ui": {
+        "width": 70,
+        "height": 10,
+        "text": "Hier komt de tekst van de speler",
+        "color": "#ffffff",
+        "fontSize": 12,
+        "type": "3d"
+      },
+      "name": "Tekst speler",
+      "order": 5.973862545647795
+    },
+    "45bca7ae-2a9c-4d11-a33f-bf28e9d1b468": {
+      "id": "45bca7ae-2a9c-4d11-a33f-bf28e9d1b468",
+      "position": [
+        1.1413963474934194,
+        0.29999999999999977,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {},
+      "ui": {
+        "width": 70,
+        "height": 10,
+        "text": "Hier komt de tekst van de speler",
+        "color": "#ffffff",
+        "fontSize": 12,
+        "type": "3d"
+      },
+      "name": "Tekst speler",
+      "order": 5.720139792449245,
+      "parentId": "7811f203-bbc5-436c-ae08-67cf92e7b935"
     }
   },
   "spaces": {

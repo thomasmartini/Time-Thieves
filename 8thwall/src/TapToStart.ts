@@ -3,37 +3,37 @@
 
 import * as ecs from "@8thwall/ecs"; // This is how you access the ecs library.
 
-const npcDialogues: Record<string, string[]> = {
+type Speaker = "npc" | "player";
+type DialogueTurn = {
+  speaker: Speaker;
+  text: string;
+};
+
+const npcDialogues: Record<string, DialogueTurn[]> = {
   spyro: [
-    "Ik ben Spyro en ik heet jullie van harte welkom bij de TimeThieves!",
-    "Deze stad zit vol geheimen. Jullie missie begint nu.",
-    "Klik door om mijn hints te lezen en vind de volgende locatie.",
-    "Als je klaar bent, activeer AR en spreek met de volgende NPC.",
+    {
+      speaker: "npc",
+      text: "Ik ben Spyro en ik heet jullie van harte welkom bij de TimeThieves!",
+    },
+    { speaker: "player", text: "Wat is onze eerste opdracht?" },
+    {
+      speaker: "npc",
+      text: "Deze stad zit vol geheimen. Jullie missie begint nu.",
+    },
+    { speaker: "player", text: "Top, we gaan op pad." },
   ],
   student: [
-    "Hoi! Ik ben de student van de TimeThieves.",
-    "Ik heb een aanwijzing voor jullie: kijk goed om je heen.",
-    "Volg de route en praat met iedereen voor het volledige verhaal.",
-    "Top gedaan. Op naar het volgende monument!",
+    { speaker: "npc", text: "Hoi! Ik ben de student van de TimeThieves." },
+    { speaker: "player", text: "Heb jij een hint voor ons?" },
+    { speaker: "npc", text: "Kijk goed om je heen en volg de route." },
+    { speaker: "player", text: "Duidelijk, dankjewel!" },
   ],
 };
 
 const fallbackDialogue = npcDialogues.spyro;
 const queryParams = new URLSearchParams(window.location.search);
-const requestedSceneId = queryParams.get("scene")?.trim().toLowerCase() || undefined;
-const debugTapToStart =
-  queryParams.get("debug") === "1" || queryParams.get("debug") === "true";
-
-function debugLog(step: string, data: Record<string, unknown>) {
-  if (!debugTapToStart) {
-    return;
-  }
-
-  console.log(`[TapToStart:${step}]`, {
-    scene: requestedSceneId || "(none)",
-    ...data,
-  });
-}
+const requestedSceneId =
+  queryParams.get("scene")?.trim().toLowerCase() || undefined;
 
 const dialogueKeyByNpcId: Record<string, string> = {
   "de-verwoeste-stad": "spyro",
@@ -47,7 +47,7 @@ function normalizeNpcId(npcId: string | undefined): string {
   return npcId?.trim().toLowerCase() || "";
 }
 
-function getDialogueForNpc(npcId: string | undefined): string[] {
+function getDialogueForNpc(npcId: string | undefined): DialogueTurn[] {
   const normalizedId = normalizeNpcId(npcId);
   if (!normalizedId) {
     return fallbackDialogue;
@@ -71,34 +71,25 @@ function getConversationRoot(
   configuredRootEid?: bigint,
 ): ecs.Entity | null {
   if (configuredRootEid && world.eidToEntity.has(configuredRootEid)) {
-    const root = world.getEntity(configuredRootEid);
-    debugLog("root-configured", {
-      entity: buttonEntity.eid.toString(),
-      root: root.eid.toString(),
-    });
-    return root;
+    return world.getEntity(configuredRootEid);
   }
 
   let current: ecs.Entity | null = buttonEntity;
   while (current) {
     if (isConversationContainer(current)) {
-      debugLog("root-detected", {
-        entity: buttonEntity.eid.toString(),
-        root: current.eid.toString(),
-      });
       return current;
     }
 
     current = current.getParent();
   }
 
-  debugLog("root-fallback-self", {
-    entity: buttonEntity.eid.toString(),
-  });
   return buttonEntity;
 }
 
-function findDialogueBubble(rootEntity: ecs.Entity, currentEid: bigint): ecs.Entity | null {
+function findDialogueBubble(
+  rootEntity: ecs.Entity,
+  currentEid: bigint,
+): ecs.Entity | null {
   const queue: ecs.Entity[] = [rootEntity];
 
   while (queue.length > 0) {
@@ -118,6 +109,86 @@ function findDialogueBubble(rootEntity: ecs.Entity, currentEid: bigint): ecs.Ent
   }
 
   return null;
+}
+
+function resolveTextTargetEntity(
+  world: ecs.World,
+  targetEid?: bigint,
+): ecs.Entity | null {
+  if (!targetEid) {
+    return null;
+  }
+
+  if (!world.eidToEntity.has(targetEid)) {
+    return null;
+  }
+
+  return world.getEntity(targetEid);
+}
+
+function findConversationTextEntities(
+  world: ecs.World,
+  rootEntity: ecs.Entity,
+  currentEid: bigint,
+  configuredNpcTextEid?: bigint,
+  configuredPlayerTextEid?: bigint,
+): {
+  npcTextEntity: ecs.Entity | null;
+  playerTextEntity: ecs.Entity | null;
+} {
+  const queue: ecs.Entity[] = [rootEntity];
+  let npcTextEntity: ecs.Entity | null = resolveTextTargetEntity(
+    world,
+    configuredNpcTextEid,
+  );
+  let playerTextEntity: ecs.Entity | null = resolveTextTargetEntity(
+    world,
+    configuredPlayerTextEid,
+  );
+
+  if (npcTextEntity && playerTextEntity) {
+    return { npcTextEntity, playerTextEntity };
+  }
+
+  while (queue.length > 0) {
+    const entity = queue.shift();
+    if (!entity) {
+      continue;
+    }
+
+    if (entity.eid !== currentEid && entity.has(ecs.Ui)) {
+      const ui = entity.get(ecs.Ui);
+      const textValue = (ui.text || "").toLowerCase().trim();
+      const runtimeName = (entity as unknown as { name?: string }).name;
+      const entityName = (runtimeName || "").toLowerCase().trim();
+
+      // Primary mapping: explicit named text entities in the scene graph.
+      if (!npcTextEntity && entityName === "tekst npc") {
+        npcTextEntity = entity;
+      }
+
+      if (!playerTextEntity && entityName === "tekst speler") {
+        playerTextEntity = entity;
+      }
+
+      if (npcTextEntity && playerTextEntity) {
+        queue.push(...entity.getChildren());
+        continue;
+      }
+
+      if (textValue === "klik hier") {
+        // Ignore the button label.
+      } else if (!npcTextEntity && ui.text && ui.background && !ui.image) {
+        npcTextEntity = entity;
+      } else if (!playerTextEntity && ui.text && !ui.background && !ui.image) {
+        playerTextEntity = entity;
+      }
+    }
+
+    queue.push(...entity.getChildren());
+  }
+
+  return { npcTextEntity, playerTextEntity };
 }
 
 function isConversationContainer(entity: ecs.Entity): boolean {
@@ -152,8 +223,25 @@ function isConversationContainer(entity: ecs.Entity): boolean {
   return false;
 }
 
-function setConversationInteractionState(entity: ecs.Entity, isActive: boolean) {
+function setConversationInteractionState(
+  entity: ecs.Entity,
+  isActive: boolean,
+) {
   if (isActive) {
+    entity.show();
+    entity.enable();
+  } else {
+    entity.hide();
+    entity.disable();
+  }
+}
+
+function setTextVisibility(entity: ecs.Entity | null, isVisible: boolean) {
+  if (!entity) {
+    return;
+  }
+
+  if (isVisible) {
     entity.show();
     entity.enable();
   } else {
@@ -191,22 +279,16 @@ function applyInitialConversationVisibility(
   configuredRootEid?: bigint,
 ) {
   const buttonEntity = world.getEntity(eid);
-  const rootEntity = getConversationRoot(world, buttonEntity, configuredRootEid);
+  const rootEntity = getConversationRoot(
+    world,
+    buttonEntity,
+    configuredRootEid,
+  );
   if (!rootEntity) {
-    debugLog("initial-no-root", {
-      entity: eid.toString(),
-      componentNpcId,
-    });
     return;
   }
 
   const shouldHandle = shouldButtonHandleNpc(componentNpcId);
-  debugLog("initial-visibility", {
-    entity: eid.toString(),
-    componentNpcId,
-    root: rootEntity.eid.toString(),
-    shouldHandle,
-  });
 
   if (!shouldHandle) {
     setConversationInteractionState(rootEntity, false);
@@ -222,25 +304,21 @@ function updateDialogueText(
   lineIndex: number,
   componentNpcId: string | undefined,
   configuredRootEid?: bigint,
+  configuredNpcTextEid?: bigint,
+  configuredPlayerTextEid?: bigint,
 ) {
   const buttonEntity = world.getEntity(currentEid);
-  const rootEntity = getConversationRoot(world, buttonEntity, configuredRootEid);
+  const rootEntity = getConversationRoot(
+    world,
+    buttonEntity,
+    configuredRootEid,
+  );
   if (!rootEntity) {
-    debugLog("dialogue-no-root", {
-      entity: currentEid.toString(),
-      componentNpcId,
-      lineIndex,
-    });
     return;
   }
 
   const shouldHandle = shouldButtonHandleNpc(componentNpcId);
   if (!shouldHandle) {
-    debugLog("dialogue-hidden", {
-      entity: currentEid.toString(),
-      componentNpcId,
-      root: rootEntity.eid.toString(),
-    });
     setConversationInteractionState(rootEntity, false);
     return;
   }
@@ -254,17 +332,37 @@ function updateDialogueText(
 
   const dialogueNpcId = requestedSceneId || componentNpcId;
   const dialogue = getDialogueForNpc(dialogueNpcId);
-  const currentLine = dialogue[lineIndex % dialogue.length];
-  dialogueBubble.set(ecs.Ui, { text: currentLine });
-  debugLog("dialogue-updated", {
-    entity: currentEid.toString(),
-    componentNpcId,
-    dialogueNpcId,
-    root: rootEntity.eid.toString(),
-    bubble: dialogueBubble.eid.toString(),
-    lineIndex,
-    line: currentLine,
-  });
+  const currentTurn = dialogue[lineIndex % dialogue.length];
+
+  const { npcTextEntity, playerTextEntity } = findConversationTextEntities(
+    world,
+    rootEntity,
+    currentEid,
+    configuredNpcTextEid,
+    configuredPlayerTextEid,
+  );
+
+  if (currentTurn.speaker === "npc") {
+    if (npcTextEntity) {
+      npcTextEntity.set(ecs.Ui, { text: currentTurn.text });
+    } else {
+      dialogueBubble.set(ecs.Ui, { text: currentTurn.text });
+    }
+    setTextVisibility(npcTextEntity || dialogueBubble, true);
+    setTextVisibility(playerTextEntity, false);
+    return;
+  }
+
+  if (playerTextEntity) {
+    playerTextEntity.set(ecs.Ui, { text: currentTurn.text });
+    setTextVisibility(playerTextEntity, true);
+    setTextVisibility(npcTextEntity || dialogueBubble, false);
+    return;
+  }
+
+  // Fallback when no separate player text field exists.
+  dialogueBubble.set(ecs.Ui, { text: `Jij: ${currentTurn.text}` });
+  setTextVisibility(dialogueBubble, true);
 }
 
 ecs.registerComponent({
@@ -272,6 +370,8 @@ ecs.registerComponent({
   schema: {
     npcId: "string",
     conversationRoot: "eid",
+    npcTextTarget: "eid",
+    playerTextTarget: "eid",
   },
   schemaDefaults: {
     npcId: "spyro",
@@ -280,13 +380,6 @@ ecs.registerComponent({
   // },
   add: (world, component) => {
     const componentNpcId = component.schema.npcId;
-    const activeNpcId = requestedSceneId || componentNpcId;
-    debugLog("add", {
-      entity: component.eid.toString(),
-      schemaNpcId: componentNpcId,
-      activeNpcId,
-      configuredRootEid: component.schema.conversationRoot?.toString(),
-    });
     applyInitialConversationVisibility(
       world,
       component.eid,
@@ -316,14 +409,15 @@ ecs.registerComponent({
         const activeNpcId = requestedSceneId || componentNpcId;
         const dialogue = getDialogueForNpc(activeNpcId);
 
-        debugLog("state-default-enter", {
-          entity: eid.toString(),
-          schemaNpcId: componentNpcId,
-          activeNpcId,
-          dialogueLength: dialogue.length,
-        });
-
-        updateDialogueText(world, eid, 0, componentNpcId, schema.conversationRoot);
+        updateDialogueText(
+          world,
+          eid,
+          0,
+          componentNpcId,
+          schema.conversationRoot,
+          schema.npcTextTarget,
+          schema.playerTextTarget,
+        );
         currentDialogueIndex = dialogue.length > 1 ? 1 : 0;
       })
       .onEvent(ecs.input.SCREEN_TOUCH_START, "touched", {
@@ -338,20 +432,14 @@ ecs.registerComponent({
         const activeNpcId = requestedSceneId || componentNpcId;
         const dialogue = getDialogueForNpc(activeNpcId);
 
-        debugLog("state-touched-enter", {
-          entity: eid.toString(),
-          schemaNpcId: componentNpcId,
-          activeNpcId,
-          currentDialogueIndex,
-          dialogueLength: dialogue.length,
-        });
-
         updateDialogueText(
           world,
           eid,
           currentDialogueIndex,
           componentNpcId,
           schema.conversationRoot,
+          schema.npcTextTarget,
+          schema.playerTextTarget,
         );
 
         currentDialogueIndex = (currentDialogueIndex + 1) % dialogue.length;
