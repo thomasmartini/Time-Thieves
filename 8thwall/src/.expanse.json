@@ -179,7 +179,7 @@
       "id": "61e2282c-0968-4da9-8083-2bae9065e15d",
       "position": [
         0.7561918396040485,
-        1.5,
+        1.366742397756827,
         0.3
       ],
       "rotation": [
@@ -208,7 +208,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image",
+      "name": "Npc",
       "order": 2.9478218696661136
     },
     "84f53e8b-a83e-43d7-88e7-de488cac605a": {
@@ -249,6 +249,14 @@
             "playerTextTarget": {
               "type": "entity",
               "id": "7d4ac714-e775-4ba8-85ac-fdfcac57dc41"
+            },
+            "npcBubbleTarget": {
+              "type": "entity",
+              "id": "6c925f6e-ace5-4dd7-b6b4-dcbec93e31a0"
+            },
+            "playerBubbleTarget": {
+              "type": "entity",
+              "id": "ca4dd790-e877-4ac4-8b9a-d53a90c1ae36"
             }
           }
         }
@@ -260,8 +268,8 @@
     "8d3f0e75-ec70-4e1c-a1b1-1e5da6d4d028": {
       "id": "8d3f0e75-ec70-4e1c-a1b1-1e5da6d4d028",
       "position": [
-        1.7478202603532804,
-        1.5046544858476856,
+        2.0006914056047878,
+        2.3733516147391875,
         0.3
       ],
       "rotation": [
@@ -280,18 +288,20 @@
       "parentId": "84f53e8b-a83e-43d7-88e7-de488cac605a",
       "components": {},
       "ui": {
-        "background": "#737373",
-        "backgroundOpacity": 0.5,
-        "width": 100,
+        "flexDirection": "row",
+        "width": 150,
         "height": 45,
         "text": "Hier komt de tekst van de npc",
-        "color": "#ffffff",
+        "color": "#000000",
         "fontSize": 12,
         "type": "3d",
-        "ignoreRaycast": false
+        "ignoreRaycast": false,
+        "verticalTextAlign": "start",
+        "textAlign": "left",
+        "flexWrap": "wrap"
       },
       "name": "Tekst npc",
-      "order": 5.152820033599735
+      "order": 4.523109385283041
     },
     "5056118f-d4f0-458a-868b-15a0dded8130": {
       "id": "5056118f-d4f0-458a-868b-15a0dded8130",
@@ -333,8 +343,8 @@
     "7d4ac714-e775-4ba8-85ac-fdfcac57dc41": {
       "id": "7d4ac714-e775-4ba8-85ac-fdfcac57dc41",
       "position": [
-        1.9308403731850254,
-        0.3026564103416733,
+        2.1642221500580683,
+        0.5923819196920171,
         0.3
       ],
       "rotation": [
@@ -353,12 +363,16 @@
       "parentId": "84f53e8b-a83e-43d7-88e7-de488cac605a",
       "components": {},
       "ui": {
-        "width": 70,
-        "height": 10,
+        "flexDirection": "row",
+        "width": 150,
+        "height": 45,
         "text": "Hier komt de tekst van de speler",
-        "color": "#ffffff",
+        "color": "#000000",
         "fontSize": 12,
-        "type": "3d"
+        "type": "3d",
+        "verticalTextAlign": "start",
+        "textAlign": "left",
+        "flexWrap": "wrap"
       },
       "name": "Tekst speler",
       "order": 5.973862545647795
@@ -399,8 +413,8 @@
     "1e92d086-163e-49dd-9e4a-ffe3f03a78c7": {
       "id": "1e92d086-163e-49dd-9e4a-ffe3f03a78c7",
       "position": [
-        0.7894440256916059,
-        0.0026564103416732987,
+        0.7894440256916058,
+        -0.5374202966359135,
         0
       ],
       "rotation": [
@@ -410,9 +424,9 @@
         1
       ],
       "scale": [
-        1,
-        1,
-        1
+        1.3,
+        1.3,
+        1.3
       ],
       "geometry": null,
       "material": null,
@@ -429,9 +443,83 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image",
-      "order": 6.192417049178637,
+      "name": "Speler",
+      "order": 5.206335711311404,
       "hidden": false
+    },
+    "6c925f6e-ace5-4dd7-b6b4-dcbec93e31a0": {
+      "id": "6c925f6e-ace5-4dd7-b6b4-dcbec93e31a0",
+      "position": [
+        2.050815284983467,
+        2.215889270026973,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        3,
+        3,
+        3
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "84f53e8b-a83e-43d7-88e7-de488cac605a",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/Vector_11.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Tekstwolk npc",
+      "order": 3.4165982411703086,
+      "hidden": true
+    },
+    "ca4dd790-e877-4ac4-8b9a-d53a90c1ae36": {
+      "id": "ca4dd790-e877-4ac4-8b9a-d53a90c1ae36",
+      "position": [
+        2.203104434887976,
+        0.29080920364616925,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        3,
+        3,
+        3
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "84f53e8b-a83e-43d7-88e7-de488cac605a",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/Vector_12.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Tekstwolk speler",
+      "order": 5.4431468580058935,
+      "hidden": true
     }
   },
   "spaces": {
