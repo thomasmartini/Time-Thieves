@@ -28,8 +28,48 @@ const queryParams = new URLSearchParams(window.location.search);
 const requestedSceneId =
   queryParams.get("scene")?.trim().toLowerCase() || undefined;
 
+const cameraNameBySceneId: Record<string, string> = {
+  "de-boeg": "camera01",
+  "de-boeg-01": "camera01",
+  "de-boeg-02": "camera02",
+};
+
 function normalizeId(value: string | undefined): string {
   return value?.trim().toLowerCase() || "";
+}
+
+function applySceneCamera(world: ecs.World, sceneId: string | undefined) {
+  const normalizedSceneId = normalizeId(sceneId);
+  const targetCameraName = cameraNameBySceneId[normalizedSceneId];
+
+  if (!targetCameraName) {
+    return;
+  }
+
+  const normalizedCameraName = targetCameraName.toLowerCase();
+  let targetCameraEid: bigint | null = null;
+
+  for (const entity of world.eidToEntity.values()) {
+    if (!entity.has(ecs.Camera)) {
+      continue;
+    }
+
+    const runtimeName = (entity as unknown as { name?: string }).name;
+    if ((runtimeName || "").trim().toLowerCase() !== normalizedCameraName) {
+      continue;
+    }
+
+    targetCameraEid = entity.eid;
+    break;
+  }
+
+  if (!targetCameraEid) {
+    return;
+  }
+
+  if (world.camera.getActiveEid() !== targetCameraEid) {
+    world.camera.setActiveEid(targetCameraEid);
+  }
 }
 
 function shouldHandleQuizScene(componentNpcId: string | undefined): boolean {
@@ -182,6 +222,8 @@ ecs.registerComponent({
   },
   add: (world, component) => {
     const schema = component.schema;
+    applySceneCamera(world, requestedSceneId || schema.npcId);
+
     const root = getQuizRoot(world, component.eid, schema.quizRoot);
     const shouldHandle = shouldHandleQuizScene(schema.npcId);
     setInteractionState(root, shouldHandle);
@@ -214,6 +256,8 @@ ecs.registerComponent({
       .initial()
       .onEnter(() => {
         const schema = schemaAttribute.get(eid);
+        applySceneCamera(world, requestedSceneId || schema.npcId);
+
         const root = getQuizRoot(world, eid, schema.quizRoot);
         const shouldHandle = shouldHandleQuizScene(schema.npcId);
 
@@ -227,6 +271,10 @@ ecs.registerComponent({
           currentQuestionIndex = 0;
           renderQuestion(world, eid, currentQuestionIndex, schema);
         }
+      })
+      .onTick(() => {
+        const schema = schemaAttribute.get(eid);
+        applySceneCamera(world, requestedSceneId || schema.npcId);
       })
       .onEvent(ecs.input.SCREEN_TOUCH_START, "pickedAnswer1", {
         target: answer1Target,

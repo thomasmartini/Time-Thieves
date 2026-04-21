@@ -77,6 +77,46 @@ const queryParams = new URLSearchParams(window.location.search);
 const requestedSceneId =
   queryParams.get("scene")?.trim().toLowerCase() || undefined;
 
+const cameraNameBySceneId: Record<string, string> = {
+  "de-boeg": "camera01",
+  "de-boeg-01": "camera01",
+  "de-boeg-02": "camera02",
+};
+
+function applySceneCamera(world: ecs.World, sceneId: string | undefined) {
+  const normalizedSceneId = normalizeNpcId(sceneId);
+  const targetCameraName = cameraNameBySceneId[normalizedSceneId];
+
+  if (!targetCameraName) {
+    return;
+  }
+
+  const normalizedCameraName = targetCameraName.toLowerCase();
+  let targetCameraEid: bigint | null = null;
+
+  for (const entity of world.eidToEntity.values()) {
+    if (!entity.has(ecs.Camera)) {
+      continue;
+    }
+
+    const runtimeName = (entity as unknown as { name?: string }).name;
+    if ((runtimeName || "").trim().toLowerCase() !== normalizedCameraName) {
+      continue;
+    }
+
+    targetCameraEid = entity.eid;
+    break;
+  }
+
+  if (!targetCameraEid) {
+    return;
+  }
+
+  if (world.camera.getActiveEid() !== targetCameraEid) {
+    world.camera.setActiveEid(targetCameraEid);
+  }
+}
+
 const pendingSpeakerHideTimeoutByController = new Map<bigint, number>();
 
 const dialogueKeyByNpcId: Record<string, string> = {
@@ -202,8 +242,18 @@ function findConversationTextEntities(
     configuredPlayerBubbleEid,
   );
 
-  if (npcTextEntity && playerTextEntity && npcBubbleEntity && playerBubbleEntity) {
-    return { npcTextEntity, playerTextEntity, npcBubbleEntity, playerBubbleEntity };
+  if (
+    npcTextEntity &&
+    playerTextEntity &&
+    npcBubbleEntity &&
+    playerBubbleEntity
+  ) {
+    return {
+      npcTextEntity,
+      playerTextEntity,
+      npcBubbleEntity,
+      playerBubbleEntity,
+    };
   }
 
   while (queue.length > 0) {
@@ -235,7 +285,12 @@ function findConversationTextEntities(
         playerBubbleEntity = entity;
       }
 
-      if (npcTextEntity && playerTextEntity && npcBubbleEntity && playerBubbleEntity) {
+      if (
+        npcTextEntity &&
+        playerTextEntity &&
+        npcBubbleEntity &&
+        playerBubbleEntity
+      ) {
         queue.push(...entity.getChildren());
         continue;
       }
@@ -252,7 +307,12 @@ function findConversationTextEntities(
     queue.push(...entity.getChildren());
   }
 
-  return { npcTextEntity, playerTextEntity, npcBubbleEntity, playerBubbleEntity };
+  return {
+    npcTextEntity,
+    playerTextEntity,
+    npcBubbleEntity,
+    playerBubbleEntity,
+  };
 }
 
 function isConversationContainer(entity: ecs.Entity): boolean {
@@ -324,7 +384,10 @@ function setTextVisibility(entity: ecs.Entity | null, isVisible: boolean) {
   }
 }
 
-function setSpeechBubbleVisibility(entity: ecs.Entity | null, isVisible: boolean) {
+function setSpeechBubbleVisibility(
+  entity: ecs.Entity | null,
+  isVisible: boolean,
+) {
   if (!entity) {
     return;
   }
@@ -442,6 +505,8 @@ function applyInitialConversationVisibility(
   configuredNpcBubbleEid?: bigint,
   configuredPlayerBubbleEid?: bigint,
 ) {
+  applySceneCamera(world, requestedSceneId || componentNpcId);
+
   const buttonEntity = world.getEntity(eid);
   const rootEntity = getConversationRoot(
     world,
@@ -513,7 +578,12 @@ function updateDialogueText(
   const dialogue = getDialogueForNpc(dialogueNpcId);
   const currentTurn = dialogue[lineIndex % dialogue.length];
 
-  const { npcTextEntity, playerTextEntity, npcBubbleEntity, playerBubbleEntity } = findConversationTextEntities(
+  const {
+    npcTextEntity,
+    playerTextEntity,
+    npcBubbleEntity,
+    playerBubbleEntity,
+  } = findConversationTextEntities(
     world,
     rootEntity,
     currentEid,
@@ -634,6 +704,10 @@ ecs.registerComponent({
           schema.playerBubbleTarget,
         );
         currentDialogueIndex = dialogue.length > 1 ? 1 : 0;
+      })
+      .onTick(() => {
+        const schema = schemaAttribute.get(eid);
+        applySceneCamera(world, requestedSceneId || schema.npcId);
       })
       .onEvent(ecs.input.SCREEN_TOUCH_START, "touched", {
         target: world.events.globalId,
