@@ -103,7 +103,7 @@ function getDialogueForNpc(npcId: string | undefined): DialogueTurn[] {
 
 function shouldButtonHandleNpc(buttonNpcId: string | undefined): boolean {
   if (!requestedSceneId) {
-    return true;
+    return false;
   }
 
   return normalizeNpcId(buttonNpcId) === requestedSceneId;
