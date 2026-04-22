@@ -213,8 +213,8 @@ updateScoreUI("klik op de objecten om punten te verdienen!");
 const monumentZones = [
   {
     name: "De Verwoeste Stad",
-    slug: "de-verwoeste-stad",
-    sceneId: "de-verwoeste-stad",
+    slug: "de-boeg",
+    sceneId: "de-boeg", // -02 for test
     lon: 4.4830665,
     lat: 51.9176368,
     radius: 20,
@@ -223,8 +223,8 @@ const monumentZones = [
   },
   {
     name: "De Boeg",
-    slug: "de-boeg",
-    sceneId: "de-boeg", // -02 for test
+    slug: "de-verwoeste-stad",
+    sceneId: "de-verwoeste-stad",
     lon: 4.4845575,
     lat: 51.9122727,
     radius: 20,
@@ -498,12 +498,14 @@ function startAR(zone) {
       `src: ${arImageUrl}; transparent: true; opacity: 1`,
     );
     objectEntity.setAttribute(
+      "look-at",
+      "[gps-camera]"
+    );
+    objectEntity.setAttribute(
       "gps-new-entity-place",
       `latitude: ${obj.lat}; longitude: ${obj.lon}`,
     );
     objectEntity.addEventListener("click", () => {
-
-      console.log(`AR object ${index + 1} in ${zone.name} clicked!`);
       updateScoreUI(`Je hebt op een AR element geklikt! Switching to 8th Wall...`);
       stopAR();
       open8thWallScene(zone);
