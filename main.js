@@ -128,7 +128,7 @@ navigator.geolocation.watchPosition(
     currentLat = 51.9225;
     updateZoneButtonsVisibility();
   },
-  { enableHighAccuracy: true, maximumAge: 1000, timeout: 5000 },
+  { enableHighAccuracy: true, maximumAge: 3000, timeout: 5000 },
 );
 
 // SCORE
@@ -401,7 +401,7 @@ function ensureArOverlay() {
   arFrameEl.style.border = "0";
   arFrameEl.style.background = "#000";
   arFrameEl.allow =
-    "camera; microphone; geolocation; accelerometer; gyroscope; magnetometer; xr-spatial-tracking";
+    "camera; geolocation; accelerometer; gyroscope; magnetometer; xr-spatial-tracking";
   arFrameEl.setAttribute("allowfullscreen", "true");
 
   arOverlayEl.appendChild(closeButton);
@@ -502,7 +502,7 @@ function startAR(zone) {
       `latitude: ${obj.lat}; longitude: ${obj.lon}`,
     );
     objectEntity.addEventListener("click", () => {
-      score += 10;
+
       console.log(`AR object ${index + 1} in ${zone.name} clicked!`);
       updateScoreUI(`Je hebt op een AR element geklikt! Switching to 8th Wall...`);
       stopAR();
@@ -513,7 +513,7 @@ function startAR(zone) {
 
   const backButton = document.createElement("button");
   backButton.id = "arBackButton";
-  backButton.textContent = "Terug naar 3D";
+  backButton.textContent = "Terug naar kaart";
   backButton.style.position = "absolute";
   backButton.style.top = "20px";
   backButton.style.right = "20px";
