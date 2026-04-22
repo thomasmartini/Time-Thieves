@@ -371,7 +371,7 @@ ecs.registerComponent({
       setEntityEnabledAndVisible(rewardItemEntity, true);
 
       const storageKey = getItemGrantedStorageKey(schema.npcId);
-      window.localStorage.setItem(storageKey, "1");
+      window.sessionStorage.setItem(storageKey, "1");
       isPermanentlyCompleted = true;
 
       window.dispatchEvent(
@@ -506,7 +506,7 @@ ecs.registerComponent({
 
         const storageKey = getItemGrantedStorageKey(schema.npcId);
         const isItemAlreadyGranted =
-          window.localStorage.getItem(storageKey) === "1";
+          window.sessionStorage.getItem(storageKey) === "1";
         if (isItemAlreadyGranted) {
           setAnswerButtonsVisible(world, eid, schema, false);
           isPermanentlyCompleted = true;
