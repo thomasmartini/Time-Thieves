@@ -9,8 +9,8 @@ type DialogueTurn = {
   text: string;
 };
 
-const npcDialogues: Record<string, DialogueTurn[]> = {
-  spyro: [
+const npcDialogues: Record<string, DialogueTurn[][]> = {
+  spyro: [[
     {
       speaker: "npc",
       text: "Ik ben Spyro en ik heet jullie van harte welkom bij de TimeThieves!",
@@ -21,8 +21,8 @@ const npcDialogues: Record<string, DialogueTurn[]> = {
       text: "Deze stad zit vol geheimen. Jullie missie begint nu.",
     },
     { speaker: "player", text: "Top, we gaan op pad." },
-  ],
-  student: [
+  ]],
+  student: [[
     {
       speaker: "player",
       text: "Hello ma'am, may I ask what you're doing here?",
@@ -69,15 +69,18 @@ const npcDialogues: Record<string, DialogueTurn[]> = {
       text: "Don't worry about it. Thanks for sharing your grandmothers story.",
     },
     { speaker: "npc", text: "You're welcome!" },
-  ],
+  ]],
 };
 
-const fallbackDialogue = npcDialogues.spyro;
+const fallbackDialogueConversations = npcDialogues.spyro;
 const queryParams = new URLSearchParams(window.location.search);
 const requestedSceneId =
   queryParams.get("scene")?.trim().toLowerCase() || undefined;
 
 const pendingSpeakerHideTimeoutByController = new Map<bigint, number>();
+const exhaustedConversationText = "I have nothing more to say.";
+const completedDialogueKeys = new Set<string>();
+const CONVERSATION_COMPLETED_STORAGE_KEY_PREFIX = "conversation-completed3";
 
 const dialogueKeyByNpcId: Record<string, string> = {
   "de-verwoeste-stad": "spyro",
@@ -91,14 +94,51 @@ function normalizeNpcId(npcId: string | undefined): string {
   return npcId?.trim().toLowerCase() || "";
 }
 
-function getDialogueForNpc(npcId: string | undefined): DialogueTurn[] {
+function getDialogueKeyForNpc(npcId: string | undefined): string {
   const normalizedId = normalizeNpcId(npcId);
   if (!normalizedId) {
-    return fallbackDialogue;
+    return "spyro";
   }
 
-  const dialogueKey = dialogueKeyByNpcId[normalizedId] || normalizedId;
-  return npcDialogues[dialogueKey] || fallbackDialogue;
+  return dialogueKeyByNpcId[normalizedId] || normalizedId;
+}
+
+function getDialoguesForNpc(npcId: string | undefined): DialogueTurn[][] {
+  const dialogueKey = getDialogueKeyForNpc(npcId);
+  const dialogues = npcDialogues[dialogueKey] || fallbackDialogueConversations;
+  return dialogues.filter((dialogue) => dialogue.length > 0);
+}
+
+function getConversationCompletedStorageKey(dialogueKey: string): string {
+  return `${CONVERSATION_COMPLETED_STORAGE_KEY_PREFIX}:${dialogueKey || "spyro"}`;
+}
+
+function markDialogueCompleted(dialogueKey: string) {
+  const normalizedKey = dialogueKey || "spyro";
+  completedDialogueKeys.add(normalizedKey);
+  window.localStorage.setItem(
+    getConversationCompletedStorageKey(normalizedKey),
+    "1",
+  );
+}
+
+function isDialogueCompleted(dialogueKey: string): boolean {
+  const normalizedKey = dialogueKey || "spyro";
+  if (completedDialogueKeys.has(normalizedKey)) {
+    return true;
+  }
+
+  const isCompletedFromStorage =
+    window.localStorage.getItem(
+      getConversationCompletedStorageKey(normalizedKey),
+    ) === "1";
+
+  if (isCompletedFromStorage) {
+    completedDialogueKeys.add(normalizedKey);
+    return true;
+  }
+
+  return false;
 }
 
 function shouldButtonHandleNpc(buttonNpcId: string | undefined): boolean {
@@ -477,6 +517,7 @@ function applyInitialConversationVisibility(
 function updateDialogueText(
   world: ecs.World,
   currentEid: bigint,
+  dialogue: DialogueTurn[],
   lineIndex: number,
   componentNpcId: string | undefined,
   previousSpeaker: Speaker | null,
@@ -509,9 +550,11 @@ function updateDialogueText(
     return previousSpeaker;
   }
 
-  const dialogueNpcId = requestedSceneId || componentNpcId;
-  const dialogue = getDialogueForNpc(dialogueNpcId);
-  const currentTurn = dialogue[lineIndex % dialogue.length];
+  if (dialogue.length === 0) {
+    return previousSpeaker;
+  }
+
+  const currentTurn = dialogue[Math.min(lineIndex, dialogue.length - 1)];
 
   const { npcTextEntity, playerTextEntity, npcBubbleEntity, playerBubbleEntity } = findConversationTextEntities(
     world,
@@ -572,6 +615,55 @@ function updateDialogueText(
   return "player";
 }
 
+function applyExhaustedConversationState(
+  world: ecs.World,
+  currentEid: bigint,
+  componentNpcId: string | undefined,
+  configuredRootEid?: bigint,
+  configuredNpcTextEid?: bigint,
+  configuredPlayerTextEid?: bigint,
+  configuredNpcBubbleEid?: bigint,
+  configuredPlayerBubbleEid?: bigint,
+) {
+  if (!world.eidToEntity.has(currentEid)) {
+    return;
+  }
+
+  const buttonEntity = world.getEntity(currentEid);
+  const rootEntity = getConversationRoot(world, buttonEntity, configuredRootEid);
+  if (!rootEntity) {
+    return;
+  }
+
+  if (!shouldButtonHandleNpc(componentNpcId)) {
+    return;
+  }
+
+  showOnlyActiveConversation(rootEntity);
+
+  const dialogueBubble = findDialogueBubble(rootEntity, currentEid);
+  const { npcTextEntity, playerTextEntity, npcBubbleEntity, playerBubbleEntity } = findConversationTextEntities(
+    world,
+    rootEntity,
+    currentEid,
+    configuredNpcTextEid,
+    configuredPlayerTextEid,
+    configuredNpcBubbleEid,
+    configuredPlayerBubbleEid,
+  );
+
+  const npcTextTarget = npcTextEntity || dialogueBubble;
+  if (npcTextTarget) {
+    npcTextTarget.set(ecs.Ui, { text: exhaustedConversationText });
+  }
+
+  setTextVisibility(npcTextTarget, true);
+  setTextVisibility(playerTextEntity, false);
+  setSpeechBubbleVisibility(npcBubbleEntity, true);
+  setSpeechBubbleVisibility(playerBubbleEntity, false);
+  setConversationInteractionState(rootEntity, true);
+}
+
 ecs.registerComponent({
   name: "TapToStart",
   schema: {
@@ -604,7 +696,12 @@ ecs.registerComponent({
   // },
   stateMachine: ({ world, eid, schemaAttribute, dataAttribute }) => {
     let initialized = false;
-    let currentDialogueIndex = 0;
+    let currentConversationIndex = 0;
+    let currentDialogueLineIndex = 0;
+    let hasRemainingConversations = true;
+    let skipExhaustedMessageOnce = false;
+    let activeDialogueKey = "spyro";
+    let exhaustedStateApplied = false;
     let currentSpeaker: Speaker | null = null;
 
     ecs
@@ -619,11 +716,47 @@ ecs.registerComponent({
         const schema = schemaAttribute.get(eid);
         const componentNpcId = schema.npcId;
         const activeNpcId = requestedSceneId || componentNpcId;
-        const dialogue = getDialogueForNpc(activeNpcId);
+        activeDialogueKey = getDialogueKeyForNpc(activeNpcId);
+
+        if (isDialogueCompleted(activeDialogueKey)) {
+          hasRemainingConversations = false;
+          skipExhaustedMessageOnce = false;
+          if (!exhaustedStateApplied) {
+            applyExhaustedConversationState(
+              world,
+              eid,
+              componentNpcId,
+              schema.conversationRoot,
+              schema.npcTextTarget,
+              schema.playerTextTarget,
+              schema.npcBubbleTarget,
+              schema.playerBubbleTarget,
+            );
+            exhaustedStateApplied = true;
+          }
+          return;
+        }
+
+        const dialogues = getDialoguesForNpc(activeNpcId);
+        if (dialogues.length === 0) {
+          hasRemainingConversations = false;
+          markDialogueCompleted(activeDialogueKey);
+          skipExhaustedMessageOnce = false;
+          return;
+        }
+
+        const currentDialogue = dialogues[currentConversationIndex];
+        if (!currentDialogue) {
+          hasRemainingConversations = false;
+          markDialogueCompleted(activeDialogueKey);
+          skipExhaustedMessageOnce = false;
+          return;
+        }
 
         currentSpeaker = updateDialogueText(
           world,
           eid,
+          currentDialogue,
           0,
           componentNpcId,
           currentSpeaker,
@@ -633,7 +766,22 @@ ecs.registerComponent({
           schema.npcBubbleTarget,
           schema.playerBubbleTarget,
         );
-        currentDialogueIndex = dialogue.length > 1 ? 1 : 0;
+
+        if (currentDialogue.length > 1) {
+          currentDialogueLineIndex = 1;
+          return;
+        }
+
+        if (dialogues.length > 1) {
+          currentConversationIndex = 1;
+          currentDialogueLineIndex = 0;
+          currentSpeaker = null;
+          return;
+        }
+
+        hasRemainingConversations = false;
+        markDialogueCompleted(activeDialogueKey);
+        skipExhaustedMessageOnce = true;
       })
       .onEvent(ecs.input.SCREEN_TOUCH_START, "touched", {
         target: world.events.globalId,
@@ -650,14 +798,64 @@ ecs.registerComponent({
           return;
         }
 
+        if (!hasRemainingConversations) {
+          if (skipExhaustedMessageOnce) {
+            skipExhaustedMessageOnce = false;
+            return;
+          }
+
+          if (!exhaustedStateApplied) {
+            applyExhaustedConversationState(
+              world,
+              eid,
+              schema.npcId,
+              schema.conversationRoot,
+              schema.npcTextTarget,
+              schema.playerTextTarget,
+              schema.npcBubbleTarget,
+              schema.playerBubbleTarget,
+            );
+            exhaustedStateApplied = true;
+          }
+          return;
+        }
+
         const componentNpcId = schema.npcId;
         const activeNpcId = requestedSceneId || componentNpcId;
-        const dialogue = getDialogueForNpc(activeNpcId);
+        activeDialogueKey = getDialogueKeyForNpc(activeNpcId);
+        if (isDialogueCompleted(activeDialogueKey)) {
+          hasRemainingConversations = false;
+          skipExhaustedMessageOnce = false;
+          if (!exhaustedStateApplied) {
+            applyExhaustedConversationState(
+              world,
+              eid,
+              componentNpcId,
+              schema.conversationRoot,
+              schema.npcTextTarget,
+              schema.playerTextTarget,
+              schema.npcBubbleTarget,
+              schema.playerBubbleTarget,
+            );
+            exhaustedStateApplied = true;
+          }
+          return;
+        }
+
+        const dialogues = getDialoguesForNpc(activeNpcId);
+        const currentDialogue = dialogues[currentConversationIndex];
+        if (!currentDialogue || currentDialogue.length === 0) {
+          hasRemainingConversations = false;
+          markDialogueCompleted(activeDialogueKey);
+          skipExhaustedMessageOnce = false;
+          return;
+        }
 
         currentSpeaker = updateDialogueText(
           world,
           eid,
-          currentDialogueIndex,
+          currentDialogue,
+          currentDialogueLineIndex,
           componentNpcId,
           currentSpeaker,
           schema.conversationRoot,
@@ -667,7 +865,21 @@ ecs.registerComponent({
           schema.playerBubbleTarget,
         );
 
-        currentDialogueIndex = (currentDialogueIndex + 1) % dialogue.length;
+        if (currentDialogueLineIndex < currentDialogue.length - 1) {
+          currentDialogueLineIndex += 1;
+          return;
+        }
+
+        if (currentConversationIndex < dialogues.length - 1) {
+          currentConversationIndex += 1;
+          currentDialogueLineIndex = 0;
+          currentSpeaker = null;
+          return;
+        }
+
+        hasRemainingConversations = false;
+        markDialogueCompleted(activeDialogueKey);
+        skipExhaustedMessageOnce = true;
       })
       .onEvent(ecs.input.SCREEN_TOUCH_END, "default", {
         target: world.events.globalId,
