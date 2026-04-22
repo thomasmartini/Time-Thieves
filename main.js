@@ -224,7 +224,7 @@ const monumentZones = [
   {
     name: "De Boeg",
     slug: "de-boeg",
-    sceneId: "de-boeg",
+    sceneId: "de-boeg", // -02 for test
     lon: 4.4845575,
     lat: 51.9122727,
     radius: 20,
