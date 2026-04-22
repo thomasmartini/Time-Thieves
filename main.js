@@ -152,7 +152,7 @@ function randomInRange(min, max) {
 }
 
 function spawnObjectsInMonumentZones() {
-  const imageUrl = "images/image27.png";
+  const imageUrl = `${import.meta.env.BASE_URL}images/image27.png`;
   const objectsPerZone = 5;
   let objectIndex = 1;
 
@@ -484,7 +484,7 @@ function startAR(zone) {
   );
   arScene.appendChild(entity);
 
-  const arImageUrl = "images/image27.png";
+  const arImageUrl = `${import.meta.env.BASE_URL}images/image27.png`;
 
   // Entities for objects in the zone
   zone.objects.forEach((obj, index) => {
