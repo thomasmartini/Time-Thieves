@@ -93,88 +93,6 @@
       "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
       "order": 0.6644431107322474
     },
-    "1c452cfb-3688-48ef-b86c-f16b852add8e": {
-      "id": "1c452cfb-3688-48ef-b86c-f16b852add8e",
-      "position": [
-        1.7478202603532804,
-        1.5046544858476856,
-        0.3
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        1,
-        1,
-        1
-      ],
-      "geometry": null,
-      "material": null,
-      "parentId": "7811f203-bbc5-436c-ae08-67cf92e7b935",
-      "components": {},
-      "ui": {
-        "background": "#737373",
-        "backgroundOpacity": 0.5,
-        "width": 100,
-        "height": 45,
-        "text": "Hier komt de tekst van de npc",
-        "color": "#ffffff",
-        "fontSize": 12,
-        "type": "3d",
-        "ignoreRaycast": false
-      },
-      "name": "Tekst npc",
-      "order": 5.152820033599735
-    },
-    "7811f203-bbc5-436c-ae08-67cf92e7b935": {
-      "id": "7811f203-bbc5-436c-ae08-67cf92e7b935",
-      "position": [
-        0,
-        1.1102230246251565e-16,
-        0
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        1,
-        1,
-        1
-      ],
-      "geometry": null,
-      "material": null,
-      "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
-      "components": {
-        "7778daf6-ac84-4f90-8211-7b0c35295887": {
-          "id": "7778daf6-ac84-4f90-8211-7b0c35295887",
-          "name": "TapToStart",
-          "parameters": {
-            "npcId": "de-verwoeste-stad",
-            "conversationRoot": {
-              "type": "entity",
-              "id": "7811f203-bbc5-436c-ae08-67cf92e7b935"
-            },
-            "npcTextTarget": {
-              "type": "entity",
-              "id": "1c452cfb-3688-48ef-b86c-f16b852add8e"
-            },
-            "playerTextTarget": {
-              "type": "entity",
-              "id": "45bca7ae-2a9c-4d11-a33f-bf28e9d1b468"
-            }
-          }
-        }
-      },
-      "name": "De verwoeste stad",
-      "order": 7.413174840900628,
-      "hidden": true
-    },
     "61e2282c-0968-4da9-8083-2bae9065e15d": {
       "id": "61e2282c-0968-4da9-8083-2bae9065e15d",
       "position": [
@@ -237,7 +155,7 @@
           "id": "527e15b5-def6-4362-bd9c-802ca5050739",
           "name": "TapToStart",
           "parameters": {
-            "npcId": "de-boeg",
+            "npcId": "de-verwoeste-stad",
             "conversationRoot": {
               "type": "entity",
               "id": "84f53e8b-a83e-43d7-88e7-de488cac605a"
@@ -261,7 +179,7 @@
           }
         }
       },
-      "name": "De boeg 01",
+      "name": "De verwoeste stad 01",
       "order": 9.025220839621644,
       "hidden": false
     },
@@ -303,43 +221,6 @@
       "name": "Tekst npc",
       "order": 4.523109385283041
     },
-    "5056118f-d4f0-458a-868b-15a0dded8130": {
-      "id": "5056118f-d4f0-458a-868b-15a0dded8130",
-      "position": [
-        0.7561918396040485,
-        1.5,
-        0.3
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        1,
-        1,
-        1
-      ],
-      "geometry": null,
-      "material": null,
-      "parentId": "7811f203-bbc5-436c-ae08-67cf92e7b935",
-      "components": {},
-      "ui": {
-        "type": "3d",
-        "width": 100,
-        "height": 100,
-        "image": {
-          "type": "asset",
-          "asset": "assets/Student.png"
-        },
-        "backgroundOpacity": 1,
-        "backgroundSize": "contain"
-      },
-      "name": "Image",
-      "order": 0.2430965691898206,
-      "hidden": false
-    },
     "7d4ac714-e775-4ba8-85ac-fdfcac57dc41": {
       "id": "7d4ac714-e775-4ba8-85ac-fdfcac57dc41",
       "position": [
@@ -376,39 +257,6 @@
       },
       "name": "Tekst speler",
       "order": 5.973862545647795
-    },
-    "45bca7ae-2a9c-4d11-a33f-bf28e9d1b468": {
-      "id": "45bca7ae-2a9c-4d11-a33f-bf28e9d1b468",
-      "position": [
-        1.1413963474934194,
-        0.29999999999999977,
-        0.3
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        1,
-        1,
-        1
-      ],
-      "geometry": null,
-      "material": null,
-      "components": {},
-      "ui": {
-        "width": 70,
-        "height": 10,
-        "text": "Hier komt de tekst van de speler",
-        "color": "#ffffff",
-        "fontSize": 12,
-        "type": "3d"
-      },
-      "name": "Tekst speler",
-      "order": 5.720139792449245,
-      "parentId": "7811f203-bbc5-436c-ae08-67cf92e7b935"
     },
     "1e92d086-163e-49dd-9e4a-ffe3f03a78c7": {
       "id": "1e92d086-163e-49dd-9e4a-ffe3f03a78c7",
@@ -547,7 +395,7 @@
           "id": "a6069649-ceaa-42fd-a6b8-b93c92aeeddb",
           "name": "QuizInteraction",
           "parameters": {
-            "npcId": "de-boeg-02",
+            "npcId": "de-verwoeste-stad-02",
             "quizRoot": {
               "type": "entity",
               "id": "501ff12f-641f-459b-b17f-909c3b82bde9"
@@ -583,9 +431,9 @@
           }
         }
       },
-      "name": "De boeg 02",
+      "name": "De verwoeste stad 02",
       "order": 11.007660988916577,
-      "hidden": false
+      "hidden": true
     },
     "8bdd936c-100a-470f-995c-2014d79e8a34": {
       "id": "8bdd936c-100a-470f-995c-2014d79e8a34",

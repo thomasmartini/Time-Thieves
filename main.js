@@ -233,42 +233,6 @@ const monumentZones = [
     radius: 100,
     color: Cesium.Color.ORANGE.withAlpha(0.35),
   },
-  {
-    name: "De Boeg",
-    slug: "de-boeg",
-    sceneId: "de-boeg", // -02 for test
-    lon: 4.4845575,
-    lat: 51.9122727,
-    radius: 20,
-    color: Cesium.Color.CYAN.withAlpha(0.35),
-  },
-  {
-    name: "Erasmusbeeld",
-    slug: "erasmusbeeld",
-    sceneId: "erasmusbeeld",
-    lon: 4.4843267,
-    lat: 51.9215122,
-    radius: 20,
-    color: Cesium.Color.LIME.withAlpha(0.35),
-  },
-  {
-    name: "Monument voor alle gevallen",
-    slug: "monument-voor-alle-gevallen",
-    sceneId: "monument-voor-alle-gevallen",
-    lon: 4.4779143,
-    lat: 51.9224434,
-    radius: 20,
-    color: Cesium.Color.MAGENTA.withAlpha(0.35),
-  },
-  {
-    name: "Calandmonument",
-    slug: "calandmonument",
-    sceneId: "calandmonument",
-    lon: 4.4797535,
-    lat: 51.9080186,
-    radius: 20,
-    color: Cesium.Color.YELLOW.withAlpha(0.35),
-  },
 ];
 
 let currentActiveMonument = null;
