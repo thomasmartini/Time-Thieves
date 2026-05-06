@@ -451,7 +451,7 @@ function activateAR(zone) {
 function startAR(zone) {
   // hide Cesium view and UI
   document.getElementById("cesiumContainer").style.display = "none";
-  document.getElementById("gamePanel").style.display = "none";
+  // document.getElementById("gamePanel").style.display = "none";
   document.getElementById("zonePanel").style.display = "none";
 
   // create AR scene
@@ -541,7 +541,7 @@ function stopAR() {
 
   // Go back to Cesium view
   document.getElementById("cesiumContainer").style.display = "block";
-  document.getElementById("gamePanel").style.display = "block";
+  // document.getElementById("gamePanel").style.display = "block";
   document.getElementById("zonePanel").style.display = "block";
 }
 
