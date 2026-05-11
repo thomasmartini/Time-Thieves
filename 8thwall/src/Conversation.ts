@@ -10,68 +10,100 @@ type DialogueTurn = {
 };
 
 const npcDialogues: Record<string, DialogueTurn[][]> = {
-  spyro: [
+  introduction: [
     [
       {
         speaker: "npc",
-        text: "Ik ben Spyro en ik heet jullie van harte welkom bij de TimeThieves!",
+        text: "Hey jij daar vreemdeling! Kun je mij helpen? Ik heb al dagen een vreemd onderbuikgevoel. Alsof ik iets belangrijks vergeten ben.",
       },
-      { speaker: "player", text: "Wat is onze eerste opdracht?" },
       {
         speaker: "npc",
-        text: "Deze stad zit vol geheimen. Jullie missie begint nu.",
+        text: "Soms flitsen er beelden door mijn hoofd. Oude gebouwen, mensen op straat, vuur, rook... maar zodra ik probeer te begrijpen wat ik zie, verdwijnen de herinneringen weer.",
       },
-      { speaker: "player", text: "Top, we gaan op pad." },
+      {
+        speaker: "npc",
+        text: "De geschiedenis van Rotterdam is gestolen door de mysterieuze Time Thieves.",
+      },
+      {
+        speaker: "npc",
+        text: "Zij geloven dat de pijnlijke geschiedenis van de stad vergeten moet worden zodat alleen mooie herinneringen overblijven.",
+      },
+      {
+        speaker: "npc",
+        text: "Maar zonder geschiedenis verliest Rotterdam zijn identiteit.",
+      },
+      {
+        speaker: "npc",
+        text: "Gelukkig zijn niet alle herinneringen verdwenen. In monumenten verspreid door de stad zitten nog fragmenten van het verleden opgeslagen.",
+      },
+      {
+        speaker: "npc",
+        text: "En er zijn nog inwoners die zich delen van het verleden herinneren.",
+      },
+      {
+        speaker: "npc",
+        text: "Samen met mij, professor E. Brown ga je op onderzoek uit. Jullie moeten puzzels oplossen, historische voorwerpen vinden en de verloren herinneringen herstellen.",
+      },
+      {
+        speaker: "npc",
+        text: "De tijd dringt... welkom bij de strijd tegen de Time Thieves.",
+      },
     ],
   ],
-  student: [
+  leya_dialogue: [
     [
       {
         speaker: "player",
-        text: "Hello ma'am, may I ask what you're doing here?",
+        text: "Hallo mevrouw, mag ik vragen wat u hier aan het doen bent?",
       },
       {
         speaker: "npc",
-        text: "Oh hi! My name is Leya, I'm a historic photographer. I'm not really sure why, but this statue here caught my attention.",
+        text: "Oh hallo! Mijn naam is Leya, ik ben historisch fotograaf. Ik weet eigenlijk niet precies waarom, maar dit standbeeld trok mijn aandacht.",
       },
       {
         speaker: "player",
-        text: "I think I know why this statue here caught your attention.",
+        text: "Ik denk dat ik weet waarom dit standbeeld uw aandacht trok.",
       },
       {
         speaker: "player",
-        text: "You see, I believe this statue, and many others around the city, hold memories of important historic events.",
-      },
-      { speaker: "player", text: "What do you know about this one?" },
-      {
-        speaker: "npc",
-        text: "Well... my grandmother told me some stories about the war and what it was like during that time.",
+        text: "Zie je, ik geloof dat dit standbeeld, en veel andere in de stad, herinneringen bevatten aan belangrijke historische gebeurtenissen.",
       },
       {
-        speaker: "npc",
-        text: "She told me that a big part of the city got destroyed and many people died... It was devastating...",
+        speaker: "player",
+        text: "Wat weet u over deze?",
       },
       {
         speaker: "npc",
-        text: "I remember a picture my grandmother took during the war. The war changed Rotterdam a lot. It left a scar right in the heart of the city.",
-      },
-      {
-        speaker: "player",
-        text: "It sounds like your grandmother went through a lot.",
-      },
-      {
-        speaker: "player",
-        text: "Do you remember any other historic events about Rotterdam?",
+        text: "Nou... mijn oma vertelde me vroeger verhalen over de oorlog en hoe het was in die tijd.",
       },
       {
         speaker: "npc",
-        text: "It feels like I should know more, but for some reason I can't remember. So I'm sorry but I don't.",
+        text: "Ze vertelde dat een groot deel van de stad werd verwoest en dat veel mensen stierven... Het was verschrikkelijk...",
+      },
+      {
+        speaker: "npc",
+        text: "Ik herinner me een foto die mijn oma tijdens de oorlog maakte. De oorlog heeft Rotterdam enorm veranderd. Het liet een litteken achter in het hart van de stad.",
       },
       {
         speaker: "player",
-        text: "Don't worry about it. Thanks for sharing your grandmothers story.",
+        text: "Het klinkt alsof uw oma veel heeft meegemaakt.",
       },
-      { speaker: "npc", text: "You're welcome!" },
+      {
+        speaker: "player",
+        text: "Herinnert u zich nog andere historische gebeurtenissen van Rotterdam?",
+      },
+      {
+        speaker: "npc",
+        text: "Het voelt alsof ik meer zou moeten weten, maar om de een of andere reden kan ik het me niet herinneren. Dus het spijt me, maar nee.",
+      },
+      {
+        speaker: "player",
+        text: "Maakt u zich geen zorgen. Bedankt dat u het verhaal van uw oma wilde delen.",
+      },
+      {
+        speaker: "npc",
+        text: "Graag gedaan!",
+      },
     ],
     [
       {
@@ -90,7 +122,7 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
   ],
 };
 
-const fallbackDialogueConversations = npcDialogues.spyro;
+const fallbackDialogueConversations = npcDialogues.introduction;
 const queryParams = new URLSearchParams(window.location.search);
 const requestedSceneId =
   queryParams.get("scene")?.trim().toLowerCase() || undefined;
@@ -102,11 +134,12 @@ const CONVERSATION_COMPLETED_STORAGE_KEY_PREFIX = "conversation-completed";
 const CONVERSATION_NEXT_INDEX_STORAGE_KEY_PREFIX = "conversation-next-index";
 
 const dialogueKeyByNpcId: Record<string, string> = {
-  "de-verwoeste-stad": "spyro",
-  "de-boeg": "student",
-  erasmusbeeld: "spyro",
-  "monument-voor-alle-gevallen": "student",
-  calandmonument: "spyro",
+  "de-verwoeste-stad-00": "introduction",
+  "de-verwoeste-stad-01": "leya_dialogue",
+  // de-verwoeste-stad-02 is quiz scene, so no dialogue assigned
+  // de-verwoeste-stad-03 is quiz scene, so no dialogue assigned
+  "de-verwoeste-stad-04": "placeholder",
+  "de-verwoeste-stad-05": "placeholder",
 };
 
 function normalizeNpcId(npcId: string | undefined): string {
@@ -116,7 +149,7 @@ function normalizeNpcId(npcId: string | undefined): string {
 function getDialogueKeyForNpc(npcId: string | undefined): string {
   const normalizedId = normalizeNpcId(npcId);
   if (!normalizedId) {
-    return "spyro";
+    return "introduction";
   }
 
   return dialogueKeyByNpcId[normalizedId] || normalizedId;
@@ -129,11 +162,11 @@ function getDialoguesForNpc(npcId: string | undefined): DialogueTurn[][] {
 }
 
 function getConversationCompletedStorageKey(dialogueKey: string): string {
-  return `${CONVERSATION_COMPLETED_STORAGE_KEY_PREFIX}:${dialogueKey || "spyro"}`;
+  return `${CONVERSATION_COMPLETED_STORAGE_KEY_PREFIX}:${dialogueKey || "introduction"}`;
 }
 
 function markDialogueCompleted(dialogueKey: string) {
-  const normalizedKey = dialogueKey || "spyro";
+  const normalizedKey = dialogueKey || "introduction";
   completedDialogueKeys.add(normalizedKey);
   window.sessionStorage.setItem(
     getConversationCompletedStorageKey(normalizedKey),
@@ -142,7 +175,7 @@ function markDialogueCompleted(dialogueKey: string) {
 }
 
 function isDialogueCompleted(dialogueKey: string): boolean {
-  const normalizedKey = dialogueKey || "spyro";
+  const normalizedKey = dialogueKey || "introduction";
   if (completedDialogueKeys.has(normalizedKey)) {
     return true;
   }
@@ -161,7 +194,7 @@ function isDialogueCompleted(dialogueKey: string): boolean {
 }
 
 function getConversationNextIndexStorageKey(dialogueKey: string): string {
-  return `${CONVERSATION_NEXT_INDEX_STORAGE_KEY_PREFIX}:${dialogueKey || "spyro"}`;
+  return `${CONVERSATION_NEXT_INDEX_STORAGE_KEY_PREFIX}:${dialogueKey || "introduction"}`;
 }
 
 function getStoredNextConversationIndex(dialogueKey: string): number {
@@ -178,7 +211,7 @@ function getStoredNextConversationIndex(dialogueKey: string): number {
 }
 
 function storeNextConversationIndex(dialogueKey: string, nextIndex: number) {
-  const normalizedKey = dialogueKey || "spyro";
+  const normalizedKey = dialogueKey || "introduction";
   window.sessionStorage.setItem(
     getConversationNextIndexStorageKey(normalizedKey),
     String(Math.max(0, Math.floor(nextIndex))),
@@ -186,7 +219,7 @@ function storeNextConversationIndex(dialogueKey: string, nextIndex: number) {
 }
 
 function clearStoredNextConversationIndex(dialogueKey: string) {
-  const normalizedKey = dialogueKey || "spyro";
+  const normalizedKey = dialogueKey || "introduction";
   window.sessionStorage.removeItem(
     getConversationNextIndexStorageKey(normalizedKey),
   );
@@ -763,7 +796,7 @@ ecs.registerComponent({
     playerBubbleTarget: "eid",
   },
   schemaDefaults: {
-    npcId: "spyro",
+    npcId: "introduction",
   },
   // data: {
   // },
@@ -789,7 +822,7 @@ ecs.registerComponent({
     let hasRemainingConversations = true;
     let isWaitingForReopenToStartNextConversation = false;
     let skipExhaustedMessageOnce = false;
-    let activeDialogueKey = "spyro";
+    let activeDialogueKey = "introduction";
     let exhaustedStateApplied = false;
     let currentSpeaker: Speaker | null = null;
 
