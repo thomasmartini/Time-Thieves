@@ -137,7 +137,7 @@ const dialogueKeyByNpcId: Record<string, string> = {
   "de-verwoeste-stad-00": "introduction",
   "de-verwoeste-stad-01": "leya_dialogue",
   // de-verwoeste-stad-02 is quiz scene, so no dialogue assigned
-  "de-verwoeste-stad-03": "placeholder",
+  // de-verwoeste-stad-03 is quiz scene, so no dialogue assigned
   "de-verwoeste-stad-04": "placeholder",
   "de-verwoeste-stad-05": "placeholder",
 };
