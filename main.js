@@ -94,8 +94,8 @@ canvas.addEventListener("dblclick", () => {
 
 navigator.geolocation.watchPosition(
   (position) => {
-    currentLon = position.coords.longitude;
-    currentLat = position.coords.latitude;
+    currentLon = 4.4830665;
+    currentLat = 51.9176368;
 
     const heading = position.coords.heading || 0;
 
@@ -214,7 +214,7 @@ const monumentZones = [
   {
     name: "De Verwoeste Stad",
     slug: "de-verwoeste-stad",
-    sceneId: "de-verwoeste-stad",
+    sceneId: "de-verwoeste-stad-03", // matches 8th wall scene id for testing, will be set in AR.js for production
     lon: 4.4830665,
     lat: 51.9176368,
     radius: 20,

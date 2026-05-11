@@ -6,27 +6,51 @@ type QuizQuestion = {
   correctAnswerIndex: 0 | 1 | 2;
 };
 
-const quizQuestions: QuizQuestion[] = [
-  {
-    question: "In welk jaar werd Rotterdam gebombardeerd?",
-    answers: ["1940", "1945", "1939"],
-    correctAnswerIndex: 0,
-  },
-  {
-    question: "Hoe heet dit bekende monument?",
-    answers: ["De Boeg", "Erasmusbrug", "Witte Huis"],
-    correctAnswerIndex: 0,
-  },
-  {
-    question: "Waar staat De Boeg vooral voor?",
-    answers: [
-      "Herdenking van zeelieden",
-      "Een marktgebouw",
-      "Een stationsplein",
-    ],
-    correctAnswerIndex: 0,
-  },
-];
+const quizQuestionsById: Record<string, QuizQuestion[]> = {
+  quiz1: [
+    {
+      question: "In welk jaar werd Rotterdam gebombardeerd?",
+      answers: ["1945", "1940", "1939"],
+      correctAnswerIndex: 1,
+    },
+    {
+      question: "Welke gebeurtenis verwoestte een groot deel van Rotterdam?",
+      answers: [
+        "Een grote overstroming",
+        "Het bombardement van Rotterdam",
+        "Een aardbeving",
+      ],
+      correctAnswerIndex: 1,
+    },
+    {
+      question: "Hoe heet het monument dat herinnert aan de verwoeste stad?",
+      answers: ["De Verwoeste Stad", "Het Witte Huis", "De Boeg"],
+      correctAnswerIndex: 0,
+    },
+    {
+      question: "Wie maakte het monument 'De Verwoeste Stad'?",
+      answers: ["Rem Koolhaas", "Piet Blom", "Ossip Zadkine"],
+      correctAnswerIndex: 2,
+    },
+    {
+      question: "Wat ontbreekt er aan het beeld van De Verwoeste Stad?",
+      answers: ["Het hoofd", "Het hart", "Een arm"],
+      correctAnswerIndex: 1,
+    },
+  ],
+  quiz2: [
+    {
+      question: "Welke rivier stroomt door Rotterdam?",
+      answers: ["De Rijn", "De Maas", "De Schelde"],
+      correctAnswerIndex: 1,
+    },
+  ],
+};
+
+const quizIdByNpcId: Record<string, string> = {
+  "de-verwoeste-stad-02": "quiz1",
+  "de-verwoeste-stad-03": "quiz2",
+};
 
 const queryParams = new URLSearchParams(window.location.search);
 const requestedSceneId =
@@ -36,6 +60,16 @@ const ITEM_GRANTED_STORAGE_KEY_PREFIX = "time-thieves-quiz-item-granted";
 
 function normalizeId(value: string | undefined): string {
   return value?.trim().toLowerCase() || "";
+}
+
+function getQuizIdForSchema(componentNpcId: string | undefined): string {
+  const resolvedQuizId = quizIdByNpcId[normalizeId(componentNpcId)];
+  return resolvedQuizId || "quiz1";
+}
+
+function getQuizQuestionsForSchema(schema: { npcId?: string }): QuizQuestion[] {
+  const quizId = getQuizIdForSchema(schema.npcId);
+  return quizQuestionsById[quizId] || quizQuestionsById.quiz1;
 }
 
 function shouldHandleQuizScene(componentNpcId: string | undefined): boolean {
@@ -216,7 +250,7 @@ function setAnswerButtonsVisible(
 }
 
 function getItemGrantedStorageKey(componentNpcId: string | undefined): string {
-  return `${ITEM_GRANTED_STORAGE_KEY_PREFIX}:${normalizeId(componentNpcId) || "de-boeg-02"}`;
+  return `${ITEM_GRANTED_STORAGE_KEY_PREFIX}:${getQuizIdForSchema(componentNpcId)}`;
 }
 
 function getQuizTextEntities(
@@ -262,6 +296,7 @@ function renderQuestion(
   world: ecs.World,
   eid: bigint,
   questionIndex: number,
+  quizQuestions: QuizQuestion[],
   schema: {
     answer1Button?: bigint;
     answer2Button?: bigint;
@@ -316,7 +351,13 @@ ecs.registerComponent({
     setInteractionState(root, shouldHandle);
 
     if (shouldHandle) {
-      renderQuestion(world, component.eid, 0, schema);
+      renderQuestion(
+        world,
+        component.eid,
+        0,
+        getQuizQuestionsForSchema(schema),
+        schema,
+      );
     }
   },
   stateMachine: ({ world, eid, schemaAttribute }) => {
@@ -330,6 +371,7 @@ ecs.registerComponent({
     let isPermanentlyCompleted = false;
     let pendingAdvanceTimeout: number | null = null;
     const initialSchema = schemaAttribute.get(eid);
+    const quizQuestions = getQuizQuestionsForSchema(initialSchema);
 
     const answer1Target = initialSchema.answer1TextTarget;
     const answer2Target = initialSchema.answer2TextTarget;
@@ -359,7 +401,7 @@ ecs.registerComponent({
       isLocked = false;
       isQuizComplete = false;
       isAwaitingReplayChoice = false;
-      renderQuestion(world, eid, currentQuestionIndex, schema);
+      renderQuestion(world, eid, currentQuestionIndex, quizQuestions, schema);
     };
 
     const grantRewardItem = (schema: {
@@ -485,7 +527,7 @@ ecs.registerComponent({
         }
 
         currentQuestionIndex += 1;
-        renderQuestion(world, eid, currentQuestionIndex, schema);
+        renderQuestion(world, eid, currentQuestionIndex, quizQuestions, schema);
         isLocked = false;
       }, 1500);
     };
