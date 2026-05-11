@@ -9,22 +9,32 @@ type QuizQuestion = {
 const quizQuestions: QuizQuestion[] = [
   {
     question: "In welk jaar werd Rotterdam gebombardeerd?",
-    answers: ["1940", "1945", "1939"],
-    correctAnswerIndex: 0,
+    answers: ["1945", "1940", "1939"],
+    correctAnswerIndex: 1,
   },
   {
-    question: "Hoe heet dit bekende monument?",
-    answers: ["De Boeg", "Erasmusbrug", "Witte Huis"],
-    correctAnswerIndex: 0,
-  },
-  {
-    question: "Waar staat De Boeg vooral voor?",
+    question: "Welke gebeurtenis verwoestte een groot deel van Rotterdam?",
     answers: [
-      "Herdenking van zeelieden",
-      "Een marktgebouw",
-      "Een stationsplein",
+      "Een grote overstroming",
+      "Het bombardement van Rotterdam",
+      "Een aardbeving",
     ],
+    correctAnswerIndex: 1,
+  },
+  {
+    question: "Hoe heet het monument dat herinnert aan de verwoeste stad?",
+    answers: ["De Verwoeste Stad", "Het Witte Huis", "De Boeg"],
     correctAnswerIndex: 0,
+  },
+  {
+    question: "Wie maakte het monument 'De Verwoeste Stad'?",
+    answers: ["Rem Koolhaas", "Piet Blom", "Ossip Zadkine"],
+    correctAnswerIndex: 2,
+  },
+  {
+    question: "Wat ontbreekt er aan het beeld van De Verwoeste Stad?",
+    answers: ["Het hoofd", "Het hart", "Een arm"],
+    correctAnswerIndex: 1,
   },
 ];
 
@@ -216,7 +226,7 @@ function setAnswerButtonsVisible(
 }
 
 function getItemGrantedStorageKey(componentNpcId: string | undefined): string {
-  return `${ITEM_GRANTED_STORAGE_KEY_PREFIX}:${normalizeId(componentNpcId) || "de-boeg-02"}`;
+  return `${ITEM_GRANTED_STORAGE_KEY_PREFIX}:${normalizeId(componentNpcId) || "de-verwoeste-stad-02"}`;
 }
 
 function getQuizTextEntities(

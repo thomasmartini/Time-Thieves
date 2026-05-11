@@ -155,7 +155,7 @@
           "id": "527e15b5-def6-4362-bd9c-802ca5050739",
           "name": "TapToStart",
           "parameters": {
-            "npcId": "de-verwoeste-stad",
+            "npcId": "de-verwoeste-stad-01",
             "conversationRoot": {
               "type": "entity",
               "id": "84f53e8b-a83e-43d7-88e7-de488cac605a"
@@ -179,9 +179,9 @@
           }
         }
       },
-      "name": "De verwoeste stad 01",
+      "name": "De verwoeste stad 01 (leya_dialogue)",
       "order": 9.025220839621644,
-      "hidden": false
+      "hidden": true
     },
     "8d3f0e75-ec70-4e1c-a1b1-1e5da6d4d028": {
       "id": "8d3f0e75-ec70-4e1c-a1b1-1e5da6d4d028",
@@ -431,7 +431,7 @@
           }
         }
       },
-      "name": "De verwoeste stad 02",
+      "name": "De verwoeste stad 02 (quiz)",
       "order": 11.007660988916577,
       "hidden": true
     },
@@ -750,6 +750,283 @@
       "name": "Antwoord3 tekst",
       "order": 14.833975299854409,
       "parentId": "501ff12f-641f-459b-b17f-909c3b82bde9"
+    },
+    "a6021c9c-7189-4bc9-8701-4f2c020b6bda": {
+      "id": "a6021c9c-7189-4bc9-8701-4f2c020b6bda",
+      "position": [
+        2.314642967444593,
+        1.1102230246251565e-16,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
+      "components": {
+        "527e15b5-def6-4362-bd9c-802ca5050739": {
+          "id": "527e15b5-def6-4362-bd9c-802ca5050739",
+          "name": "TapToStart",
+          "parameters": {
+            "npcId": "de-verwoeste-stad-00",
+            "conversationRoot": {
+              "type": "entity",
+              "id": "a6021c9c-7189-4bc9-8701-4f2c020b6bda"
+            },
+            "npcTextTarget": {
+              "type": "entity",
+              "id": "304ae50d-48f7-45a9-8eee-354ef11e54e5"
+            },
+            "playerTextTarget": {
+              "type": "entity",
+              "id": "4e40a46d-ec5b-4d09-89ba-f599652c77ce"
+            },
+            "npcBubbleTarget": {
+              "type": "entity",
+              "id": "9c7b771c-debe-4db1-80f2-dd5842d45832"
+            },
+            "playerBubbleTarget": {
+              "type": "entity",
+              "id": "e3a315a0-d6df-4c8b-9a61-f2424c6b2e65"
+            }
+          }
+        }
+      },
+      "name": "De verwoeste stad 00 (introduction)",
+      "order": 6.900383617514299,
+      "hidden": true
+    },
+    "52838e43-d9a0-4e04-a818-f90a60f0afe9": {
+      "id": "52838e43-d9a0-4e04-a818-f90a60f0afe9",
+      "position": [
+        3.10133803695385,
+        3.8176309529862054,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "a6021c9c-7189-4bc9-8701-4f2c020b6bda",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/Photographer_1.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Npc (1)",
+      "order": 2.9478218696661136
+    },
+    "304ae50d-48f7-45a9-8eee-354ef11e54e5": {
+      "id": "304ae50d-48f7-45a9-8eee-354ef11e54e5",
+      "position": [
+        2.2302973564008663,
+        4.980659218062537,
+        0.33
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "a6021c9c-7189-4bc9-8701-4f2c020b6bda",
+      "components": {},
+      "ui": {
+        "flexDirection": "row",
+        "width": 150,
+        "height": 45,
+        "text": "Hier komt de tekst van de npc",
+        "color": "#000000",
+        "fontSize": 12,
+        "type": "3d",
+        "ignoreRaycast": false,
+        "verticalTextAlign": "start",
+        "textAlign": "left",
+        "flexWrap": "wrap"
+      },
+      "name": "Tekst npc (1)",
+      "order": 4.523109385283041
+    },
+    "4e40a46d-ec5b-4d09-89ba-f599652c77ce": {
+      "id": "4e40a46d-ec5b-4d09-89ba-f599652c77ce",
+      "position": [
+        1.5787847480682116,
+        2.066787327687865,
+        0.33
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "a6021c9c-7189-4bc9-8701-4f2c020b6bda",
+      "components": {},
+      "ui": {
+        "flexDirection": "row",
+        "width": 150,
+        "height": 45,
+        "text": "Hier komt de tekst van de speler",
+        "color": "#000000",
+        "fontSize": 12,
+        "type": "3d",
+        "verticalTextAlign": "start",
+        "textAlign": "left",
+        "flexWrap": "wrap"
+      },
+      "name": "Tekst speler (1)",
+      "order": 5.973862545647795,
+      "hidden": true
+    },
+    "818af3f9-a078-4fef-a50a-62f649e74b0f": {
+      "id": "818af3f9-a078-4fef-a50a-62f649e74b0f",
+      "position": [
+        1.0285385922992774,
+        0.6720283510566026,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1.3,
+        1.3,
+        1.3
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "a6021c9c-7189-4bc9-8701-4f2c020b6bda",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/Student.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Speler (1)",
+      "order": 5.206335711311404,
+      "hidden": false
+    },
+    "9c7b771c-debe-4db1-80f2-dd5842d45832": {
+      "id": "9c7b771c-debe-4db1-80f2-dd5842d45832",
+      "position": [
+        2.1607618425335984,
+        4.7773863949844255,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        3,
+        3,
+        3
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "a6021c9c-7189-4bc9-8701-4f2c020b6bda",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/Vector_11_2.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Tekstwolk npc (1)",
+      "order": 3.4165982411703086,
+      "hidden": false
+    },
+    "e3a315a0-d6df-4c8b-9a61-f2424c6b2e65": {
+      "id": "e3a315a0-d6df-4c8b-9a61-f2424c6b2e65",
+      "position": [
+        1.5251373113310778,
+        1.8426497800135286,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        2.5,
+        2.5,
+        2.5
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "a6021c9c-7189-4bc9-8701-4f2c020b6bda",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/Vector_12.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Tekstwolk speler (1)",
+      "order": 5.4431468580058935,
+      "hidden": true
     }
   },
   "spaces": {
