@@ -121,7 +121,7 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Photographer_1.png"
+          "asset": "assets/TT_Photographer_Style2_1.png"
         },
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
@@ -286,7 +286,7 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Student.png"
+          "asset": "assets/TT_Student_Style2_1.png"
         },
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
@@ -427,12 +427,16 @@
             "answer3TextTarget": {
               "type": "entity",
               "id": "a4c9711a-c70a-4b6f-889c-5850cbc5b014"
+            },
+            "rewardItemTarget": {
+              "type": "entity",
+              "id": "6833cf08-18b6-442b-b059-8686e2917cef"
             }
           }
         }
       },
       "name": "De verwoeste stad 02 (quiz)",
-      "order": 11.007660988916577,
+      "order": 15.581445751224319,
       "hidden": true
     },
     "8bdd936c-100a-470f-995c-2014d79e8a34": {
@@ -463,7 +467,7 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Professor.png"
+          "asset": "assets/TT_Professor_Style2_1.png"
         },
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
@@ -833,7 +837,7 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Photographer_1.png"
+          "asset": "assets/TT_Professor_Style2_1.png"
         },
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
@@ -867,7 +871,7 @@
         "flexDirection": "row",
         "width": 150,
         "height": 45,
-        "text": "Hier komt de tekst van de npc",
+        "text": "Hier komt de tekst van de professor",
         "color": "#000000",
         "fontSize": 12,
         "type": "3d",
@@ -945,7 +949,7 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Student.png"
+          "asset": "assets/TT_Student_Style2_1.png"
         },
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
@@ -1054,7 +1058,7 @@
           "id": "a6069649-ceaa-42fd-a6b8-b93c92aeeddb",
           "name": "QuizInteraction",
           "parameters": {
-            "npcId": "de-verwoeste-stad-03",
+            "npcId": "de-verwoeste-stad-04",
             "quizRoot": {
               "type": "entity",
               "id": "e61fec7a-7512-40c6-ad49-052c69e2ec68"
@@ -1086,12 +1090,16 @@
             "answer3TextTarget": {
               "type": "entity",
               "id": "64d8bf3b-d7c2-4837-a827-e11445840717"
+            },
+            "rewardItemTarget": {
+              "type": "entity",
+              "id": "222cb2b4-b4bc-4e66-ae6e-6cc6a6974788"
             }
           }
         }
       },
-      "name": "De verwoeste stad 03 (quiz)",
-      "order": 12.63306013913515,
+      "name": "De verwoeste stad 04 (quiz)",
+      "order": 18.802065111083976,
       "hidden": true
     },
     "380469bc-2ae1-434b-b0aa-128280112958": {
@@ -1122,7 +1130,7 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Professor.png"
+          "asset": "assets/TT_Professor_Style2_1.png"
         },
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
@@ -1409,6 +1417,353 @@
       "name": "Antwoord3 tekst (1)",
       "order": 14.833975299854409,
       "parentId": "e61fec7a-7512-40c6-ad49-052c69e2ec68"
+    },
+    "6833cf08-18b6-442b-b059-8686e2917cef": {
+      "id": "6833cf08-18b6-442b-b059-8686e2917cef",
+      "position": [
+        -0.3995724268291534,
+        -0.6535910797272673,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "501ff12f-641f-459b-b17f-909c3b82bde9",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": null,
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Reward",
+      "order": 16.8235263435336,
+      "hidden": true
+    },
+    "222cb2b4-b4bc-4e66-ae6e-6cc6a6974788": {
+      "id": "222cb2b4-b4bc-4e66-ae6e-6cc6a6974788",
+      "position": [
+        -0.4,
+        -0.654,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "url",
+          "url": ""
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Reward (1)",
+      "order": 16.168169354067633,
+      "hidden": true,
+      "parentId": "e61fec7a-7512-40c6-ad49-052c69e2ec68"
+    },
+    "89d65646-44f1-44e2-924c-a19677aac5c8": {
+      "id": "89d65646-44f1-44e2-924c-a19677aac5c8",
+      "position": [
+        2.314642967444593,
+        2.220446049250313e-16,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
+      "components": {
+        "527e15b5-def6-4362-bd9c-802ca5050739": {
+          "id": "527e15b5-def6-4362-bd9c-802ca5050739",
+          "name": "TapToStart",
+          "parameters": {
+            "npcId": "de-verwoeste-stad-03",
+            "conversationRoot": {
+              "type": "entity",
+              "id": "89d65646-44f1-44e2-924c-a19677aac5c8"
+            },
+            "npcTextTarget": {
+              "type": "entity",
+              "id": "6be59cec-4818-47d6-bbd7-3badac963635"
+            },
+            "playerTextTarget": {
+              "type": "entity",
+              "id": "a10542fa-b9a1-4baa-a913-2106b70e1073"
+            },
+            "npcBubbleTarget": {
+              "type": "entity",
+              "id": "7c6f4522-3848-4f6a-847f-3b727d8230f1"
+            },
+            "playerBubbleTarget": {
+              "type": "entity",
+              "id": "28e159de-06e1-44ac-8d85-9e81be0eaf69"
+            }
+          }
+        }
+      },
+      "name": "De verwoeste stad 03 (timethief_dialogue)",
+      "order": 17.448516265406226,
+      "hidden": true
+    },
+    "ad4c5952-420b-420d-a875-bd5ff817ff68": {
+      "id": "ad4c5952-420b-420d-a875-bd5ff817ff68",
+      "position": [
+        3.10133803695385,
+        3.8176309529862054,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "89d65646-44f1-44e2-924c-a19677aac5c8",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/Time_Thief.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Npc (3)",
+      "order": 2.9478218696661136
+    },
+    "6be59cec-4818-47d6-bbd7-3badac963635": {
+      "id": "6be59cec-4818-47d6-bbd7-3badac963635",
+      "position": [
+        2.2302973564008663,
+        4.980659218062537,
+        0.33
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "89d65646-44f1-44e2-924c-a19677aac5c8",
+      "components": {},
+      "ui": {
+        "flexDirection": "row",
+        "width": 150,
+        "height": 45,
+        "text": "Hier komt de tekst van de npc",
+        "color": "#000000",
+        "fontSize": 12,
+        "type": "3d",
+        "ignoreRaycast": false,
+        "verticalTextAlign": "start",
+        "textAlign": "left",
+        "flexWrap": "wrap"
+      },
+      "name": "Tekst npc (3)",
+      "order": 4.523109385283041
+    },
+    "a10542fa-b9a1-4baa-a913-2106b70e1073": {
+      "id": "a10542fa-b9a1-4baa-a913-2106b70e1073",
+      "position": [
+        1.5787847480682116,
+        2.066787327687865,
+        0.33
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "89d65646-44f1-44e2-924c-a19677aac5c8",
+      "components": {},
+      "ui": {
+        "flexDirection": "row",
+        "width": 150,
+        "height": 45,
+        "text": "Hier komt de tekst van de speler",
+        "color": "#000000",
+        "fontSize": 12,
+        "type": "3d",
+        "verticalTextAlign": "start",
+        "textAlign": "left",
+        "flexWrap": "wrap"
+      },
+      "name": "Tekst speler (2)",
+      "order": 5.973862545647795
+    },
+    "9ba71514-d984-45a6-a11a-735e974165dd": {
+      "id": "9ba71514-d984-45a6-a11a-735e974165dd",
+      "position": [
+        1.0285385922992774,
+        0.6720283510566026,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1.3,
+        1.3,
+        1.3
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "89d65646-44f1-44e2-924c-a19677aac5c8",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/TT_Student_Style2_1.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Speler (2)",
+      "order": 5.206335711311404,
+      "hidden": false
+    },
+    "7c6f4522-3848-4f6a-847f-3b727d8230f1": {
+      "id": "7c6f4522-3848-4f6a-847f-3b727d8230f1",
+      "position": [
+        2.1607618425335984,
+        4.7773863949844255,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        3,
+        3,
+        3
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "89d65646-44f1-44e2-924c-a19677aac5c8",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/Vector_11_2.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Tekstwolk npc (3)",
+      "order": 3.4165982411703086,
+      "hidden": false
+    },
+    "28e159de-06e1-44ac-8d85-9e81be0eaf69": {
+      "id": "28e159de-06e1-44ac-8d85-9e81be0eaf69",
+      "position": [
+        1.5251373113310778,
+        1.8426497800135286,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        2.5,
+        2.5,
+        2.5
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "89d65646-44f1-44e2-924c-a19677aac5c8",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/Vector_12.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Tekstwolk speler (2)",
+      "order": 5.4431468580058935,
+      "hidden": false
     }
   },
   "spaces": {

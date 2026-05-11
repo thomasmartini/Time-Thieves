@@ -1,4 +1,5 @@
 import * as ecs from "@8thwall/ecs";
+import { addInventoryItem } from "./Inventory";
 
 type QuizQuestion = {
   question: string;
@@ -49,7 +50,12 @@ const quizQuestionsById: Record<string, QuizQuestion[]> = {
 
 const quizIdByNpcId: Record<string, string> = {
   "de-verwoeste-stad-02": "quiz1",
-  "de-verwoeste-stad-03": "quiz2",
+  "de-verwoeste-stad-04": "quiz2",
+};
+
+const rewardIdByQuizId: Record<string, string> = {
+  quiz1: "rotterdam-monument",
+  quiz2: "rotterdam-river",
 };
 
 const queryParams = new URLSearchParams(window.location.search);
@@ -70,6 +76,11 @@ function getQuizIdForSchema(componentNpcId: string | undefined): string {
 function getQuizQuestionsForSchema(schema: { npcId?: string }): QuizQuestion[] {
   const quizId = getQuizIdForSchema(schema.npcId);
   return quizQuestionsById[quizId] || quizQuestionsById.quiz1;
+}
+
+function getRewardIdForSchema(componentNpcId: string | undefined): string {
+  const quizId = getQuizIdForSchema(componentNpcId);
+  return rewardIdByQuizId[quizId] || "default-reward";
 }
 
 function shouldHandleQuizScene(componentNpcId: string | undefined): boolean {
@@ -416,10 +427,20 @@ ecs.registerComponent({
       window.sessionStorage.setItem(storageKey, "1");
       isPermanentlyCompleted = true;
 
+      const rewardId = getRewardIdForSchema(schema.npcId);
+      const quizId = getQuizIdForSchema(schema.npcId);
+
+      addInventoryItem(rewardId, "quiz", quizId, {
+        score,
+        total: quizQuestions.length,
+      });
+
       window.dispatchEvent(
         new CustomEvent("quiz-item-earned", {
           detail: {
             npcId: schema.npcId,
+            rewardId,
+            quizId,
             score,
             total: quizQuestions.length,
           },

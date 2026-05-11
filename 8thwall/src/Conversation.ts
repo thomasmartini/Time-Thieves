@@ -120,6 +120,58 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
     ],
   ],
+  timethief_dialogue: [
+    [
+      {
+        speaker: "npc",
+        text: "Waarom zouden mensen zich pijn en verdriet moeten blijven herinneren?",
+      },
+      {
+        speaker: "npc",
+        text: "Kijk naar dit monument... een hart weggerukt uit een lichaam. Een eeuwige herinnering aan verlies.",
+      },
+      {
+        speaker: "npc",
+        text: "De Time Thieves willen de mensen van Rotterdam juist bevrijden van die pijnlijke herinneringen.",
+      },
+      {
+        speaker: "player",
+        text: "Maar zonder geschiedenis weet niemand meer wat deze stad heeft doorgemaakt.",
+      },
+      {
+        speaker: "npc",
+        text: "Misschien is dat beter. Geen verdriet, geen trauma, geen littekens van oorlog.",
+      },
+      {
+        speaker: "npc",
+        text: "Alleen de mooie herinneringen blijven bestaan. Een gelukkiger Rotterdam.",
+      },
+      {
+        speaker: "player",
+        text: "Maar de geschiedenis hoort bij de identiteit van de stad.",
+      },
+      {
+        speaker: "npc",
+        text: "Identiteit gebouwd op pijn brengt alleen nieuwe pijn voort.",
+      },
+      {
+        speaker: "npc",
+        text: "Toen Ossip Zadkine dit monument maakte en het in 1953 werd onthuld, wilde hij dat niemand het bombardement ooit zou vergeten.",
+      },
+      {
+        speaker: "npc",
+        text: "Maar wij geloven dat sommige herinneringen beter verborgen kunnen blijven.",
+      },
+      {
+        speaker: "player",
+        text: "Ik denk dat mensen zelf moeten kunnen kiezen wat ze herinneren.",
+      },
+      {
+        speaker: "npc",
+        text: "Dan zul je de verloren herinneringen moeten herstellen... voordat ze voorgoed verdwijnen.",
+      },
+    ],
+  ],
 };
 
 const fallbackDialogueConversations = npcDialogues.introduction;
@@ -137,8 +189,8 @@ const dialogueKeyByNpcId: Record<string, string> = {
   "de-verwoeste-stad-00": "introduction",
   "de-verwoeste-stad-01": "leya_dialogue",
   // de-verwoeste-stad-02 is quiz scene, so no dialogue assigned
-  // de-verwoeste-stad-03 is quiz scene, so no dialogue assigned
-  "de-verwoeste-stad-04": "placeholder",
+  "de-verwoeste-stad-03": "timethief_dialogue",
+  // de-verwoeste-stad-04 is quiz scene, so no dialogue assigned
   "de-verwoeste-stad-05": "placeholder",
 };
 
