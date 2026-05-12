@@ -43,18 +43,18 @@ const BACK_IMAGE_URL = "#4a5568";
 // Map card IDs to asset paths
 // Update these to match your actual 8th Wall asset URLs
 const CARD_IMAGE_MAP: Record<string, string> = {
-  "image-1": "url('assets/Photographer.png')",
-  "image-2": "url('assets/Professor.png')",
-  "image-3": "url('assets/Student.png')",
-  "image-4": "url('assets/Time_Thief.png')",
-  "image-5": "url('assets/memory-card-5.jpg')",
-  "image-6": "url('assets/memory-card-6.jpg')",
-  "image-7": "url('assets/memory-card-7.jpg')",
-  "image-8": "url('assets/memory-card-8.jpg')",
+  "image-1": "assets/Photographer.png",
+  "image-2": "assets/Student.png",
+  "image-3": "assets/Time_Thief.png",
+  "image-4": "assets/Professor.png",
+  "image-5": "assets/TT_Photographer_Style2_1.png",
+  "image-6": "assets/TT_Professor_Style2_1.png",
+  "image-7": "assets/TT_Student_Style2_1.png",
+  "image-8": "assets/Photographer_1.png",
 };
 
 // Storage key for persisting game state
-const MEMORY_GAME_STATE_KEY = "time-thieves-memory-game-state1";
+const MEMORY_GAME_STATE_KEY = "time-thieves-memory-game-state5";
 
 /**
  * Initialize memory game state
@@ -181,24 +181,30 @@ function getCardEntities(
 /**
  * Update card visual appearance using 8th Wall Ui component
  */
-function updateCardVisual(cardEntity: ecs.Entity, card: CardState, isSelected = false): void {
+function updateCardVisual(
+  cardEntity: ecs.Entity,
+  card: CardState,
+  isSelected = false,
+): void {
   if (!cardEntity.has(ecs.Ui)) {
     console.warn("Card entity does not have Ui component");
     return;
   }
 
   const imageUrl = CARD_IMAGE_MAP[card.imageId] || BACK_IMAGE_URL;
-  const background =
-    card.isFlipped || card.isMatched ? imageUrl : BACK_IMAGE_URL;
+  const showFace = card.isFlipped || card.isMatched || isSelected;
 
-  console.log(`Updating card visual: ${card.imageId}, flipped: ${card.isFlipped}, matched: ${card.isMatched}, selected: ${isSelected}, background: ${background.substring(0, 50)}`);
+  console.log(
+    `Updating card ${card.imageId} visual. Flipped: ${card.isFlipped}, Matched: ${card.isMatched}, Selected: ${isSelected}`,
+  );
 
-  // Update the UI with the new background and related properties
   const uiUpdate: any = {
-    background,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
+    background: BACK_IMAGE_URL,
+    backgroundSize: showFace ? "contain" : "cover",
+    image: showFace ? imageUrl : "assets/Group_6.png",
   };
+
+  console.log(`Card ${card.imageId} visual update:`, uiUpdate);
 
   // Add visual feedback for matched cards
   if (card.isMatched) {
@@ -207,13 +213,7 @@ function updateCardVisual(cardEntity: ecs.Entity, card: CardState, isSelected = 
     uiUpdate.opacity = 1;
   }
 
-  // Add visual feedback for selected (currently flipped) card
-  if (isSelected && !card.isMatched) {
-    uiUpdate.borderColor = "#FFD54F"; // highlight color
-    uiUpdate.borderWidth = 4;
-  } else {
-    uiUpdate.borderWidth = 0;
-  }
+  // Selected state shows the actual card image as background (no border styling)
 
   cardEntity.set(ecs.Ui, uiUpdate);
   console.log(`Card visual updated`);
@@ -330,9 +330,9 @@ ecs.registerComponent({
       }
 
       console.log(`Flipping card ${cardIndex}`);
-       card.isFlipped = true;
-       gameState.flippedCards.push(cardIndex);
-       updateCardVisual(cardEntity, card, true);
+      card.isFlipped = true;
+      gameState.flippedCards.push(cardIndex);
+      updateCardVisual(cardEntity, card, true);
 
       // Check if we have two cards flipped
       if (gameState.flippedCards.length === 2) {
@@ -351,8 +351,8 @@ ecs.registerComponent({
           secondCard.isMatched = true;
           gameState.matchedPairs++;
 
-           updateCardVisual(cardEntities[firstIndex], firstCard, false);
-           updateCardVisual(cardEntities[secondIndex], secondCard, false);
+          updateCardVisual(cardEntities[firstIndex], firstCard, false);
+          updateCardVisual(cardEntities[secondIndex], secondCard, false);
 
           gameState.flippedCards = [];
           gameState.isProcessing = false;
@@ -391,8 +391,8 @@ ecs.registerComponent({
             firstCard.isFlipped = false;
             secondCard.isFlipped = false;
 
-             updateCardVisual(cardEntities[firstIndex], firstCard, false);
-             updateCardVisual(cardEntities[secondIndex], secondCard, false);
+            updateCardVisual(cardEntities[firstIndex], firstCard, false);
+            updateCardVisual(cardEntities[secondIndex], secondCard, false);
 
             gameState.flippedCards = [];
             gameState.isProcessing = false;
