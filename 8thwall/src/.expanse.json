@@ -1787,21 +1787,20 @@
       "material": null,
       "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
       "components": {
-        "625b1bc5-72f4-43a9-9534-e5cea79c8d6c": {
-          "id": "625b1bc5-72f4-43a9-9534-e5cea79c8d6c",
-          "name": "Memory",
+        "f68b91d4-13ac-49c9-b8c4-de8c27352ef2": {
+          "id": "f68b91d4-13ac-49c9-b8c4-de8c27352ef2",
+          "name": "MemoryGame",
           "parameters": {
-            "cardRoot": {
+            "gameRoot": {
               "type": "entity",
               "id": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
-            },
-            "pairMappings": "0:0,1:0,2:1,3:1,4:2,5:2,6:3,7:3,8:4,9:4,10:5,11:5,12:6,13:6,14:7,15:7"
+            }
           }
         }
       },
       "name": "De verwoeste stad 05 (memory)",
       "order": 20.25244073196628,
-      "hidden": true
+      "hidden": false
     },
     "d3f23b34-3dcb-4b09-84e9-1bbb450e8972": {
       "id": "d3f23b34-3dcb-4b09-84e9-1bbb450e8972",
@@ -1836,7 +1835,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image",
+      "name": "Card1",
       "order": 21.001412291549396
     },
     "6aa850a3-1efb-4e10-b961-4f81ffe3697d": {
@@ -1871,7 +1870,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (1)",
+      "name": "Card2",
       "order": 22.575771837763885,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     },
@@ -1907,7 +1906,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (2)",
+      "name": "Card3",
       "order": 23.742010100590303,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     },
@@ -1943,7 +1942,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (3)",
+      "name": "Card4",
       "order": 25.604200014109747,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     },
@@ -1979,7 +1978,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (4)",
+      "name": "Card5",
       "order": 26.654044462024533,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     },
@@ -2015,7 +2014,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (5)",
+      "name": "Card6",
       "order": 27.86107610636578,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     },
@@ -2051,7 +2050,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (6)",
+      "name": "Card7",
       "order": 29.222716111614144,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     },
@@ -2087,7 +2086,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (7)",
+      "name": "Card8",
       "order": 30.846841476793163,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     },
@@ -2123,7 +2122,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (8)",
+      "name": "Card9",
       "order": 32.0975620412083,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     },
@@ -2159,7 +2158,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (9)",
+      "name": "Card10",
       "order": 33.52083004754961,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     },
@@ -2195,7 +2194,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (10)",
+      "name": "Card11",
       "order": 34.88394106080579,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     },
@@ -2231,7 +2230,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (11)",
+      "name": "Card12",
       "order": 36.255443122208774,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     },
@@ -2267,7 +2266,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (12)",
+      "name": "Card13",
       "order": 37.58789371595536,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     },
@@ -2303,7 +2302,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (13)",
+      "name": "Card14",
       "order": 39.26169007992024,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     },
@@ -2339,7 +2338,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (14)",
+      "name": "Card15",
       "order": 41.25045323132554,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     },
@@ -2375,7 +2374,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Image (15)",
+      "name": "Card16",
       "order": 43.12476869094904,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     }
