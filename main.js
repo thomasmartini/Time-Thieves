@@ -227,7 +227,7 @@ const monumentZones = [
   {
     name: "De Verwoeste Stad",
     slug: "de-verwoeste-stad",
-    sceneId: "de-verwoeste-stad-03", // matches 8th wall scene id for testing, will be set in AR.js for production
+    sceneId: "de-verwoeste-stad-05", // matches 8th wall scene id for testing, will be set in AR.js for production
     lon: 4.4830665,
     lat: 51.9176368,
     radius: 100,
