@@ -1794,13 +1794,21 @@
             "gameRoot": {
               "type": "entity",
               "id": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
+            },
+            "rewardTextTarget": {
+              "type": "entity",
+              "id": "79aaf9e3-0833-4a53-a068-155dc2db2b0a"
+            },
+            "rewardItemTarget": {
+              "type": "entity",
+              "id": "e128fade-df73-46ab-9785-8e216ef8564c"
             }
           }
         }
       },
       "name": "De verwoeste stad 05 (memory)",
       "order": 20.25244073196628,
-      "hidden": false
+      "hidden": true
     },
     "d3f23b34-3dcb-4b09-84e9-1bbb450e8972": {
       "id": "d3f23b34-3dcb-4b09-84e9-1bbb450e8972",
@@ -2376,6 +2384,77 @@
       },
       "name": "Card16",
       "order": 43.12476869094904,
+      "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
+    },
+    "79aaf9e3-0833-4a53-a068-155dc2db2b0a": {
+      "id": "79aaf9e3-0833-4a53-a068-155dc2db2b0a",
+      "position": [
+        1.4843864368922244,
+        -0.5620421405187148,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca",
+      "components": {},
+      "ui": {
+        "width": 200,
+        "height": 10,
+        "text": "Sample Text",
+        "color": "#ffffff",
+        "fontSize": 12,
+        "type": "3d"
+      },
+      "name": "Text",
+      "order": 19.91264071482322,
+      "hidden": true
+    },
+    "e128fade-df73-46ab-9785-8e216ef8564c": {
+      "id": "e128fade-df73-46ab-9785-8e216ef8564c",
+      "position": [
+        3.3288939483022526,
+        -0.5976547050497646,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "url",
+          "url": ""
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Reward (2)",
+      "order": 20.239280293468138,
+      "hidden": true,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
     }
   },

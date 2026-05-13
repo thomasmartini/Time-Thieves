@@ -54,7 +54,7 @@ const CARD_IMAGE_MAP: Record<string, string> = {
 };
 
 // Storage key for persisting game state
-const MEMORY_GAME_STATE_KEY = "time-thieves-memory-game-state5";
+const MEMORY_GAME_STATE_KEY = "time-thieves-memory-game-state";
 
 /**
  * Initialize memory game state
@@ -263,6 +263,7 @@ ecs.registerComponent({
     gameRoot: "eid",
     cardEids: ["eid"], // Optional: direct entity references for cards
     rewardItemTarget: "eid", // Optional: item to show on completion
+    rewardTextTarget: "eid", // Optional: text to show on completion
   },
   schemaDefaults: {
     sceneId: "de-verwoeste-stad-05",
@@ -369,6 +370,23 @@ ecs.registerComponent({
               if (rewardEntity.isHidden()) rewardEntity.show();
               if (rewardEntity.isDisabled()) rewardEntity.enable();
             }
+
+            // Show reward text
+            if (schema.rewardTextTarget) {
+              const rewardTextEntity = resolveTargetEntity(
+                world,
+                schema.rewardTextTarget,
+              );
+              if (rewardTextEntity) {
+                if (rewardTextEntity.isHidden()) rewardTextEntity.show();
+                if (rewardTextEntity.isDisabled()) rewardTextEntity.enable();
+                // Update text content
+                rewardTextEntity.set(ecs.Ui, {
+                  text: "Memory game has been completed, you have been given an item as a reward!",
+                });
+              }
+            }
+
             addInventoryItem("memory-game-completed", "quiz", schema.sceneId, {
               moves: gameState.moves,
               pairs: gameState.matchedPairs,
@@ -443,6 +461,18 @@ ecs.registerComponent({
         }
 
         initialized = true;
+
+        // Hide the reward text on initialization
+        if (schema.rewardTextTarget) {
+          const rewardTextEntity = resolveTargetEntity(
+            world,
+            schema.rewardTextTarget,
+          );
+          if (rewardTextEntity) {
+            if (!rewardTextEntity.isHidden()) rewardTextEntity.hide();
+            if (!rewardTextEntity.isDisabled()) rewardTextEntity.disable();
+          }
+        }
 
         // Update all card visuals
         cardEntities.forEach((cardEntity, index) => {
