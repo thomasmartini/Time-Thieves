@@ -132,7 +132,7 @@ navigator.geolocation.watchPosition(
     currentLat = 51.9225;
     updateZoneButtonsVisibility();
   },
-  { enableHighAccuracy: true, maximumAge: 3000, timeout: 5000 },
+  { enableHighAccuracy: true, maximumAge: 1000, timeout: 2000 },
 );
 
 // SCORE
