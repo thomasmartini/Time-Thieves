@@ -134,7 +134,11 @@ function showCompletionText(world: ecs.World, schema: any, text: string): void {
   });
 }
 
-function showCompletionReward(world: ecs.World, schema: any, text: string = MEMORY_GAME_JUST_COMPLETED_TEXT): void {
+function showCompletionReward(
+  world: ecs.World,
+  schema: any,
+  text: string = MEMORY_GAME_JUST_COMPLETED_TEXT,
+): void {
   const rewardEntity = resolveTargetEntity(world, schema.rewardItemTarget);
   if (rewardEntity) {
     if (rewardEntity.isHidden()) rewardEntity.show();
@@ -476,7 +480,11 @@ ecs.registerComponent({
         initialized = true;
 
         if (isGameComplete) {
-          showCompletionReward(world, schema, MEMORY_GAME_ALREADY_COMPLETED_TEXT);
+          showCompletionReward(
+            world,
+            schema,
+            MEMORY_GAME_ALREADY_COMPLETED_TEXT,
+          );
         } else if (schema.rewardTextTarget) {
           const rewardTextEntity = resolveTargetEntity(
             world,
