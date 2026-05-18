@@ -43,14 +43,14 @@ const BACK_IMAGE_URL = "#4a5568";
 // Map card IDs to asset paths
 // Update these to match your actual 8th Wall asset URLs
 const CARD_IMAGE_MAP: Record<string, string> = {
-  "image-1": "assets/Photographer.png",
-  "image-2": "assets/Student.png",
-  "image-3": "assets/Time_Thief.png",
-  "image-4": "assets/Professor.png",
-  "image-5": "assets/TT_Photographer_Style2_1.png",
-  "image-6": "assets/TT_Professor_Style2_1.png",
-  "image-7": "assets/TT_Student_Style2_1.png",
-  "image-8": "assets/Photographer_1.png",
+  "image-1": "assets/Memory_Bosjeskerk.png",
+  "image-2": "assets/Memory_Dijkstraat.png",
+  "image-3": "assets/Memory_Maasstation.png",
+  "image-4": "assets/Memory_Nassaustraat.png",
+  "image-5": "assets/Memory_Puinruimers.png",
+  "image-6": "assets/Memory_Scheepsmakershaven.png",
+  "image-7": "assets/Memory_SintLaurensKerk.png",
+  "image-8": "assets/Memory_Tivoli.png",
 };
 
 // Storage key for persisting game state

@@ -45,15 +45,15 @@
       "material": null,
       "name": "Camera",
       "position": [
-        4.543778351881202,
+        4.5,
         3.5,
         5
       ],
       "rotation": [
-        0.000042675744015171155,
-        0.999885175164843,
-        -0.014879887145439785,
-        0.0028676859819449984
+        0,
+        1,
+        0,
+        6.123233995736766e-17
       ],
       "scale": [
         0.9999998646558023,
@@ -1035,7 +1035,7 @@
     "e61fec7a-7512-40c6-ad49-052c69e2ec68": {
       "id": "e61fec7a-7512-40c6-ad49-052c69e2ec68",
       "position": [
-        5.124721367022228,
+        6.835811368993305,
         1.7804521341660682,
         0
       ],
@@ -1085,7 +1085,7 @@
             },
             "answer2TextTarget": {
               "type": "entity",
-              "id": "ed07c038-df8c-44ec-9cf3-3f7f445ec6a9"
+              "id": "ba1e76c9-d0f4-496e-a940-7f28df721ac6"
             },
             "answer3TextTarget": {
               "type": "entity",
@@ -1105,44 +1105,8 @@
     "380469bc-2ae1-434b-b0aa-128280112958": {
       "id": "380469bc-2ae1-434b-b0aa-128280112958",
       "position": [
-        0,
-        0.7686232356651623,
-        0.3
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        1,
-        1,
-        1
-      ],
-      "geometry": null,
-      "material": null,
-      "parentId": "e61fec7a-7512-40c6-ad49-052c69e2ec68",
-      "components": {},
-      "ui": {
-        "type": "3d",
-        "width": 100,
-        "height": 100,
-        "image": {
-          "type": "asset",
-          "asset": "assets/TT_Professor_Style2_1.png"
-        },
-        "backgroundOpacity": 1,
-        "backgroundSize": "contain"
-      },
-      "name": "Npc (2)",
-      "order": 10.30541031150533
-    },
-    "f5c1f7a5-1258-447c-af9f-30684bb6167d": {
-      "id": "f5c1f7a5-1258-447c-af9f-30684bb6167d",
-      "position": [
-        -0.4641681208004086,
-        1.8,
+        -2.744241159459,
+        1.0468588072296636,
         0.3
       ],
       "rotation": [
@@ -1166,20 +1130,20 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Vector_10.png"
+          "asset": "assets/SpeechBubble_Onderzoeker.png"
         },
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Tekstwolk npc (2)",
-      "order": 12.539124135336872
+      "name": "Professor",
+      "order": 10.30541031150533
     },
     "b4cc920b-8068-44df-badf-70727bf0ee13": {
       "id": "b4cc920b-8068-44df-badf-70727bf0ee13",
       "position": [
-        -0.4399794702863986,
-        1.941059195436911,
-        0.3
+        -2.732095555847512,
+        0.631534180833498,
+        0.6493397685401576
       ],
       "rotation": [
         0,
@@ -1202,15 +1166,16 @@
         "text": "Hier komt de vraag van de professor",
         "color": "#000000",
         "fontSize": 7,
-        "type": "3d"
+        "type": "3d",
+        "verticalTextAlign": "center"
       },
-      "name": "Tekst npc (2)",
+      "name": "ProfessorTekst",
       "order": 13.64957399602904
     },
     "acdec01b-d3a7-4abf-aec8-fde67f3e56aa": {
       "id": "acdec01b-d3a7-4abf-aec8-fde67f3e56aa",
       "position": [
-        -1.1219732587182445,
+        -1.036096152820246,
         1.2,
         0.3
       ],
@@ -1241,13 +1206,13 @@
         "backgroundSize": "contain",
         "borderRadius": 0
       },
-      "name": "Antwoord1 (1)",
+      "name": "Antwoord1 wolk",
       "order": 14.72524005329745
     },
     "063b5aad-862d-4a12-aa95-62f394ebf561": {
       "id": "063b5aad-862d-4a12-aa95-62f394ebf561",
       "position": [
-        -1.1219732587182445,
+        -1.036096152820246,
         0.8,
         0.3
       ],
@@ -1276,15 +1241,15 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Antwoord2 (1)",
+      "name": "Antwoord2 wolk",
       "order": 14.800906110565856,
       "parentId": "e61fec7a-7512-40c6-ad49-052c69e2ec68"
     },
     "fc1ace6e-3f03-4b5e-99b0-279e579f27ab": {
       "id": "fc1ace6e-3f03-4b5e-99b0-279e579f27ab",
       "position": [
-        -1.1219732587182445,
-        0.38514979854607156,
+        -1.036096152820246,
+        0.40000000000000013,
         0.3
       ],
       "rotation": [
@@ -1312,16 +1277,16 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Antwoord3 (1)",
+      "name": "Antwoord3 wolk",
       "order": 14.876572167834265,
       "parentId": "e61fec7a-7512-40c6-ad49-052c69e2ec68"
     },
     "5c5db50a-8d02-40e3-b6c6-c41d274a5583": {
       "id": "5c5db50a-8d02-40e3-b6c6-c41d274a5583",
       "position": [
-        -1.2192028918903706,
-        1.2,
-        0.33
+        -1.1333257859923718,
+        1.22,
+        0.46165968842900934
       ],
       "rotation": [
         0,
@@ -1341,55 +1306,21 @@
       "ui": {
         "width": 80,
         "height": 20,
-        "text": "Answer 1",
+        "text": "Antwoord 1",
         "color": "#000000",
         "fontSize": 7,
         "type": "3d",
         "verticalTextAlign": "center"
       },
-      "name": "Antwoord1 tekst (1)",
+      "name": "Antwoord1 tekst",
       "order": 14.108556510172646
-    },
-    "ed07c038-df8c-44ec-9cf3-3f7f445ec6a9": {
-      "id": "ed07c038-df8c-44ec-9cf3-3f7f445ec6a9",
-      "position": [
-        -1.2046207365384158,
-        0.8043923788468224,
-        0.33
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        1,
-        1,
-        1
-      ],
-      "geometry": null,
-      "material": null,
-      "components": {},
-      "ui": {
-        "width": 80,
-        "height": 20,
-        "text": "Answer 2\n",
-        "color": "#000000",
-        "fontSize": 7,
-        "type": "3d",
-        "verticalTextAlign": "center"
-      },
-      "name": "Antwoord2 tekst (1)",
-      "order": 14.77141903500224,
-      "parentId": "e61fec7a-7512-40c6-ad49-052c69e2ec68"
     },
     "64d8bf3b-d7c2-4837-a827-e11445840717": {
       "id": "64d8bf3b-d7c2-4837-a827-e11445840717",
       "position": [
-        -1.1992019916723227,
-        0.42584299125352276,
-        0.33
+        -1.1331228941020015,
+        0.42000000000000015,
+        0.462
       ],
       "rotation": [
         0,
@@ -1408,13 +1339,13 @@
       "ui": {
         "width": 80,
         "height": 20,
-        "text": "Answer 3",
+        "text": "Antwoord 3",
         "color": "#000000",
         "fontSize": 7,
         "type": "3d",
         "verticalTextAlign": "center"
       },
-      "name": "Antwoord3 tekst (1)",
+      "name": "Antwoord3 tekst",
       "order": 14.833975299854409,
       "parentId": "e61fec7a-7512-40c6-ad49-052c69e2ec68"
     },
@@ -1455,8 +1386,8 @@
     "222cb2b4-b4bc-4e66-ae6e-6cc6a6974788": {
       "id": "222cb2b4-b4bc-4e66-ae6e-6cc6a6974788",
       "position": [
-        -0.4,
-        -0.654,
+        -2.122085698426943,
+        -0.6102386248760201,
         0.3
       ],
       "rotation": [
@@ -1484,7 +1415,7 @@
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Reward (1)",
+      "name": "RewardItem",
       "order": 16.168169354067633,
       "hidden": true,
       "parentId": "e61fec7a-7512-40c6-ad49-052c69e2ec68"
@@ -1808,7 +1739,7 @@
       },
       "name": "De verwoeste stad 05 (memory)",
       "order": 20.25244073196628,
-      "hidden": false
+      "hidden": true
     },
     "d3f23b34-3dcb-4b09-84e9-1bbb450e8972": {
       "id": "d3f23b34-3dcb-4b09-84e9-1bbb450e8972",
@@ -2456,6 +2387,40 @@
       "order": 20.239280293468138,
       "hidden": true,
       "parentId": "6d12cc01-1534-4b96-a24e-851c3f6ff2ca"
+    },
+    "ba1e76c9-d0f4-496e-a940-7f28df721ac6": {
+      "id": "ba1e76c9-d0f4-496e-a940-7f28df721ac6",
+      "position": [
+        -1.1331228941020015,
+        0.8200000000000001,
+        0.462
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {},
+      "ui": {
+        "width": 80,
+        "height": 20,
+        "text": "Antwoord 2",
+        "color": "#000000",
+        "fontSize": 7,
+        "type": "3d",
+        "verticalTextAlign": "center"
+      },
+      "name": "Antwoord2 tekst",
+      "order": 14.786474781419257,
+      "parentId": "e61fec7a-7512-40c6-ad49-052c69e2ec68"
     }
   },
   "spaces": {
