@@ -16,7 +16,7 @@ export function populateDummyInventory() {
       source: "quiz",
       sourceId: "quiz-1",
       acquiredAt: Date.now() - 3600000,
-      metadata: { score: 100 },
+      metadata: {},
     },
     {
       itemId: "bakstenen-verwoeste-stad",

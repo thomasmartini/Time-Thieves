@@ -18,17 +18,7 @@ try {
     baseLayerPicker: false,
     timeline: false,
     animation: true,
-    shadows: true,
     shouldAnimate: true,
-  });
-
-  viewer.scene.globe.enableLighting = true;
-  viewer.scene.globe.depthTestAgainstTerrain = true;
-
-  viewer.scene.shadowMap = new Cesium.ShadowMap({
-    context: viewer.scene.context,
-    lightSource: viewer.scene.lightSource,
-    enabled: true,
   });
 
   console.log("Viewer created");
@@ -45,7 +35,6 @@ try {
     infoBox: false,
     selectionIndicator: false,
     fullscreenButton: false,
-    shadows: true,
     shouldAnimate: true,
   });
   viewer._cesiumWidget._creditContainer.style.display = "none";
@@ -73,6 +62,40 @@ let touchStartY = 0;
 let isDragging = false;
 
 const canvas = viewer.scene.canvas;
+
+const inventoryPanel = document.getElementById("inventoryPanel");
+const inventoryToggle = document.getElementById("inventoryToggle");
+const inventoryItemsEl = document.getElementById("inventoryItems");
+const inventoryCountEl = document.getElementById("inventoryCount");
+const monumentSelectionEl = document.getElementById("monumentSelection");
+const inventoryViewEl = document.getElementById("inventoryView");
+const inventoryBackBtn = document.getElementById("inventoryBackBtn");
+
+const ITEM_DISPLAY_DATA = {
+  "boek-erasmus": {
+    name: "Boek van Erasmus",
+    icon: "📖",
+  },
+  "bakstenen-verwoeste-stad": {
+    name: "Bakstenen van De Verwoeste Stad",
+    icon: "📚",
+  },
+};
+
+const monumentZones = [
+  {
+    name: "De Verwoeste Stad",
+    slug: "de-verwoeste-stad",
+    sceneId: "de-verwoeste-stad-05", // matches 8th wall scene id for testing, will be set in AR.js for production
+    lon: 4.4830665,
+    lat: 51.9176368,
+    radius: 20,
+    color: Cesium.Color.ORANGE.withAlpha(0.35),
+    objects: [],
+  },
+];
+
+const eighthWallSceneUrl = import.meta.env.VITE_8THWALL_SCENE_URL || "/ar/";
 
 // Touch drag detection to disable camera follow
 canvas.addEventListener("touchstart", (e) => {
@@ -136,43 +159,7 @@ navigator.geolocation.watchPosition(
   { enableHighAccuracy: true, maximumAge: 1000, timeout: 2000 },
 );
 
-// SCORE
-
-let score = 0;
-let clickCount = 0;
-const scoreGoal = 100;
-
-function updateScoreUI(message = "") {
-  const scoreEl = document.getElementById("scoreValue");
-  const goalEl = document.getElementById("goalValue");
-  const clickEl = document.getElementById("clickCount");
-  const msgEl = document.getElementById("gameMessage");
-  if (scoreEl) scoreEl.textContent = score.toString();
-  if (goalEl) goalEl.textContent = scoreGoal.toString();
-  if (clickEl) clickEl.textContent = clickCount.toString();
-  if (msgEl) msgEl.textContent = message;
-}
-
-const inventoryPanel = document.getElementById("inventoryPanel");
-const inventoryToggle = document.getElementById("inventoryToggle");
-const inventoryItemsEl = document.getElementById("inventoryItems");
-const inventoryCountEl = document.getElementById("inventoryCount");
-const monumentSelectionEl = document.getElementById("monumentSelection");
-const inventoryViewEl = document.getElementById("inventoryView");
-const inventoryBackBtn = document.getElementById("inventoryBackBtn");
-
 let selectedMonument = null;
-
-const ITEM_DISPLAY_DATA = {
-  "boek-erasmus": {
-    name: "Boek van Erasmus",
-    icon: "📖",
-  },
-  "bakstenen-verwoeste-stad": {
-    name: "Bakstenen van De Verwoeste Stad",
-    icon: "📚",
-  },
-};
 
 function getItemDisplay(itemId) {
   return (
@@ -334,35 +321,6 @@ function spawnObjectsInMonumentZones() {
   }
 }
 
-const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-handler.setInputAction(function (click) {
-  const picked = viewer.scene.pick(click.position);
-  if (Cesium.defined(picked)) {
-    clickCount++;
-    score += 10;
-    const message =
-      score >= scoreGoal
-        ? "🎉 Doel bereikt! De Time Thieves zijn verslagen!"
-        : "Ga door om het doel te bereiken.";
-    updateScoreUI(message);
-  }
-}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-
-updateScoreUI("klik op de objecten om punten te verdienen!");
-// Monument Zones
-const monumentZones = [
-  {
-    name: "De Verwoeste Stad",
-    slug: "de-verwoeste-stad",
-    sceneId: "de-verwoeste-stad-05", // matches 8th wall scene id for testing, will be set in AR.js for production
-    lon: 4.4830665,
-    lat: 51.9176368,
-    radius: 20,
-    color: Cesium.Color.ORANGE.withAlpha(0.35),
-    objects: [],
-  },
-];
-
 renderMonumentSelection(monumentZones);
 
 let currentActiveMonument = null;
@@ -437,15 +395,6 @@ function createMonumentZones() {
   }
 }
 
-function setGameMessage(message, color = "#b8f5c0") {
-  const msgEl = document.getElementById("gameMessage");
-  if (msgEl) {
-    msgEl.textContent = message;
-    msgEl.style.color = color;
-  }
-}
-
-const eighthWallSceneUrl = import.meta.env.VITE_8THWALL_SCENE_URL || "/ar/";
 let arOverlayEl = null;
 let arFrameEl = null;
 
@@ -493,7 +442,6 @@ function ensureArOverlay() {
     if (!arOverlayEl || !arFrameEl) return;
     arOverlayEl.style.display = "none";
     arFrameEl.src = "about:blank";
-    setGameMessage("Terug in Cesium.", "#b8f5c0");
   });
 
   arFrameEl = document.createElement("iframe");
@@ -515,12 +463,6 @@ function open8thWallScene(zone, source = "manual") {
   const targetUrl = getArUrlForZone(zone);
   ensureArOverlay();
   currentActiveMonument = zone.name;
-  setGameMessage(`8th Wall start voor ${zone.name}...`, "#8efc8e");
-  const infoEl = document.getElementById("zoneMessage");
-  if (infoEl) {
-    infoEl.textContent = `Je bent in de zone van ${zone.name}. AR wordt in de app geopend.`;
-    infoEl.style.color = "#b8f5c0";
-  }
   arFrameEl.src = targetUrl;
   arOverlayEl.style.display = "block";
 }
@@ -528,18 +470,12 @@ function open8thWallScene(zone, source = "manual") {
 function activateAR(zone) {
   if (isInZone(zone)) {
     startAR(zone);
-  } else {
-    if (infoEl) {
-      const distance = Math.round(distanceToZone(zone));
-      infoEl.textContent = `Je bent ${distance} meter van ${zone.name}. Beweeg dichterbij en probeer het opnieuw.`;
-    }
-  }
+  } else { return }
 }
 
 function startAR(zone) {
   // hide Cesium view and UI
   document.getElementById("cesiumContainer").style.display = "none";
-  // document.getElementById("gamePanel").style.display = "none";
   document.getElementById("zonePanel").style.display = "none";
   document.getElementById("inventoryPanel").style.display = "none";
 
@@ -592,9 +528,7 @@ function startAR(zone) {
       `latitude: ${obj.lat}; longitude: ${obj.lon}`,
     );
     objectEntity.addEventListener("click", () => {
-      updateScoreUI(
-        `Je hebt op een AR element geklikt! Switching to 8th Wall...`,
-      );
+
       stopAR();
       open8thWallScene(zone);
     });
@@ -627,11 +561,53 @@ function stopAR() {
   const backButton = document.getElementById("arBackButton");
   if (backButton) document.body.removeChild(backButton);
 
+  // Log camera state before restore (helpful for debugging)
+  try {
+    console.log("[stopAR] camera before restore:", viewer.camera.positionWC, viewer.camera.frustum);
+  } catch (e) {
+    console.warn("[stopAR] could not read camera state", e);
+  }
+
   // Go back to Cesium view
   document.getElementById("cesiumContainer").style.display = "block";
-  // document.getElementById("gamePanel").style.display = "block";
   document.getElementById("zonePanel").style.display = "block";
   document.getElementById("inventoryPanel").style.display = "block";
+
+  // Restore camera transform and sensible view so the map isn't zoomed in
+  try {
+    // Clear any lookAt transform applied earlier
+    if (viewer && viewer.camera && Cesium && Cesium.Matrix4) {
+      viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+    }
+
+    // Reset field of view to a sane default if accessible
+    if (viewer && viewer.camera && viewer.camera.frustum && typeof viewer.camera.frustum.fovy !== "undefined") {
+      viewer.camera.frustum.fovy = Cesium.Math.toRadians(60);
+    }
+
+    // Smoothly move camera to a reasonable distance above the user's current location
+    if (typeof currentLon === "number" && typeof currentLat === "number") {
+      viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(currentLon, currentLat, 150),
+        duration: 0.5,
+      });
+    }
+
+    // Ensure Cesium redraws and resizes correctly after being hidden
+    try {
+      if (typeof viewer.resize === "function") viewer.resize();
+    } catch (e) { }
+    try {
+      if (viewer && viewer.scene && typeof viewer.scene.requestRender === "function") viewer.scene.requestRender();
+    } catch (e) { }
+  } catch (e) {
+    console.warn("[stopAR] failed to fully restore camera:", e);
+  }
+
+  // Log camera state after restore
+  try {
+    console.log("[stopAR] camera after restore:", viewer.camera.positionWC, viewer.camera.frustum);
+  } catch (e) { }
 }
 
 function updateZoneButtonsVisibility() {
