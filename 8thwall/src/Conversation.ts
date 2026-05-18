@@ -191,7 +191,7 @@ const dialogueKeyByNpcId: Record<string, string> = {
   // de-verwoeste-stad-02 is quiz scene, so no dialogue assigned
   "de-verwoeste-stad-03": "timethief_dialogue",
   // de-verwoeste-stad-04 is quiz scene, so no dialogue assigned
-  "de-verwoeste-stad-05": "placeholder",
+  "de-verwoeste-stad-05": "placeholder", // memory game
 };
 
 function normalizeNpcId(npcId: string | undefined): string {

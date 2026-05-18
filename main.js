@@ -1,5 +1,9 @@
 import * as Cesium from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
+import {
+  getInventoryItems,
+  populateDummyInventory,
+} from "./utils/inventory.js";
 
 Cesium.Ion.defaultAccessToken = import.meta.env.VITE_CESIUM_TOKEN;
 let viewer;
@@ -128,10 +132,11 @@ navigator.geolocation.watchPosition(
     currentLat = 51.9225;
     updateZoneButtonsVisibility();
   },
-  { enableHighAccuracy: true, maximumAge: 2000, timeout: 3000 },
+  { enableHighAccuracy: true, maximumAge: 3000, timeout: 5000 },
 );
 
 // SCORE
+
 let score = 0;
 let clickCount = 0;
 const scoreGoal = 100;
@@ -146,6 +151,140 @@ function updateScoreUI(message = "") {
   if (clickEl) clickEl.textContent = clickCount.toString();
   if (msgEl) msgEl.textContent = message;
 }
+
+const inventoryPanel = document.getElementById("inventoryPanel");
+const inventoryToggle = document.getElementById("inventoryToggle");
+const inventoryItemsEl = document.getElementById("inventoryItems");
+const inventoryCountEl = document.getElementById("inventoryCount");
+const monumentSelectionEl = document.getElementById("monumentSelection");
+const inventoryViewEl = document.getElementById("inventoryView");
+const inventoryBackBtn = document.getElementById("inventoryBackBtn");
+
+let selectedMonument = null;
+
+const ITEM_DISPLAY_DATA = {
+  "boek-erasmus": {
+    name: "Boek van Erasmus",
+    icon: "📖",
+  },
+  "bakstenen-verwoeste-stad": {
+    name: "Bakstenen van De Verwoeste Stad",
+    icon: "📚",
+  },
+};
+
+function getItemDisplay(itemId) {
+  return (
+    ITEM_DISPLAY_DATA[itemId] || {
+      name: itemId,
+      icon: "📦",
+    }
+  );
+}
+
+function showMonumentSelection() {
+  selectedMonument = null;
+  if (monumentSelectionEl) monumentSelectionEl.style.display = "grid";
+  if (inventoryViewEl) inventoryViewEl.style.display = "none";
+}
+
+function showInventoryView() {
+  if (monumentSelectionEl) monumentSelectionEl.style.display = "none";
+  if (inventoryViewEl) inventoryViewEl.style.display = "block";
+  refreshInventoryUI();
+}
+
+function selectMonument(monumentSlug) {
+  selectedMonument = monumentSlug;
+  showInventoryView();
+}
+
+function renderMonumentSelection(monuments) {
+  if (!monumentSelectionEl) return;
+  monumentSelectionEl.innerHTML = monuments
+    .map(
+      (monument) =>
+        `<div class="inventory-monument-item" data-slug="${monument.slug}">
+          <div class="inventory-monument-name">${monument.name}</div>
+        </div>`,
+    )
+    .join("");
+
+  monumentSelectionEl
+    .querySelectorAll(".inventory-monument-item")
+    .forEach((el) => {
+      el.addEventListener("click", () => {
+        selectMonument(el.dataset.slug);
+      });
+      el.addEventListener("touchend", (e) => {
+        e.preventDefault();
+        selectMonument(el.dataset.slug);
+      });
+    });
+}
+
+function refreshInventoryUI() {
+  const items = getInventoryItems();
+  if (!inventoryItemsEl) return;
+
+  if (items.length === 0) {
+    inventoryItemsEl.innerHTML =
+      '<div class="inventory-empty">Je hebt nog geen items.</div>';
+  } else {
+    inventoryItemsEl.innerHTML = items
+      .map((item) => {
+        const display = getItemDisplay(item.itemId);
+        return `<div class="inventory-item">
+          <div class="inventory-item-icon">${display.icon}</div>
+          <div class="inventory-item-name">${display.name}</div>
+        </div>`;
+      })
+      .join("");
+  }
+
+  if (inventoryCountEl) {
+    inventoryCountEl.textContent = items.length.toString();
+  }
+}
+
+function setInventoryPanelOpen(open) {
+  if (!inventoryPanel || !inventoryToggle) return;
+  inventoryPanel.classList.toggle("inventory-expanded", open);
+  inventoryPanel.classList.toggle("inventory-collapsed", !open);
+  inventoryToggle.setAttribute("aria-expanded", open ? "true" : "false");
+
+  if (open && !selectedMonument) {
+    showMonumentSelection();
+  }
+}
+
+function toggleInventoryPanel() {
+  if (!inventoryPanel) return;
+  const open = !inventoryPanel.classList.contains("inventory-expanded");
+  setInventoryPanelOpen(open);
+}
+
+if (inventoryToggle) {
+  inventoryToggle.addEventListener("click", toggleInventoryPanel);
+  inventoryToggle.addEventListener("touchend", (event) => {
+    event.preventDefault();
+    toggleInventoryPanel();
+  });
+}
+
+if (inventoryBackBtn) {
+  inventoryBackBtn.addEventListener("click", showMonumentSelection);
+  inventoryBackBtn.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    showMonumentSelection();
+  });
+}
+
+window.addEventListener("inventory-item-added", refreshInventoryUI);
+window.addEventListener("inventory-item-removed", refreshInventoryUI);
+
+populateDummyInventory();
+refreshInventoryUI();
 
 function randomInRange(min, max) {
   return Math.random() * (max - min) + min;
@@ -214,7 +353,7 @@ const monumentZones = [
   {
     name: "De Verwoeste Stad",
     slug: "de-verwoeste-stad",
-    sceneId: "de-verwoeste-stad-03", // matches 8th wall scene id for testing, will be set in AR.js for production
+    sceneId: "de-verwoeste-stad-05", // matches 8th wall scene id for testing, will be set in AR.js for production
     lon: 4.4830665,
     lat: 51.9176368,
     radius: 20,
@@ -222,6 +361,8 @@ const monumentZones = [
     objects: [],
   },
 ];
+
+renderMonumentSelection(monumentZones);
 
 let currentActiveMonument = null;
 
@@ -457,16 +598,15 @@ function startAR(zone) {
       "material",
       `src: ${arImageUrl}; transparent: true; opacity: 1`,
     );
-    objectEntity.setAttribute(
-      "look-at",
-      "[gps-camera]"
-    );
+    objectEntity.setAttribute("look-at", "[gps-camera]");
     objectEntity.setAttribute(
       "gps-new-entity-place",
       `latitude: ${obj.lat}; longitude: ${obj.lon}`,
     );
     objectEntity.addEventListener("click", () => {
-      updateScoreUI(`Je hebt op een AR element geklikt! Switching to 8th Wall...`);
+      updateScoreUI(
+        `Je hebt op een AR element geklikt! Switching to 8th Wall...`,
+      );
       stopAR();
       open8thWallScene(zone);
     });
