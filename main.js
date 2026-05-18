@@ -48,6 +48,7 @@ try {
     shadows: true,
     shouldAnimate: true,
   });
+  viewer._cesiumWidget._creditContainer.style.display = "none";
 }
 
 // USER LOCATION + MODEL
@@ -520,9 +521,6 @@ function open8thWallScene(zone, source = "manual") {
     infoEl.textContent = `Je bent in de zone van ${zone.name}. AR wordt in de app geopend.`;
     infoEl.style.color = "#b8f5c0";
   }
-  console.log(
-    `Opening embedded 8th Wall scene for ${zone.name} via ${source}: ${targetUrl}`,
-  );
   arFrameEl.src = targetUrl;
   arOverlayEl.style.display = "block";
 }
@@ -530,18 +528,7 @@ function open8thWallScene(zone, source = "manual") {
 function activateAR(zone) {
   if (isInZone(zone)) {
     startAR(zone);
-    setGameMessage(`AR.js geactiveerd voor ${zone.name}!`, "#8efc8e");
-    const infoEl = document.getElementById("zoneMessage");
-    if (infoEl) {
-      infoEl.textContent = `Je bevindt je binnen ${zone.radius} meter van ${zone.name}. AR.js is nu actief.`;
-    }
-    console.log(`AR.js activated for ${zone.name}`);
   } else {
-    setGameMessage(
-      `Je moet dichter bij ${zone.name} zijn om AR te activeren.`,
-      "#f4b8b8",
-    );
-    const infoEl = document.getElementById("zoneMessage");
     if (infoEl) {
       const distance = Math.round(distanceToZone(zone));
       infoEl.textContent = `Je bent ${distance} meter van ${zone.name}. Beweeg dichterbij en probeer het opnieuw.`;
@@ -554,10 +541,11 @@ function startAR(zone) {
   document.getElementById("cesiumContainer").style.display = "none";
   // document.getElementById("gamePanel").style.display = "none";
   document.getElementById("zonePanel").style.display = "none";
+  document.getElementById("inventoryPanel").style.display = "none";
 
   // create AR scene
   const arScene = document.createElement("a-scene");
-  arScene.setAttribute("vr-mode-ui", "enabled: false");
+  arScene.setAttribute("xr-mode-ui", "enabled: false");
   arScene.setAttribute(
     "arjs",
     "sourceType: webcam; videoTexture: true; debugUIEnabled: false",
@@ -643,6 +631,7 @@ function stopAR() {
   document.getElementById("cesiumContainer").style.display = "block";
   // document.getElementById("gamePanel").style.display = "block";
   document.getElementById("zonePanel").style.display = "block";
+  document.getElementById("inventoryPanel").style.display = "block";
 }
 
 function updateZoneButtonsVisibility() {
@@ -659,15 +648,7 @@ function updateZoneButtonsVisibility() {
     }
   });
 
-  if (infoEl) {
-    if (visibleCount > 0) {
-      infoEl.textContent = "Je bent dichtbij een monument. Activeer AR.";
-      infoEl.style.color = "#b8f5c0";
-    } else {
-      infoEl.textContent = "Beweeg dichterbij een monument om AR te activeren.";
-      infoEl.style.color = "#f4b8b8";
-    }
-  }
+
 }
 
 function createZoneButtons() {
@@ -675,23 +656,34 @@ function createZoneButtons() {
   if (!panel) return;
   monumentZones.forEach((zone) => {
     const row = document.createElement("div");
+    row.style.width = "100%";
     row.style.marginBottom = "8px";
     row.style.display = "none";
 
-    const label = document.createElement("div");
-    label.textContent = `${zone.name} — radius ${zone.radius} m`;
-    label.style.fontSize = "13px";
-    label.style.marginBottom = "4px";
-    row.appendChild(label);
-
     const button = document.createElement("button");
-    button.textContent = "Activeer AR";
-    button.style.padding = "6px 10px";
+    button.textContent = `Activeer AR`;
+    button.style.width = "100%";
+    button.style.padding = "22px 24px";
+    button.style.minHeight = "72px";
+    button.style.fontSize = "26px";
+    button.style.fontWeight = "700";
     button.style.border = "none";
-    button.style.borderRadius = "4px";
-    button.style.background = "#24a0ff";
+    button.style.borderRadius = "16px";
+    button.style.background = "linear-gradient(135deg, #2196f3 0%, #4dabf7 100%)";
     button.style.color = "white";
     button.style.cursor = "pointer";
+    button.style.boxShadow = "0 10px 24px rgba(0, 0, 0, 0.2)";
+    button.style.transition = "transform 0.2s ease, box-shadow 0.2s ease";
+    button.style.display = "block";
+    button.style.textAlign = "center";
+    button.addEventListener("mouseenter", () => {
+      button.style.transform = "translateY(-1px)";
+      button.style.boxShadow = "0 10px 22px rgba(0, 0, 0, 0.22)";
+    });
+    button.addEventListener("mouseleave", () => {
+      button.style.transform = "translateY(0)";
+      button.style.boxShadow = "0 8px 20px rgba(0, 0, 0, 0.18)";
+    });
     button.addEventListener("click", () => activateAR(zone));
     row.appendChild(button);
     panel.appendChild(row);
