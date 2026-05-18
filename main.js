@@ -98,8 +98,8 @@ canvas.addEventListener("dblclick", () => {
 
 navigator.geolocation.watchPosition(
   (position) => {
-    currentLon = 4.4830665;
-    currentLat = 51.9176368;
+    currentLon = position.coords.longitude;
+    currentLat = position.coords.latitude
 
     const heading = position.coords.heading || 0;
 
@@ -132,7 +132,7 @@ navigator.geolocation.watchPosition(
     currentLat = 51.9225;
     updateZoneButtonsVisibility();
   },
-  { enableHighAccuracy: true, maximumAge: 1000, timeout: 3000 },
+  { enableHighAccuracy: true, maximumAge: 1000, timeout: 2000 },
 );
 
 // SCORE
@@ -694,7 +694,6 @@ function createZoneButtons() {
     button.style.cursor = "pointer";
     button.addEventListener("click", () => activateAR(zone));
     row.appendChild(button);
-
     panel.appendChild(row);
     zone.rowElement = row;
   });
