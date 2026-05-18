@@ -369,392 +369,6 @@
       "order": 5.4431468580058935,
       "hidden": false
     },
-    "501ff12f-641f-459b-b17f-909c3b82bde9": {
-      "id": "501ff12f-641f-459b-b17f-909c3b82bde9",
-      "position": [
-        5.124721367022228,
-        1.7804521341660682,
-        0
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        1,
-        1,
-        1
-      ],
-      "geometry": null,
-      "material": null,
-      "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
-      "components": {
-        "a6069649-ceaa-42fd-a6b8-b93c92aeeddb": {
-          "id": "a6069649-ceaa-42fd-a6b8-b93c92aeeddb",
-          "name": "QuizInteraction",
-          "parameters": {
-            "npcId": "de-verwoeste-stad-02",
-            "quizRoot": {
-              "type": "entity",
-              "id": "501ff12f-641f-459b-b17f-909c3b82bde9"
-            },
-            "questionTextTarget": {
-              "type": "entity",
-              "id": "2e363567-f821-4961-8a41-92b80d7d4639"
-            },
-            "answer1Button": {
-              "type": "entity",
-              "id": "8ae78019-1f4b-4141-8d38-223d512db337"
-            },
-            "answer2Button": {
-              "type": "entity",
-              "id": "f4c01a68-f844-4f38-bb2c-80accd24742f"
-            },
-            "answer3Button": {
-              "type": "entity",
-              "id": "5c0efded-aa5e-4a7c-bf5f-24471cfec372"
-            },
-            "answer1TextTarget": {
-              "type": "entity",
-              "id": "d3b126eb-37e2-47ae-90c0-fb72d02f4530"
-            },
-            "answer2TextTarget": {
-              "type": "entity",
-              "id": "90b98c89-4fb8-4552-8245-a65dc608d7dd"
-            },
-            "answer3TextTarget": {
-              "type": "entity",
-              "id": "a4c9711a-c70a-4b6f-889c-5850cbc5b014"
-            },
-            "rewardItemTarget": {
-              "type": "entity",
-              "id": "6833cf08-18b6-442b-b059-8686e2917cef"
-            }
-          }
-        }
-      },
-      "name": "De verwoeste stad 02 (quiz)",
-      "order": 15.581445751224319,
-      "hidden": true
-    },
-    "8bdd936c-100a-470f-995c-2014d79e8a34": {
-      "id": "8bdd936c-100a-470f-995c-2014d79e8a34",
-      "position": [
-        0,
-        0.7686232356651623,
-        0.3
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        1,
-        1,
-        1
-      ],
-      "geometry": null,
-      "material": null,
-      "parentId": "501ff12f-641f-459b-b17f-909c3b82bde9",
-      "components": {},
-      "ui": {
-        "type": "3d",
-        "width": 100,
-        "height": 100,
-        "image": {
-          "type": "asset",
-          "asset": "assets/TT_Professor_Style2_1.png"
-        },
-        "backgroundOpacity": 1,
-        "backgroundSize": "contain"
-      },
-      "name": "Npc",
-      "order": 10.30541031150533
-    },
-    "475b3a4a-bd82-4789-82cb-b5569609eb30": {
-      "id": "475b3a4a-bd82-4789-82cb-b5569609eb30",
-      "position": [
-        -0.4641681208004086,
-        1.8,
-        0.3
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        2,
-        2,
-        2
-      ],
-      "geometry": null,
-      "material": null,
-      "parentId": "501ff12f-641f-459b-b17f-909c3b82bde9",
-      "components": {},
-      "ui": {
-        "type": "3d",
-        "width": 100,
-        "height": 100,
-        "image": {
-          "type": "asset",
-          "asset": "assets/Vector_10.png"
-        },
-        "backgroundOpacity": 1,
-        "backgroundSize": "contain"
-      },
-      "name": "Tekstwolk npc",
-      "order": 12.539124135336872
-    },
-    "2e363567-f821-4961-8a41-92b80d7d4639": {
-      "id": "2e363567-f821-4961-8a41-92b80d7d4639",
-      "position": [
-        -0.4399794702863986,
-        1.941059195436911,
-        0.3
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        1,
-        1,
-        1
-      ],
-      "geometry": null,
-      "material": null,
-      "parentId": "501ff12f-641f-459b-b17f-909c3b82bde9",
-      "components": {},
-      "ui": {
-        "width": 150,
-        "height": 10,
-        "text": "Hier komt de vraag van de professor",
-        "color": "#000000",
-        "fontSize": 7,
-        "type": "3d"
-      },
-      "name": "Tekst npc",
-      "order": 13.64957399602904
-    },
-    "8ae78019-1f4b-4141-8d38-223d512db337": {
-      "id": "8ae78019-1f4b-4141-8d38-223d512db337",
-      "position": [
-        -1.1219732587182445,
-        1.2,
-        0.3
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        3,
-        3,
-        3
-      ],
-      "geometry": null,
-      "material": null,
-      "parentId": "501ff12f-641f-459b-b17f-909c3b82bde9",
-      "components": {},
-      "ui": {
-        "type": "3d",
-        "width": 40,
-        "height": 20,
-        "image": {
-          "type": "asset",
-          "asset": "assets/Vector_14_quiz.png"
-        },
-        "backgroundOpacity": 1,
-        "backgroundSize": "contain",
-        "borderRadius": 0
-      },
-      "name": "Antwoord1",
-      "order": 14.72524005329745
-    },
-    "f4c01a68-f844-4f38-bb2c-80accd24742f": {
-      "id": "f4c01a68-f844-4f38-bb2c-80accd24742f",
-      "position": [
-        -1.1219732587182445,
-        0.8,
-        0.3
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        3,
-        3,
-        3
-      ],
-      "geometry": null,
-      "material": null,
-      "components": {},
-      "ui": {
-        "type": "3d",
-        "width": 40,
-        "height": 20,
-        "image": {
-          "type": "asset",
-          "asset": "assets/Vector_14_quiz.png"
-        },
-        "backgroundOpacity": 1,
-        "backgroundSize": "contain"
-      },
-      "name": "Antwoord2",
-      "order": 14.800906110565856,
-      "parentId": "501ff12f-641f-459b-b17f-909c3b82bde9"
-    },
-    "5c0efded-aa5e-4a7c-bf5f-24471cfec372": {
-      "id": "5c0efded-aa5e-4a7c-bf5f-24471cfec372",
-      "position": [
-        -1.1219732587182445,
-        0.38514979854607156,
-        0.3
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        3,
-        3,
-        3
-      ],
-      "geometry": null,
-      "material": null,
-      "components": {},
-      "ui": {
-        "type": "3d",
-        "width": 40,
-        "height": 20,
-        "image": {
-          "type": "asset",
-          "asset": "assets/Vector_14_quiz.png"
-        },
-        "backgroundOpacity": 1,
-        "backgroundSize": "contain"
-      },
-      "name": "Antwoord3",
-      "order": 14.876572167834265,
-      "parentId": "501ff12f-641f-459b-b17f-909c3b82bde9"
-    },
-    "d3b126eb-37e2-47ae-90c0-fb72d02f4530": {
-      "id": "d3b126eb-37e2-47ae-90c0-fb72d02f4530",
-      "position": [
-        -1.2192028918903706,
-        1.2,
-        0.33
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        1,
-        1,
-        1
-      ],
-      "geometry": null,
-      "material": null,
-      "parentId": "501ff12f-641f-459b-b17f-909c3b82bde9",
-      "components": {},
-      "ui": {
-        "width": 80,
-        "height": 20,
-        "text": "Answer 1",
-        "color": "#000000",
-        "fontSize": 7,
-        "type": "3d",
-        "verticalTextAlign": "center"
-      },
-      "name": "Antwoord1 tekst",
-      "order": 14.108556510172646
-    },
-    "90b98c89-4fb8-4552-8245-a65dc608d7dd": {
-      "id": "90b98c89-4fb8-4552-8245-a65dc608d7dd",
-      "position": [
-        -1.2046207365384158,
-        0.8043923788468224,
-        0.33
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        1,
-        1,
-        1
-      ],
-      "geometry": null,
-      "material": null,
-      "components": {},
-      "ui": {
-        "width": 80,
-        "height": 20,
-        "text": "Answer 2\n",
-        "color": "#000000",
-        "fontSize": 7,
-        "type": "3d",
-        "verticalTextAlign": "center"
-      },
-      "name": "Antwoord2 tekst",
-      "order": 14.77141903500224,
-      "parentId": "501ff12f-641f-459b-b17f-909c3b82bde9"
-    },
-    "a4c9711a-c70a-4b6f-889c-5850cbc5b014": {
-      "id": "a4c9711a-c70a-4b6f-889c-5850cbc5b014",
-      "position": [
-        -1.1992019916723227,
-        0.42584299125352276,
-        0.33
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        1,
-        1,
-        1
-      ],
-      "geometry": null,
-      "material": null,
-      "components": {},
-      "ui": {
-        "width": 80,
-        "height": 20,
-        "text": "Answer 3",
-        "color": "#000000",
-        "fontSize": 7,
-        "type": "3d",
-        "verticalTextAlign": "center"
-      },
-      "name": "Antwoord3 tekst",
-      "order": 14.833975299854409,
-      "parentId": "501ff12f-641f-459b-b17f-909c3b82bde9"
-    },
     "a6021c9c-7189-4bc9-8701-4f2c020b6bda": {
       "id": "a6021c9c-7189-4bc9-8701-4f2c020b6bda",
       "position": [
@@ -1099,7 +713,7 @@
         }
       },
       "name": "De verwoeste stad 04 (quiz)",
-      "order": 18.802065111083976,
+      "order": 25.316964066766154,
       "hidden": true
     },
     "380469bc-2ae1-434b-b0aa-128280112958": {
@@ -1349,40 +963,6 @@
       "order": 14.833975299854409,
       "parentId": "e61fec7a-7512-40c6-ad49-052c69e2ec68"
     },
-    "6833cf08-18b6-442b-b059-8686e2917cef": {
-      "id": "6833cf08-18b6-442b-b059-8686e2917cef",
-      "position": [
-        -0.3995724268291534,
-        -0.6535910797272673,
-        0.3
-      ],
-      "rotation": [
-        0,
-        0,
-        0,
-        1
-      ],
-      "scale": [
-        1,
-        1,
-        1
-      ],
-      "geometry": null,
-      "material": null,
-      "parentId": "501ff12f-641f-459b-b17f-909c3b82bde9",
-      "components": {},
-      "ui": {
-        "type": "3d",
-        "width": 100,
-        "height": 100,
-        "image": null,
-        "backgroundOpacity": 1,
-        "backgroundSize": "contain"
-      },
-      "name": "Reward",
-      "order": 16.8235263435336,
-      "hidden": true
-    },
     "222cb2b4-b4bc-4e66-ae6e-6cc6a6974788": {
       "id": "222cb2b4-b4bc-4e66-ae6e-6cc6a6974788",
       "position": [
@@ -1471,7 +1051,7 @@
         }
       },
       "name": "De verwoeste stad 03 (timethief_dialogue)",
-      "order": 17.448516265406226,
+      "order": 23.332092537650958,
       "hidden": true
     },
     "ad4c5952-420b-420d-a875-bd5ff817ff68": {
@@ -1738,7 +1318,7 @@
         }
       },
       "name": "De verwoeste stad 05 (memory)",
-      "order": 20.25244073196628,
+      "order": 26.43551066566749,
       "hidden": true
     },
     "d3f23b34-3dcb-4b09-84e9-1bbb450e8972": {
@@ -2421,6 +2001,394 @@
       "name": "Antwoord2 tekst",
       "order": 14.786474781419257,
       "parentId": "e61fec7a-7512-40c6-ad49-052c69e2ec68"
+    },
+    "1b6429eb-6de0-4945-a19a-2633cfeada3b": {
+      "id": "1b6429eb-6de0-4945-a19a-2633cfeada3b",
+      "position": [
+        6.835811368993305,
+        1.7804521341660682,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {
+        "a6069649-ceaa-42fd-a6b8-b93c92aeeddb": {
+          "id": "a6069649-ceaa-42fd-a6b8-b93c92aeeddb",
+          "name": "QuizInteraction",
+          "parameters": {
+            "npcId": "de-verwoeste-stad-02",
+            "quizRoot": {
+              "type": "entity",
+              "id": "1b6429eb-6de0-4945-a19a-2633cfeada3b"
+            },
+            "questionTextTarget": {
+              "type": "entity",
+              "id": "8858d78d-be67-4cdc-9f4e-47fc0b016a0f"
+            },
+            "answer1Button": {
+              "type": "entity",
+              "id": "5c17a83e-c66c-4d76-87a2-3e48b1ed4686"
+            },
+            "answer2Button": {
+              "type": "entity",
+              "id": "9005ef1b-ffda-4709-b6e6-a0611b10e0cf"
+            },
+            "answer3Button": {
+              "type": "entity",
+              "id": "bbeb064b-3c48-4c84-932c-d846e82ec479"
+            },
+            "answer1TextTarget": {
+              "type": "entity",
+              "id": "32b2c1c0-1379-4132-8bc0-b35c1f46e051"
+            },
+            "answer2TextTarget": {
+              "type": "entity",
+              "id": "cf583cdf-929f-4020-b632-7cc16ef4cf54"
+            },
+            "answer3TextTarget": {
+              "type": "entity",
+              "id": "b28e6fc1-93bc-4739-ae5c-39d2de088bf8"
+            },
+            "rewardItemTarget": {
+              "type": "entity",
+              "id": "0c335ca5-b7ed-4a20-9611-a9f7b92709e8"
+            }
+          }
+        }
+      },
+      "name": "De verwoeste stad 02 (quiz)",
+      "order": 21.34198703252959,
+      "hidden": true,
+      "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864"
+    },
+    "72d718e3-643c-4866-b627-33d6dc9bc924": {
+      "id": "72d718e3-643c-4866-b627-33d6dc9bc924",
+      "position": [
+        -2.744241159459,
+        1.0468588072296636,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        2,
+        2,
+        2
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "1b6429eb-6de0-4945-a19a-2633cfeada3b",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/SpeechBubble_Onderzoeker.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Professor",
+      "order": 1
+    },
+    "8858d78d-be67-4cdc-9f4e-47fc0b016a0f": {
+      "id": "8858d78d-be67-4cdc-9f4e-47fc0b016a0f",
+      "position": [
+        -2.732095555847512,
+        0.631534180833498,
+        0.6493397685401576
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "1b6429eb-6de0-4945-a19a-2633cfeada3b",
+      "components": {},
+      "ui": {
+        "width": 150,
+        "height": 10,
+        "text": "Hier komt de vraag van de professor",
+        "color": "#000000",
+        "fontSize": 7,
+        "type": "3d",
+        "verticalTextAlign": "center"
+      },
+      "name": "ProfessorTekst",
+      "order": 2
+    },
+    "5c17a83e-c66c-4d76-87a2-3e48b1ed4686": {
+      "id": "5c17a83e-c66c-4d76-87a2-3e48b1ed4686",
+      "position": [
+        -1.036096152820246,
+        1.2,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        3,
+        3,
+        3
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "1b6429eb-6de0-4945-a19a-2633cfeada3b",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 40,
+        "height": 20,
+        "image": {
+          "type": "asset",
+          "asset": "assets/Vector_14_quiz.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain",
+        "borderRadius": 0
+      },
+      "name": "Antwoord1 wolk",
+      "order": 3
+    },
+    "9005ef1b-ffda-4709-b6e6-a0611b10e0cf": {
+      "id": "9005ef1b-ffda-4709-b6e6-a0611b10e0cf",
+      "position": [
+        -1.036096152820246,
+        0.8,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        3,
+        3,
+        3
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 40,
+        "height": 20,
+        "image": {
+          "type": "asset",
+          "asset": "assets/Vector_14_quiz.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Antwoord2 wolk",
+      "order": 4,
+      "parentId": "1b6429eb-6de0-4945-a19a-2633cfeada3b"
+    },
+    "bbeb064b-3c48-4c84-932c-d846e82ec479": {
+      "id": "bbeb064b-3c48-4c84-932c-d846e82ec479",
+      "position": [
+        -1.036096152820246,
+        0.40000000000000013,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        3,
+        3,
+        3
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 40,
+        "height": 20,
+        "image": {
+          "type": "asset",
+          "asset": "assets/Vector_14_quiz.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Antwoord3 wolk",
+      "order": 5,
+      "parentId": "1b6429eb-6de0-4945-a19a-2633cfeada3b"
+    },
+    "32b2c1c0-1379-4132-8bc0-b35c1f46e051": {
+      "id": "32b2c1c0-1379-4132-8bc0-b35c1f46e051",
+      "position": [
+        -1.1333257859923718,
+        1.22,
+        0.46165968842900934
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "1b6429eb-6de0-4945-a19a-2633cfeada3b",
+      "components": {},
+      "ui": {
+        "width": 80,
+        "height": 20,
+        "text": "Antwoord 1",
+        "color": "#000000",
+        "fontSize": 7,
+        "type": "3d",
+        "verticalTextAlign": "center"
+      },
+      "name": "Antwoord1 tekst",
+      "order": 6
+    },
+    "b28e6fc1-93bc-4739-ae5c-39d2de088bf8": {
+      "id": "b28e6fc1-93bc-4739-ae5c-39d2de088bf8",
+      "position": [
+        -1.1331228941020015,
+        0.42000000000000015,
+        0.462
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {},
+      "ui": {
+        "width": 80,
+        "height": 20,
+        "text": "Antwoord 3",
+        "color": "#000000",
+        "fontSize": 7,
+        "type": "3d",
+        "verticalTextAlign": "center"
+      },
+      "name": "Antwoord3 tekst",
+      "order": 9.54693109687392,
+      "parentId": "1b6429eb-6de0-4945-a19a-2633cfeada3b"
+    },
+    "0c335ca5-b7ed-4a20-9611-a9f7b92709e8": {
+      "id": "0c335ca5-b7ed-4a20-9611-a9f7b92709e8",
+      "position": [
+        -2.122085698426943,
+        -0.6102386248760201,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "url",
+          "url": ""
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "RewardItem",
+      "order": 10.022226959895402,
+      "hidden": true,
+      "parentId": "1b6429eb-6de0-4945-a19a-2633cfeada3b"
+    },
+    "cf583cdf-929f-4020-b632-7cc16ef4cf54": {
+      "id": "cf583cdf-929f-4020-b632-7cc16ef4cf54",
+      "position": [
+        -1.1331228941020015,
+        0.8200000000000001,
+        0.462
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {},
+      "ui": {
+        "width": 80,
+        "height": 20,
+        "text": "Antwoord 2",
+        "color": "#000000",
+        "fontSize": 7,
+        "type": "3d",
+        "verticalTextAlign": "center"
+      },
+      "name": "Antwoord2 tekst",
+      "order": 9.021797699264052,
+      "parentId": "1b6429eb-6de0-4945-a19a-2633cfeada3b"
     }
   },
   "spaces": {
