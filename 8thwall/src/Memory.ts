@@ -55,7 +55,9 @@ const CARD_IMAGE_MAP: Record<string, string> = {
 
 // Storage key for persisting game state
 const MEMORY_GAME_STATE_KEY = "time-thieves-memory-game-state";
-const MEMORY_GAME_COMPLETED_TEXT =
+const MEMORY_GAME_JUST_COMPLETED_TEXT =
+  "Memory game has been completed, you have been given an item as a reward!";
+const MEMORY_GAME_ALREADY_COMPLETED_TEXT =
   "Memory game has been completed already. You have already earned this reward.";
 
 /**
@@ -132,14 +134,14 @@ function showCompletionText(world: ecs.World, schema: any, text: string): void {
   });
 }
 
-function showCompletionReward(world: ecs.World, schema: any): void {
+function showCompletionReward(world: ecs.World, schema: any, text: string = MEMORY_GAME_JUST_COMPLETED_TEXT): void {
   const rewardEntity = resolveTargetEntity(world, schema.rewardItemTarget);
   if (rewardEntity) {
     if (rewardEntity.isHidden()) rewardEntity.show();
     if (rewardEntity.isDisabled()) rewardEntity.enable();
   }
 
-  showCompletionText(world, schema, MEMORY_GAME_COMPLETED_TEXT);
+  showCompletionText(world, schema, text);
 }
 
 /**
@@ -233,8 +235,8 @@ function updateCardVisual(
 
   const uiUpdate: any = {
     background: BACK_IMAGE_URL,
-    backgroundSize: showFace ? "contain" : "cover",
-    image: showFace ? imageUrl : "assets/Group_6.png",
+    backgroundSize: showFace ? "stretch" : "stretch",
+    image: showFace ? imageUrl : "assets/TimeThievesMemoryCard.png",
   };
 
   console.log(`Card ${card.imageId} visual update:`, uiUpdate);
@@ -474,7 +476,7 @@ ecs.registerComponent({
         initialized = true;
 
         if (isGameComplete) {
-          showCompletionReward(world, schema);
+          showCompletionReward(world, schema, MEMORY_GAME_ALREADY_COMPLETED_TEXT);
         } else if (schema.rewardTextTarget) {
           const rewardTextEntity = resolveTargetEntity(
             world,
