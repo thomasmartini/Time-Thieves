@@ -1808,7 +1808,7 @@
       },
       "name": "De verwoeste stad 05 (memory)",
       "order": 20.25244073196628,
-      "hidden": true
+      "hidden": false
     },
     "d3f23b34-3dcb-4b09-84e9-1bbb450e8972": {
       "id": "d3f23b34-3dcb-4b09-84e9-1bbb450e8972",
@@ -1838,10 +1838,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card1",
       "order": 21.001412291549396
@@ -1873,10 +1873,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card2",
       "order": 22.575771837763885,
@@ -1909,10 +1909,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card3",
       "order": 23.742010100590303,
@@ -1945,10 +1945,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card4",
       "order": 25.604200014109747,
@@ -1981,10 +1981,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card5",
       "order": 26.654044462024533,
@@ -2017,10 +2017,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card6",
       "order": 27.86107610636578,
@@ -2053,10 +2053,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card7",
       "order": 29.222716111614144,
@@ -2089,10 +2089,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card8",
       "order": 30.846841476793163,
@@ -2125,10 +2125,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card9",
       "order": 32.0975620412083,
@@ -2161,10 +2161,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card10",
       "order": 33.52083004754961,
@@ -2197,10 +2197,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card11",
       "order": 34.88394106080579,
@@ -2233,10 +2233,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card12",
       "order": 36.255443122208774,
@@ -2269,10 +2269,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card13",
       "order": 37.58789371595536,
@@ -2305,10 +2305,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card14",
       "order": 39.26169007992024,
@@ -2341,10 +2341,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card15",
       "order": 41.25045323132554,
@@ -2377,10 +2377,10 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/Group_6.png"
+          "asset": "assets/TimeThievesMemoryCard.png"
         },
         "backgroundOpacity": 1,
-        "backgroundSize": "contain"
+        "backgroundSize": "stretch"
       },
       "name": "Card16",
       "order": 43.12476869094904,
