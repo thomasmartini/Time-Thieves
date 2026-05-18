@@ -55,6 +55,8 @@ const CARD_IMAGE_MAP: Record<string, string> = {
 
 // Storage key for persisting game state
 const MEMORY_GAME_STATE_KEY = "time-thieves-memory-game-state";
+const MEMORY_GAME_COMPLETED_TEXT =
+  "Memory game has been completed already. You have already earned this reward.";
 
 /**
  * Initialize memory game state
@@ -107,6 +109,37 @@ function loadGameState(): MemoryGameStateData {
  */
 function saveGameState(state: MemoryGameStateData): void {
   localStorage.setItem(MEMORY_GAME_STATE_KEY, JSON.stringify(state));
+}
+
+function isGameStateComplete(state: MemoryGameStateData): boolean {
+  return state.matchedPairs === CARD_PAIRS.length / 2;
+}
+
+function showCompletionText(world: ecs.World, schema: any, text: string): void {
+  if (!schema.rewardTextTarget) {
+    return;
+  }
+
+  const rewardTextEntity = resolveTargetEntity(world, schema.rewardTextTarget);
+  if (!rewardTextEntity) {
+    return;
+  }
+
+  if (rewardTextEntity.isHidden()) rewardTextEntity.show();
+  if (rewardTextEntity.isDisabled()) rewardTextEntity.enable();
+  rewardTextEntity.set(ecs.Ui, {
+    text,
+  });
+}
+
+function showCompletionReward(world: ecs.World, schema: any): void {
+  const rewardEntity = resolveTargetEntity(world, schema.rewardItemTarget);
+  if (rewardEntity) {
+    if (rewardEntity.isHidden()) rewardEntity.show();
+    if (rewardEntity.isDisabled()) rewardEntity.enable();
+  }
+
+  showCompletionText(world, schema, MEMORY_GAME_COMPLETED_TEXT);
 }
 
 /**
@@ -362,30 +395,7 @@ ecs.registerComponent({
           // Check if game is complete
           if (gameState.matchedPairs === CARD_PAIRS.length / 2) {
             isGameComplete = true;
-            const rewardEntity = resolveTargetEntity(
-              world,
-              schema.rewardItemTarget,
-            );
-            if (rewardEntity) {
-              if (rewardEntity.isHidden()) rewardEntity.show();
-              if (rewardEntity.isDisabled()) rewardEntity.enable();
-            }
-
-            // Show reward text
-            if (schema.rewardTextTarget) {
-              const rewardTextEntity = resolveTargetEntity(
-                world,
-                schema.rewardTextTarget,
-              );
-              if (rewardTextEntity) {
-                if (rewardTextEntity.isHidden()) rewardTextEntity.show();
-                if (rewardTextEntity.isDisabled()) rewardTextEntity.enable();
-                // Update text content
-                rewardTextEntity.set(ecs.Ui, {
-                  text: "Memory game has been completed, you have been given an item as a reward!",
-                });
-              }
-            }
+            showCompletionReward(world, schema);
 
             addInventoryItem("memory-game-completed", "quiz", schema.sceneId, {
               moves: gameState.moves,
@@ -439,6 +449,7 @@ ecs.registerComponent({
 
         console.log("Initializing memory game...");
         gameState = loadGameState();
+        isGameComplete = isGameStateComplete(gameState);
 
         // FIND CARDS HERE - not in add(), because scene entities aren't ready yet
         const root = getGameRoot(world, eid, schema.gameRoot);
@@ -462,8 +473,9 @@ ecs.registerComponent({
 
         initialized = true;
 
-        // Hide the reward text on initialization
-        if (schema.rewardTextTarget) {
+        if (isGameComplete) {
+          showCompletionReward(world, schema);
+        } else if (schema.rewardTextTarget) {
           const rewardTextEntity = resolveTargetEntity(
             world,
             schema.rewardTextTarget,
