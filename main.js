@@ -13,15 +13,7 @@ let viewer;
 
 try {
   viewer = new Cesium.Viewer("cesiumContainer", {
-    terrainProvider: Cesium.createWorldTerrain({
-      requestWaterMask: true,
-      requestVertexNormals: true,
-    }),
-    imageryProvider: new Cesium.IonImageryProvider({ assetId: 2 }),
-    baseLayerPicker: false,
-    timeline: false,
-    animation: true,
-    shouldAnimate: true,
+    terrainProvider: Cesium.createWorldTerrain({}),
   });
 
   console.log("Viewer created");
@@ -38,7 +30,7 @@ try {
     infoBox: false,
     selectionIndicator: false,
     fullscreenButton: false,
-    shouldAnimate: true,
+    shouldAnimate: false,
   });
   viewer._cesiumWidget._creditContainer.style.display = "none";
 }
@@ -327,7 +319,7 @@ function spawnObjectsInMonumentZones() {
           outlineWidth: 1,
           style: Cesium.LabelStyle.FILL_AND_OUTLINE,
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-          pixelOffset: new Cesium.Cartesian2(0, -30),
+          pixelOffset: new Cesium.Cartesian2(0, -40),
         },
       });
     }
