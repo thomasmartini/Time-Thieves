@@ -4,6 +4,9 @@ import {
   getInventoryItems,
   populateDummyInventory,
 } from "./utils/inventory.js";
+import scenesData from "./utils/scenes.json";
+
+const CHARACTER_DATA = (scenesData && scenesData.characters) || [];
 
 Cesium.Ion.defaultAccessToken = import.meta.env.VITE_CESIUM_TOKEN;
 let viewer;
@@ -86,7 +89,7 @@ const monumentZones = [
   {
     name: "De Verwoeste Stad",
     slug: "de-verwoeste-stad",
-    sceneId: "de-verwoeste-stad-05", // matches 8th wall scene id for testing, will be set in AR.js for production
+    monumentId: "de-verwoeste-stad", // matches 8th wall scene id for testing, will be set in AR.js for production
     lon: 4.4830665,
     lat: 51.9176368,
     radius: 20,
@@ -123,7 +126,7 @@ canvas.addEventListener("dblclick", () => {
 navigator.geolocation.watchPosition(
   (position) => {
     currentLon = position.coords.longitude;
-    currentLat = position.coords.latitude
+    currentLat = position.coords.latitude;
 
     const heading = position.coords.heading || 0;
 
@@ -278,11 +281,21 @@ function randomInRange(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-function spawnObjectsInMonumentZones() {
-  const imageUrl = `${import.meta.env.BASE_URL}images/image27.png`;
-  const objectsPerZone = 5;
-  let objectIndex = 1;
+function resolveSceneUrl(url) {
+  return String(url || "").replace(
+    /\$\{import\.meta\.env\.BASE_URL\}/g,
+    import.meta.env.BASE_URL,
+  );
+}
 
+function getCharacterImageUrl(character) {
+  return (
+    resolveSceneUrl(character?.imageUrl) ||
+    `${import.meta.env.BASE_URL}images/image27.png`
+  );
+}
+
+function spawnObjectsInMonumentZones() {
   for (const zone of monumentZones) {
     const { metersPerDegLat, metersPerDegLon } = getMetersPerDegree(
       zone.lon,
@@ -291,22 +304,23 @@ function spawnObjectsInMonumentZones() {
     const deltaLon = zone.radius / metersPerDegLon;
     const deltaLat = zone.radius / metersPerDegLat;
 
-    for (let i = 0; i < objectsPerZone; i++) {
+    for (let i = 0; i < CHARACTER_DATA.length; i++) {
+      const character = CHARACTER_DATA[i];
       const lon = randomInRange(zone.lon - deltaLon, zone.lon + deltaLon);
       const lat = randomInRange(zone.lat - deltaLat, zone.lat + deltaLat);
       const alt = 1;
 
-      zone.objects.push({ lon, lat, alt });
+      zone.objects.push({ lon, lat, alt, character });
 
       viewer.entities.add({
         position: Cesium.Cartesian3.fromDegrees(lon, lat, alt),
         billboard: {
-          image: imageUrl,
+          image: getCharacterImageUrl(character),
           width: 48,
           height: 48,
         },
         label: {
-          text: `Object ${objectIndex}`,
+          text: character.name,
           font: "bold 10px Arial",
           fillColor: Cesium.Color.WHITE,
           outlineColor: Cesium.Color.BLACK,
@@ -316,7 +330,6 @@ function spawnObjectsInMonumentZones() {
           pixelOffset: new Cesium.Cartesian2(0, -16),
         },
       });
-      objectIndex++;
     }
   }
 }
@@ -398,8 +411,17 @@ function createMonumentZones() {
 let arOverlayEl = null;
 let arFrameEl = null;
 
-function getArUrlForZone(zone) {
-  const url = new URL(zone.arUrl || eighthWallSceneUrl, window.location.href);
+function getArUrlForZone(zone, character) {
+  const sourceUrl =
+    zone.slug + character?.sceneId || zone.arUrl || eighthWallSceneUrl;
+  if (
+    zone.slug + character?.sceneId &&
+    /\.(glb|gltf|usdz)(\?.*)?$/i.test(sourceUrl)
+  ) {
+    return sourceUrl;
+  }
+
+  const url = new URL(sourceUrl, window.location.href);
 
   // Without a trailing slash, relative assets (bundle.js, ./external/...) resolve to the app root.
   if (url.origin === window.location.origin && url.pathname === "/ar") {
@@ -459,8 +481,8 @@ function ensureArOverlay() {
   document.body.appendChild(arOverlayEl);
 }
 
-function open8thWallScene(zone, source = "manual") {
-  const targetUrl = getArUrlForZone(zone);
+function open8thWallScene(zone, character, source = "manual") {
+  const targetUrl = getArUrlForZone(zone, character);
   ensureArOverlay();
   currentActiveMonument = zone.name;
   arFrameEl.src = targetUrl;
@@ -470,12 +492,14 @@ function open8thWallScene(zone, source = "manual") {
 function activateAR(zone) {
   if (isInZone(zone)) {
     startAR(zone);
-  } else { return }
+  } else {
+    return;
+  }
 }
 
 function startAR(zone) {
   // hide Cesium view and UI
-  document.getElementById("cesiumContainer").style.display = "none";
+  //document.getElementById("cesiumContainer").style.display = "none";
   document.getElementById("zonePanel").style.display = "none";
   document.getElementById("inventoryPanel").style.display = "none";
 
@@ -499,20 +523,14 @@ function startAR(zone) {
   camera.setAttribute("cursor", "rayOrigin: mouse; fuse: false");
   arScene.appendChild(camera);
 
-  // Entity for the zone center (for testing)
-  const entity = document.createElement("a-entity");
-  entity.setAttribute("material", "color: red");
-  entity.setAttribute("geometry", "primitive: box");
-  entity.setAttribute(
-    "gps-new-entity-place",
-    `latitude: ${zone.lat}; longitude: ${zone.lon}`,
-  );
-  arScene.appendChild(entity);
-
-  const arImageUrl = `${import.meta.env.BASE_URL}images/image27.png`;
-
   // Entities for objects in the zone
-  zone.objects.forEach((obj, index) => {
+  zone.objects.forEach((obj) => {
+    const character = obj.character || {
+      name: character.name,
+      imageUrl: `${import.meta.env.BASE_URL}${character.imageUrl}`,
+      sceneId: null,
+    };
+
     const objectEntity = document.createElement("a-entity");
     objectEntity.setAttribute(
       "geometry",
@@ -520,7 +538,7 @@ function startAR(zone) {
     );
     objectEntity.setAttribute(
       "material",
-      `src: ${arImageUrl}; transparent: true; opacity: 1`,
+      `src: ${getCharacterImageUrl(character)}; transparent: true; opacity: 1`,
     );
     objectEntity.setAttribute("look-at", "[gps-camera]");
     objectEntity.setAttribute(
@@ -528,9 +546,8 @@ function startAR(zone) {
       `latitude: ${obj.lat}; longitude: ${obj.lon}`,
     );
     objectEntity.addEventListener("click", () => {
-
       stopAR();
-      open8thWallScene(zone);
+      open8thWallScene(zone, character);
     });
     arScene.appendChild(objectEntity);
   });
@@ -561,53 +578,11 @@ function stopAR() {
   const backButton = document.getElementById("arBackButton");
   if (backButton) document.body.removeChild(backButton);
 
-  // Log camera state before restore (helpful for debugging)
-  try {
-    console.log("[stopAR] camera before restore:", viewer.camera.positionWC, viewer.camera.frustum);
-  } catch (e) {
-    console.warn("[stopAR] could not read camera state", e);
-  }
-
   // Go back to Cesium view
   document.getElementById("cesiumContainer").style.display = "block";
   document.getElementById("zonePanel").style.display = "block";
   document.getElementById("inventoryPanel").style.display = "block";
-
-  // Restore camera transform and sensible view so the map isn't zoomed in
-  try {
-    // Clear any lookAt transform applied earlier
-    if (viewer && viewer.camera && Cesium && Cesium.Matrix4) {
-      viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-    }
-
-    // Reset field of view to a sane default if accessible
-    if (viewer && viewer.camera && viewer.camera.frustum && typeof viewer.camera.frustum.fovy !== "undefined") {
-      viewer.camera.frustum.fovy = Cesium.Math.toRadians(60);
-    }
-
-    // Smoothly move camera to a reasonable distance above the user's current location
-    if (typeof currentLon === "number" && typeof currentLat === "number") {
-      viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(currentLon, currentLat, 150),
-        duration: 0.5,
-      });
-    }
-
-    // Ensure Cesium redraws and resizes correctly after being hidden
-    try {
-      if (typeof viewer.resize === "function") viewer.resize();
-    } catch (e) { }
-    try {
-      if (viewer && viewer.scene && typeof viewer.scene.requestRender === "function") viewer.scene.requestRender();
-    } catch (e) { }
-  } catch (e) {
-    console.warn("[stopAR] failed to fully restore camera:", e);
-  }
-
-  // Log camera state after restore
-  try {
-    console.log("[stopAR] camera after restore:", viewer.camera.positionWC, viewer.camera.frustum);
-  } catch (e) { }
+  refreshInventoryUI();
 }
 
 function updateZoneButtonsVisibility() {
@@ -623,8 +598,6 @@ function updateZoneButtonsVisibility() {
       zone.rowElement.style.display = "none";
     }
   });
-
-
 }
 
 function createZoneButtons() {
@@ -645,7 +618,8 @@ function createZoneButtons() {
     button.style.fontWeight = "700";
     button.style.border = "none";
     button.style.borderRadius = "16px";
-    button.style.background = "linear-gradient(135deg, #2196f3 0%, #4dabf7 100%)";
+    button.style.background =
+      "linear-gradient(135deg, #2196f3 0%, #4dabf7 100%)";
     button.style.color = "white";
     button.style.cursor = "pointer";
     button.style.boxShadow = "0 10px 24px rgba(0, 0, 0, 0.2)";

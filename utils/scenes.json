@@ -1,0 +1,24 @@
+{
+  "characters": [
+    {
+      "name": "Leya",
+      "imageUrl": "images/ar/leya.png",
+      "sceneId": "01"
+    },
+    {
+      "name": "TimeThieves",
+      "imageUrl": "images/ar/timethieves.png",
+      "sceneId": "02"
+    },
+    {
+      "name": "Professor E. Brown",
+      "imageUrl": "images/ar/professor.png",
+      "sceneId": "03"
+    },
+    {
+      "name": "Benjamin Philips",
+      "imageUrl": "images/ar/benjamin.png",
+      "sceneId": "05"
+    }
+  ]
+}
