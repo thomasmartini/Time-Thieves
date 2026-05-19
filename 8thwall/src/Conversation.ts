@@ -349,13 +349,9 @@ function findConversationTextEntities(
   currentEid: bigint,
   configuredNpcTextEid?: bigint,
   configuredPlayerTextEid?: bigint,
-  configuredNpcBubbleEid?: bigint,
-  configuredPlayerBubbleEid?: bigint,
 ): {
   npcTextEntity: ecs.Entity | null;
   playerTextEntity: ecs.Entity | null;
-  npcBubbleEntity: ecs.Entity | null;
-  playerBubbleEntity: ecs.Entity | null;
 } {
   const queue: ecs.Entity[] = [rootEntity];
   let npcTextEntity: ecs.Entity | null = resolveTextTargetEntity(
@@ -366,26 +362,11 @@ function findConversationTextEntities(
     world,
     configuredPlayerTextEid,
   );
-  let npcBubbleEntity: ecs.Entity | null = resolveTextTargetEntity(
-    world,
-    configuredNpcBubbleEid,
-  );
-  let playerBubbleEntity: ecs.Entity | null = resolveTextTargetEntity(
-    world,
-    configuredPlayerBubbleEid,
-  );
 
-  if (
-    npcTextEntity &&
-    playerTextEntity &&
-    npcBubbleEntity &&
-    playerBubbleEntity
-  ) {
+  if (npcTextEntity && playerTextEntity) {
     return {
       npcTextEntity,
       playerTextEntity,
-      npcBubbleEntity,
-      playerBubbleEntity,
     };
   }
 
@@ -410,20 +391,7 @@ function findConversationTextEntities(
         playerTextEntity = entity;
       }
 
-      if (!npcBubbleEntity && entityName === "tekstwolk npc") {
-        npcBubbleEntity = entity;
-      }
-
-      if (!playerBubbleEntity && entityName === "tekstwolk speler") {
-        playerBubbleEntity = entity;
-      }
-
-      if (
-        npcTextEntity &&
-        playerTextEntity &&
-        npcBubbleEntity &&
-        playerBubbleEntity
-      ) {
+      if (npcTextEntity && playerTextEntity) {
         queue.push(...entity.getChildren());
         continue;
       }
@@ -443,8 +411,6 @@ function findConversationTextEntities(
   return {
     npcTextEntity,
     playerTextEntity,
-    npcBubbleEntity,
-    playerBubbleEntity,
   };
 }
 
@@ -537,8 +503,6 @@ function switchSpeakerVisibility(
   currentSpeaker: Speaker,
   npcTextEntity: ecs.Entity | null,
   playerTextEntity: ecs.Entity | null,
-  npcBubbleEntity: ecs.Entity | null,
-  playerBubbleEntity: ecs.Entity | null,
   fallbackTextEntity: ecs.Entity | null,
 ) {
   const npcTextTarget = npcTextEntity || fallbackTextEntity;
@@ -612,8 +576,6 @@ function applyInitialConversationVisibility(
   eid: bigint,
   componentNpcId: string | undefined,
   configuredRootEid?: bigint,
-  configuredNpcBubbleEid?: bigint,
-  configuredPlayerBubbleEid?: bigint,
 ) {
   const buttonEntity = world.getEntity(eid);
   const rootEntity = getConversationRoot(
@@ -645,8 +607,6 @@ function updateDialogueText(
   configuredRootEid?: bigint,
   configuredNpcTextEid?: bigint,
   configuredPlayerTextEid?: bigint,
-  configuredNpcBubbleEid?: bigint,
-  configuredPlayerBubbleEid?: bigint,
 ): Speaker | null {
   const buttonEntity = world.getEntity(currentEid);
   const rootEntity = getConversationRoot(
@@ -677,19 +637,12 @@ function updateDialogueText(
 
   const currentTurn = dialogue[Math.min(lineIndex, dialogue.length - 1)];
 
-  const {
-    npcTextEntity,
-    playerTextEntity,
-    npcBubbleEntity,
-    playerBubbleEntity,
-  } = findConversationTextEntities(
+  const { npcTextEntity, playerTextEntity } = findConversationTextEntities(
     world,
     rootEntity,
     currentEid,
     configuredNpcTextEid,
     configuredPlayerTextEid,
-    configuredNpcBubbleEid,
-    configuredPlayerBubbleEid,
   );
 
   if (currentTurn.speaker === "npc") {
@@ -704,8 +657,6 @@ function updateDialogueText(
       "npc",
       npcTextEntity,
       playerTextEntity,
-      npcBubbleEntity,
-      playerBubbleEntity,
       dialogueBubble,
     );
     return "npc";
@@ -719,8 +670,6 @@ function updateDialogueText(
       "player",
       npcTextEntity,
       playerTextEntity,
-      npcBubbleEntity,
-      playerBubbleEntity,
       dialogueBubble,
     );
     return "player";
@@ -734,8 +683,6 @@ function updateDialogueText(
     "player",
     npcTextEntity,
     playerTextEntity,
-    npcBubbleEntity,
-    playerBubbleEntity,
     dialogueBubble,
   );
   return "player";
@@ -748,8 +695,6 @@ function applyExhaustedConversationState(
   configuredRootEid?: bigint,
   configuredNpcTextEid?: bigint,
   configuredPlayerTextEid?: bigint,
-  configuredNpcBubbleEid?: bigint,
-  configuredPlayerBubbleEid?: bigint,
 ) {
   if (!world.eidToEntity.has(currentEid)) {
     return;
@@ -772,19 +717,12 @@ function applyExhaustedConversationState(
   showOnlyActiveConversation(rootEntity);
 
   const dialogueBubble = findDialogueBubble(rootEntity, currentEid);
-  const {
-    npcTextEntity,
-    playerTextEntity,
-    npcBubbleEntity,
-    playerBubbleEntity,
-  } = findConversationTextEntities(
+  const { npcTextEntity, playerTextEntity } = findConversationTextEntities(
     world,
     rootEntity,
     currentEid,
     configuredNpcTextEid,
     configuredPlayerTextEid,
-    configuredNpcBubbleEid,
-    configuredPlayerBubbleEid,
   );
 
   const npcTextTarget = npcTextEntity || dialogueBubble;
@@ -804,8 +742,6 @@ ecs.registerComponent({
     conversationRoot: "eid",
     npcTextTarget: "eid",
     playerTextTarget: "eid",
-    npcBubbleTarget: "eid",
-    playerBubbleTarget: "eid",
   },
   schemaDefaults: {
     npcId: "introduction_dialogue",
@@ -819,8 +755,6 @@ ecs.registerComponent({
       component.eid,
       componentNpcId,
       component.schema.conversationRoot,
-      component.schema.npcBubbleTarget,
-      component.schema.playerBubbleTarget,
     );
   },
   // tick: (world, component) => {
@@ -871,8 +805,6 @@ ecs.registerComponent({
               schema.conversationRoot,
               schema.npcTextTarget,
               schema.playerTextTarget,
-              schema.npcBubbleTarget,
-              schema.playerBubbleTarget,
             );
             exhaustedStateApplied = true;
           }
@@ -908,8 +840,6 @@ ecs.registerComponent({
           schema.conversationRoot,
           schema.npcTextTarget,
           schema.playerTextTarget,
-          schema.npcBubbleTarget,
-          schema.playerBubbleTarget,
         );
 
         if (currentDialogue.length > 1) {
@@ -968,8 +898,6 @@ ecs.registerComponent({
               schema.conversationRoot,
               schema.npcTextTarget,
               schema.playerTextTarget,
-              schema.npcBubbleTarget,
-              schema.playerBubbleTarget,
             );
             exhaustedStateApplied = true;
           }
@@ -991,8 +919,6 @@ ecs.registerComponent({
               schema.conversationRoot,
               schema.npcTextTarget,
               schema.playerTextTarget,
-              schema.npcBubbleTarget,
-              schema.playerBubbleTarget,
             );
             exhaustedStateApplied = true;
           }
@@ -1020,8 +946,6 @@ ecs.registerComponent({
           schema.conversationRoot,
           schema.npcTextTarget,
           schema.playerTextTarget,
-          schema.npcBubbleTarget,
-          schema.playerBubbleTarget,
         );
 
         if (currentDialogueLineIndex < currentDialogue.length - 1) {
