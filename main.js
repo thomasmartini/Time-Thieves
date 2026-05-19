@@ -316,8 +316,8 @@ function spawnObjectsInMonumentZones() {
         position: Cesium.Cartesian3.fromDegrees(lon, lat, alt),
         billboard: {
           image: getCharacterImageUrl(character),
-          width: 48,
-          height: 48,
+          width: 84,
+          height: 84,
         },
         label: {
           text: character.name,
@@ -327,7 +327,7 @@ function spawnObjectsInMonumentZones() {
           outlineWidth: 1,
           style: Cesium.LabelStyle.FILL_AND_OUTLINE,
           verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-          pixelOffset: new Cesium.Cartesian2(0, -16),
+          pixelOffset: new Cesium.Cartesian2(0, -30),
         },
       });
     }
@@ -579,7 +579,7 @@ function stopAR() {
   if (backButton) document.body.removeChild(backButton);
 
   // Go back to Cesium view
-  document.getElementById("cesiumContainer").style.display = "block";
+  //document.getElementById("cesiumContainer").style.display = "block";
   document.getElementById("zonePanel").style.display = "block";
   document.getElementById("inventoryPanel").style.display = "block";
   refreshInventoryUI();
