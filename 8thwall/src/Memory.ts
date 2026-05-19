@@ -95,7 +95,7 @@ function shuffleArray(array: string[]): string[] {
  * Load or create game state
  */
 function loadGameState(): MemoryGameStateData {
-  const stored = localStorage.getItem(MEMORY_GAME_STATE_KEY);
+  const stored = sessionStorage.getItem(MEMORY_GAME_STATE_KEY);
   if (stored) {
     try {
       return JSON.parse(stored);
@@ -107,10 +107,10 @@ function loadGameState(): MemoryGameStateData {
 }
 
 /**
- * Save game state to localStorage
+ * Save game state to sessionStorage
  */
 function saveGameState(state: MemoryGameStateData): void {
-  localStorage.setItem(MEMORY_GAME_STATE_KEY, JSON.stringify(state));
+  sessionStorage.setItem(MEMORY_GAME_STATE_KEY, JSON.stringify(state));
 }
 
 function isGameStateComplete(state: MemoryGameStateData): boolean {
