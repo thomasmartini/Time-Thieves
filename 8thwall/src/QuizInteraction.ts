@@ -10,17 +10,17 @@ type QuizQuestion = {
 const quizQuestionsById: Record<string, QuizQuestion[]> = {
   quiz1: [
     {
-      question: "In welk jaar werd Rotterdam gebombardeerd?",
-      answers: ["1945", "1940", "1939"],
-      correctAnswerIndex: 1,
-    },
-    {
       question: "Welke gebeurtenis verwoestte een groot deel van Rotterdam?",
       answers: [
         "Een grote overstroming",
         "Het bombardement van Rotterdam",
         "Een aardbeving",
       ],
+      correctAnswerIndex: 1,
+    },
+    {
+      question: "In welk jaar werd Rotterdam gebombardeerd?",
+      answers: ["1945", "1940", "1939"],
       correctAnswerIndex: 1,
     },
     {
@@ -41,9 +41,37 @@ const quizQuestionsById: Record<string, QuizQuestion[]> = {
   ],
   quiz2: [
     {
-      question: "Welke rivier stroomt door Rotterdam?",
-      answers: ["De Rijn", "De Maas", "De Schelde"],
+      question:
+        "Hoeveel dagen na het begin van de Duitse aanval werd Rotterdam gebombardeerd?",
+      answers: ["1 dag", "4 dagen", "10 dagen"],
       correctAnswerIndex: 1,
+    },
+    {
+      question:
+        "Welk deel van Rotterdam werd het zwaarst getroffen tijdens het bombardement?",
+      answers: ["De haven", "Rotterdam-Zuid", "Het stadscentrum"],
+      correctAnswerIndex: 2,
+    },
+    {
+      question:
+        "Hoe heet het plein waar het monument 'De Verwoeste Stad' staat?",
+      answers: ["Plein 1940", "Schouwburgplein", "Stationsplein"],
+      correctAnswerIndex: 0,
+    },
+    {
+      question:
+        "Wat wilden de Duitsers bereiken met het bombardement op Rotterdam?",
+      answers: [
+        "De Nederlandse haven uitbreiden",
+        "Nederland dwingen zich over te geven",
+        "Een nieuw vliegveld bouwen",
+      ],
+      correctAnswerIndex: 1,
+    },
+    {
+      question: "Hoe lang duurde het bombardement op Rotterdam ongeveer?",
+      answers: ["Ongeveer 15 minuten", "Ongeveer 2 uur", "Een hele dag"],
+      correctAnswerIndex: 0,
     },
   ],
 };

@@ -395,18 +395,18 @@
         "height": 100,
         "image": {
           "type": "asset",
-          "asset": "assets/SpeechBubble_Onderzoeker.png"
+          "asset": "assets/SpeechBubble_Verzamelaar.png"
         },
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
       },
-      "name": "Professor",
+      "name": "Verzamelaar",
       "order": 10.30541031150533
     },
     "b4cc920b-8068-44df-badf-70727bf0ee13": {
       "id": "b4cc920b-8068-44df-badf-70727bf0ee13",
       "position": [
-        -2.732095555847512,
+        -2.6900717780167964,
         0.631534180833498,
         0.6493397685401576
       ],
@@ -428,13 +428,13 @@
       "ui": {
         "width": 150,
         "height": 10,
-        "text": "Hier komt de vraag van de professor",
+        "text": "Hier komt de vraag van de verzamelaar",
         "color": "#000000",
         "fontSize": 7,
         "type": "3d",
         "verticalTextAlign": "center"
       },
-      "name": "ProfessorTekst",
+      "name": "VerzamelaarTekst",
       "order": 13.64957399602904
     },
     "acdec01b-d3a7-4abf-aec8-fde67f3e56aa": {
@@ -2214,7 +2214,8 @@
         }
       },
       "name": "De verwoeste stad 06 (item)",
-      "order": 35.900573256108096
+      "order": 35.900573256108096,
+      "hidden": false
     },
     "99dd71b9-2f53-4d9e-b749-f4c6f9b67432": {
       "id": "99dd71b9-2f53-4d9e-b749-f4c6f9b67432",

@@ -34,6 +34,14 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
+        text: "Eén van die verloren herinneringen gaat over het bombardement van Rotterdam in 1940.",
+      },
+      {
+        speaker: "npc",
+        text: "Slechts vier dagen na de Duitse inval werd een groot deel van het stadscentrum verwoest.",
+      },
+      {
+        speaker: "npc",
         text: "Gelukkig zijn niet alle herinneringen verdwenen. In monumenten verspreid door de stad zitten nog fragmenten van het verleden opgeslagen.",
       },
       {
@@ -78,7 +86,15 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
-        text: "Ze vertelde dat een groot deel van de stad werd verwoest en dat veel mensen stierven... Het was verschrikkelijk...",
+        text: "Ze vertelde dat een groot deel van de stad in 1940 werd verwoest tijdens het bombardement.",
+      },
+      {
+        speaker: "npc",
+        text: "Vooral het stadscentrum werd zwaar geraakt door de branden en explosies.",
+      },
+      {
+        speaker: "npc",
+        text: "Mijn oma zei altijd dat het bombardement maar ongeveer vijftien minuten duurde, maar dat het voor de mensen daar eindeloos voelde.",
       },
       {
         speaker: "npc",
@@ -108,15 +124,39 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
     [
       {
         speaker: "npc",
-        text: "Welkom terug. Hebben jullie al nieuwe sporen gevonden?",
-      },
-      {
-        speaker: "player",
-        text: "Ja, we hebben genoeg om verder te gaan.",
+        text: "Oh, jullie zijn terug. Sinds ons vorige gesprek blijf ik maar denken aan de verhalen van mijn oma.",
       },
       {
         speaker: "npc",
-        text: "Mooi, blijf scherp. Tijd voor de volgende stap.",
+        text: "Het is vreemd... hoe meer ik hierover praat, hoe meer herinneringen lijken terug te komen.",
+      },
+      {
+        speaker: "player",
+        text: "Misschien herstellen de herinneringen zich langzaam weer.",
+      },
+      {
+        speaker: "npc",
+        text: "Misschien wel. Ik blijf steeds denken aan de rook boven de stad op die oude foto's.",
+      },
+      {
+        speaker: "npc",
+        text: "Mijn oma zei altijd dat Rotterdam na het bombardement nooit meer hetzelfde was.",
+      },
+      {
+        speaker: "npc",
+        text: "Ze vertelde vroeger ook vaak over het monument 'De Verwoeste Stad'. Volgens mij staat het op Plein 1940.",
+      },
+      {
+        speaker: "npc",
+        text: "Mijn oma zei dat het ontbrekende hart van het beeld symbool staat voor het verloren hart van Rotterdam.",
+      },
+      {
+        speaker: "player",
+        text: "Elke herinnering helpt ons om de geschiedenis terug te brengen.",
+      },
+      {
+        speaker: "npc",
+        text: "Blijf dan zoeken. Het voelt alsof de stad haar verleden langzaam begint terug te krijgen.",
       },
     ],
   ],
@@ -157,6 +197,10 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       {
         speaker: "npc",
         text: "Toen Ossip Zadkine dit monument maakte en het in 1953 werd onthuld, wilde hij dat niemand het bombardement ooit zou vergeten.",
+      },
+      {
+        speaker: "npc",
+        text: "De Duitsers gebruikten het bombardement om Nederland te dwingen zich over te geven.",
       },
       {
         speaker: "npc",
