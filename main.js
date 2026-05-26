@@ -35,6 +35,7 @@ try {
     infoBox: false,
     selectionIndicator: false,
     fullscreenButton: false,
+    shadows: false,
     shouldAnimate: true,
   });
   viewer._cesiumWidget._creditContainer.style.display = "none";
@@ -561,53 +562,10 @@ function stopAR() {
   const backButton = document.getElementById("arBackButton");
   if (backButton) document.body.removeChild(backButton);
 
-  // Log camera state before restore (helpful for debugging)
-  try {
-    console.log("[stopAR] camera before restore:", viewer.camera.positionWC, viewer.camera.frustum);
-  } catch (e) {
-    console.warn("[stopAR] could not read camera state", e);
-  }
-
   // Go back to Cesium view
   document.getElementById("cesiumContainer").style.display = "block";
   document.getElementById("zonePanel").style.display = "block";
   document.getElementById("inventoryPanel").style.display = "block";
-
-  // Restore camera transform and sensible view so the map isn't zoomed in
-  try {
-    // Clear any lookAt transform applied earlier
-    if (viewer && viewer.camera && Cesium && Cesium.Matrix4) {
-      viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-    }
-
-    // Reset field of view to a sane default if accessible
-    if (viewer && viewer.camera && viewer.camera.frustum && typeof viewer.camera.frustum.fovy !== "undefined") {
-      viewer.camera.frustum.fovy = Cesium.Math.toRadians(60);
-    }
-
-    // Smoothly move camera to a reasonable distance above the user's current location
-    if (typeof currentLon === "number" && typeof currentLat === "number") {
-      viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(currentLon, currentLat, 150),
-        duration: 0.5,
-      });
-    }
-
-    // Ensure Cesium redraws and resizes correctly after being hidden
-    try {
-      if (typeof viewer.resize === "function") viewer.resize();
-    } catch (e) { }
-    try {
-      if (viewer && viewer.scene && typeof viewer.scene.requestRender === "function") viewer.scene.requestRender();
-    } catch (e) { }
-  } catch (e) {
-    console.warn("[stopAR] failed to fully restore camera:", e);
-  }
-
-  // Log camera state after restore
-  try {
-    console.log("[stopAR] camera after restore:", viewer.camera.positionWC, viewer.camera.frustum);
-  } catch (e) { }
 }
 
 function updateZoneButtonsVisibility() {
@@ -623,8 +581,6 @@ function updateZoneButtonsVisibility() {
       zone.rowElement.style.display = "none";
     }
   });
-
-
 }
 
 function createZoneButtons() {
