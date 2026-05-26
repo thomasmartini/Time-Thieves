@@ -2168,6 +2168,122 @@
       "name": "Scholier",
       "order": 2.4818898828333267,
       "hidden": false
+    },
+    "c6aa1858-5ace-4e62-947b-3980addabb62": {
+      "id": "c6aa1858-5ace-4e62-947b-3980addabb62",
+      "position": [
+        6.836,
+        1.78,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
+      "components": {
+        "f35d14a5-b4c3-4d8a-94eb-4f99d7fb6608": {
+          "id": "f35d14a5-b4c3-4d8a-94eb-4f99d7fb6608",
+          "name": "Item",
+          "parameters": {
+            "sceneId": "de-verwoeste-stad-06",
+            "itemRoot": {
+              "type": "entity",
+              "id": "c6aa1858-5ace-4e62-947b-3980addabb62"
+            },
+            "professorTarget": {
+              "type": "entity",
+              "id": "99dd71b9-2f53-4d9e-b749-f4c6f9b67432"
+            },
+            "textTarget": {
+              "type": "entity",
+              "id": "69dd3f44-9d11-4a6c-90c8-d5e0c24ae39a"
+            },
+            "rewardItemId": "mystery-time-thieves",
+            "rewardSourceId": "de-verwoeste-stad-06"
+          }
+        }
+      },
+      "name": "De verwoeste stad 06 (item)",
+      "order": 35.900573256108096
+    },
+    "99dd71b9-2f53-4d9e-b749-f4c6f9b67432": {
+      "id": "99dd71b9-2f53-4d9e-b749-f4c6f9b67432",
+      "position": [
+        -2.744,
+        1.047,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        2,
+        2,
+        2
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "c6aa1858-5ace-4e62-947b-3980addabb62",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/SpeechBubble_Onderzoeker.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Image",
+      "order": 1.1966834320120554
+    },
+    "69dd3f44-9d11-4a6c-90c8-d5e0c24ae39a": {
+      "id": "69dd3f44-9d11-4a6c-90c8-d5e0c24ae39a",
+      "position": [
+        -2.7116360771272774,
+        0.5992900153281184,
+        0.4166566528830282
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "c6aa1858-5ace-4e62-947b-3980addabb62",
+      "components": {},
+      "ui": {
+        "width": 150,
+        "height": 10,
+        "text": "Hier komt de tekst van de professor",
+        "color": "#000000",
+        "fontSize": 7,
+        "type": "3d"
+      },
+      "name": "Text",
+      "order": -1.0023948067702777
     }
   },
   "spaces": {
