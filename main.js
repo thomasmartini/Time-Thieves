@@ -1,9 +1,6 @@
 import * as Cesium from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
-import {
-  getInventoryItems,
-  populateDummyInventory,
-} from "./utils/inventory.js";
+import { getInventoryItems } from "./utils/inventory.js";
 import scenesData from "./utils/scenes.json";
 
 const CHARACTER_DATA = (scenesData && scenesData.characters) || [];
@@ -80,11 +77,11 @@ const ITEM_DISPLAY_DATA = {
 const monumentZones = [
   {
     name: "De Verwoeste Stad",
-    slug: "de-verwoeste-stad",
-    monumentId: "de-verwoeste-stad", // matches 8th wall scene id for testing, will be set in AR.js for production
+    slug: "de-verwoeste-stad-01",
+    monumentId: "de-verwoeste-stad-", // matches 8th wall scene id for testing, will be set in AR.js for production
     lon: 4.4830665,
     lat: 51.9176368,
-    radius: 20,
+    radius: 100,
     color: Cesium.Color.ORANGE.withAlpha(0.35),
     objects: [],
   },
@@ -266,7 +263,6 @@ if (inventoryBackBtn) {
 window.addEventListener("inventory-item-added", refreshInventoryUI);
 window.addEventListener("inventory-item-removed", refreshInventoryUI);
 
-populateDummyInventory();
 refreshInventoryUI();
 
 function randomInRange(min, max) {
@@ -404,26 +400,16 @@ let arOverlayEl = null;
 let arFrameEl = null;
 
 function getArUrlForZone(zone, character) {
-  const sourceUrl =
-    zone.slug + character?.sceneId || zone.arUrl || eighthWallSceneUrl;
-  if (
-    zone.slug + character?.sceneId &&
-    /\.(glb|gltf|usdz)(\?.*)?$/i.test(sourceUrl)
-  ) {
-    return sourceUrl;
-  }
-
-  const url = new URL(sourceUrl, window.location.href);
+  const url = new URL(zone.arUrl || eighthWallSceneUrl, window.location.href);
 
   // Without a trailing slash, relative assets (bundle.js, ./external/...) resolve to the app root.
   if (url.origin === window.location.origin && url.pathname === "/ar") {
     url.pathname = "/ar/";
   }
 
-  const sceneId = zone.sceneId || zone.slug || "default";
+  const sceneId = zone.monumentId + character.sceneId || zone.slug || "default";
   url.searchParams.set("scene", sceneId);
   url.searchParams.set("source", "cesium");
-
   return url.toString();
 }
 
@@ -484,14 +470,13 @@ function open8thWallScene(zone, character, source = "manual") {
 function activateAR(zone) {
   if (isInZone(zone)) {
     startAR(zone);
-  } else {
-    return;
-  }
+  } else { return }
 }
+
 
 function startAR(zone) {
   // hide Cesium view and UI
-  //document.getElementById("cesiumContainer").style.display = "none";
+  document.getElementById("cesiumContainer").style.display = "none";
   document.getElementById("zonePanel").style.display = "none";
   document.getElementById("inventoryPanel").style.display = "none";
 
@@ -520,7 +505,7 @@ function startAR(zone) {
     const character = obj.character || {
       name: character.name,
       imageUrl: `${import.meta.env.BASE_URL}${character.imageUrl}`,
-      sceneId: null,
+      sceneId: character.sceneId,
     };
 
     const objectEntity = document.createElement("a-entity");
@@ -571,7 +556,7 @@ function stopAR() {
   if (backButton) document.body.removeChild(backButton);
 
   // Go back to Cesium view
-  //document.getElementById("cesiumContainer").style.display = "block";
+  document.getElementById("cesiumContainer").style.display = "block";
   document.getElementById("zonePanel").style.display = "block";
   document.getElementById("inventoryPanel").style.display = "block";
   refreshInventoryUI();
