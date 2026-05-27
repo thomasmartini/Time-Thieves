@@ -23,8 +23,7 @@ function normalizeId(value: string | undefined): string {
 
 function shouldHandleItemScene(componentSceneId: string | undefined): boolean {
   if (!requestedSceneId) {
-    // Direct scene preview can omit the query param; keep Item active there.
-    return true;
+    return false;
   }
 
   return normalizeId(componentSceneId) === requestedSceneId;
