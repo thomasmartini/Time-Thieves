@@ -179,15 +179,31 @@ function selectMonument(monumentSlug) {
   showInventoryView();
 }
 
+function getMonumentProgress(monumentSlug) {
+  const items = getInventoryItems();
+  const itemsCollected = items.length;
+  const maxItems = 4;
+  const progress = Math.min(itemsCollected / maxItems * 100, 100);
+  return {
+    progress,
+    itemsCollected,
+    maxItems,
+  };
+}
+
 function renderMonumentSelection(monuments) {
   if (!monumentSelectionEl) return;
   monumentSelectionEl.innerHTML = monuments
-    .map(
-      (monument) =>
-        `<div class="inventory-monument-item" data-slug="${monument.slug}">
+    .map((monument) => {
+      const { progress, itemsCollected, maxItems } = getMonumentProgress(monument.slug);
+      return `<div class="inventory-monument-item" data-slug="${monument.slug}">
           <div class="inventory-monument-name">${monument.name}</div>
-        </div>`,
-    )
+          <div class="inventory-monument-progress-container">
+            <div class="inventory-monument-progress-bar" style="width: ${progress}%"></div>
+          </div>
+          <div class="inventory-monument-progress-text">${itemsCollected}/${maxItems} items</div>
+        </div>`;
+    })
     .join("");
 
   monumentSelectionEl
@@ -225,6 +241,9 @@ function refreshInventoryUI() {
   if (inventoryCountEl) {
     inventoryCountEl.textContent = items.length.toString();
   }
+
+  // Update progress bars in monument selection
+  renderMonumentSelection(monumentZones);
 }
 
 function setInventoryPanelOpen(open) {
@@ -559,6 +578,11 @@ function stopAR() {
   document.getElementById("cesiumContainer").style.display = "block";
   document.getElementById("zonePanel").style.display = "block";
   document.getElementById("inventoryPanel").style.display = "block";
+
+  if (viewer && typeof viewer.resize === "function") {
+    viewer.resize();
+  }
+
   refreshInventoryUI();
 }
 
@@ -588,16 +612,17 @@ function createZoneButtons() {
 
     const button = document.createElement("button");
     button.textContent = `Activeer AR`;
-    button.style.width = "100%";
-    button.style.padding = "22px 24px";
-    button.style.minHeight = "72px";
-    button.style.fontSize = "26px";
+    button.style.width = "40%";
+    button.style.padding = "16px 18px";
+    button.style.minHeight = "42px";
+    button.style.justifySelf = "center";
+    button.style.fontSize = "14px";
     button.style.fontWeight = "700";
     button.style.border = "none";
     button.style.borderRadius = "16px";
     button.style.background =
-      "linear-gradient(135deg, #2196f3 0%, #4dabf7 100%)";
-    button.style.color = "white";
+      "linear-gradient(135deg, #c6f321 0%, #4dabf7 100%)";
+    button.style.color = "1500000";
     button.style.cursor = "pointer";
     button.style.boxShadow = "0 10px 24px rgba(0, 0, 0, 0.2)";
     button.style.transition = "transform 0.2s ease, box-shadow 0.2s ease";
