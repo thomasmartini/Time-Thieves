@@ -2219,7 +2219,7 @@
       },
       "name": "De verwoeste stad 06 (item)",
       "order": 35.900573256108096,
-      "hidden": false
+      "hidden": true
     },
     "99dd71b9-2f53-4d9e-b749-f4c6f9b67432": {
       "id": "99dd71b9-2f53-4d9e-b749-f4c6f9b67432",
@@ -2352,6 +2352,190 @@
       "order": 2.47367789132751,
       "hidden": true,
       "parentId": "c6aa1858-5ace-4e62-947b-3980addabb62"
+    },
+    "ddb9e01a-5184-4c05-b102-eeb0ff670d97": {
+      "id": "ddb9e01a-5184-4c05-b102-eeb0ff670d97",
+      "position": [
+        0,
+        0,
+        0.2
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "7703bacb-c547-4260-8383-f861f7a69656",
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/Item5_TimeTurnerHourglass.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Hourglass",
+      "order": 1.359825272167383
+    },
+    "8e8e88a2-eb0b-4049-8cf5-f4fc76e81a0c": {
+      "id": "8e8e88a2-eb0b-4049-8cf5-f4fc76e81a0c",
+      "position": [
+        -1.95971938758007,
+        2.5426443061603496,
+        0.2
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        3,
+        3,
+        3
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/SpeechBubble_TimeThieves.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "TimeThieves",
+      "order": 2.5398961806493263,
+      "parentId": "7703bacb-c547-4260-8383-f861f7a69656"
+    },
+    "33b341e3-4177-414b-8be2-842cb7117d7b": {
+      "id": "33b341e3-4177-414b-8be2-842cb7117d7b",
+      "position": [
+        -1.786777887084492,
+        1.8035595074023651,
+        0.637
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {},
+      "ui": {
+        "flexDirection": "row",
+        "width": 180,
+        "height": 45,
+        "text": "Hier komt de tekst van de npc",
+        "color": "#000000",
+        "fontSize": 12,
+        "type": "3d",
+        "ignoreRaycast": false,
+        "verticalTextAlign": "start",
+        "textAlign": "left",
+        "flexWrap": "wrap"
+      },
+      "name": "TimeThievesTekst",
+      "order": 2.71996708913127,
+      "parentId": "7703bacb-c547-4260-8383-f861f7a69656"
+    },
+    "099f434f-f902-40e9-b402-7224c5a8a237": {
+      "id": "099f434f-f902-40e9-b402-7224c5a8a237",
+      "position": [
+        -1.5114097169025023,
+        -1.1383475893471655,
+        0.2
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        3,
+        3,
+        3
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "asset",
+          "asset": "assets/SpeechBubble_Student.png"
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "Scholier",
+      "order": 2.900037997613214,
+      "hidden": false,
+      "parentId": "7703bacb-c547-4260-8383-f861f7a69656"
+    },
+    "396c18d8-ed1e-4ee0-8f73-fcf4729f9237": {
+      "id": "396c18d8-ed1e-4ee0-8f73-fcf4729f9237",
+      "position": [
+        -1.560234208999728,
+        -1.69977030274541,
+        0.637
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {},
+      "ui": {
+        "flexDirection": "row",
+        "width": 180,
+        "height": 45,
+        "text": "Hier komt de tekst van de speler",
+        "color": "#000000",
+        "fontSize": 12,
+        "type": "3d",
+        "verticalTextAlign": "start",
+        "textAlign": "left",
+        "flexWrap": "wrap"
+      },
+      "name": "ScholierTekst",
+      "order": 3.0801089060951576,
+      "parentId": "7703bacb-c547-4260-8383-f861f7a69656"
     }
   },
   "spaces": {
