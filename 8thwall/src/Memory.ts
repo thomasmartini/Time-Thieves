@@ -56,9 +56,9 @@ const CARD_IMAGE_MAP: Record<string, string> = {
 // Storage key for persisting game state
 const MEMORY_GAME_STATE_KEY = "time-thieves-memory-game-state";
 const MEMORY_GAME_JUST_COMPLETED_TEXT =
-  "Memory game has been completed, you have been given an item as a reward!";
+  "Goed gedaan! Je hebt Memory voltooid en een item als beloning ontvangen.";
 const MEMORY_GAME_ALREADY_COMPLETED_TEXT =
-  "Memory game has been completed already. You have already earned this reward.";
+  "Je hebt Memory al uitgespeeld en deze beloning al verdiend.";
 
 /**
  * Initialize memory game state

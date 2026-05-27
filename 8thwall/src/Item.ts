@@ -177,7 +177,7 @@ function getMissingRequirements(): string[] {
       } else if (dialogueKey === "leya_dialogue") {
         missing.push("gesprek met Leya");
       } else if (dialogueKey === "timethief_dialogue") {
-        missing.push("gesprek met de Time Thief");
+        missing.push("gesprek met de Time Thieves");
       }
     }
   }

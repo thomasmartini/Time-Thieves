@@ -228,7 +228,8 @@ const requestedSceneId =
   queryParams.get("scene")?.trim().toLowerCase() || undefined;
 
 const pendingSpeakerHideTimeoutByController = new Map<bigint, number>();
-const exhaustedConversationText = "I have nothing more to say.";
+const exhaustedConversationText =
+  "Ik heb op dit moment niets meer waarmee ik je kan helpen.";
 const completedDialogueKeys = new Set<string>();
 const CONVERSATION_COMPLETED_STORAGE_KEY_PREFIX = "conversation-completed";
 const CONVERSATION_NEXT_INDEX_STORAGE_KEY_PREFIX = "conversation-next-index";
