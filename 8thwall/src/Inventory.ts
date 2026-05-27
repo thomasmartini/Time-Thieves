@@ -1,4 +1,4 @@
-export type ItemSource = "quiz" | "npc" | "pickup";
+export type ItemSource = "quiz" | "npc" | "pickup" | "memory";
 
 export interface InventoryItem {
   itemId: string;

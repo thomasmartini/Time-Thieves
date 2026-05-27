@@ -82,8 +82,8 @@ const quizIdByNpcId: Record<string, string> = {
 };
 
 const rewardIdByQuizId: Record<string, string> = {
-  quiz1: "rotterdam-monument",
-  quiz2: "rotterdam-river",
+  quiz1: "Zandloper onderdeel 1",
+  quiz2: "Experimenteel zand",
 };
 
 const queryParams = new URLSearchParams(window.location.search);
@@ -498,7 +498,7 @@ ecs.registerComponent({
 
       if (hasPerfectScore) {
         setText(answerTextEntities[0], "Bedankt voor het spelen.");
-        setText(answerTextEntities[1], "Je hebt het item ontvangen!");
+        setText(answerTextEntities[1], "Je hebt een item ontvangen!");
         setText(answerTextEntities[2], "Quiz voltooid.");
         isAwaitingReplayChoice = false;
         grantRewardItem(schema);
@@ -506,8 +506,8 @@ ecs.registerComponent({
       }
 
       setText(answerTextEntities[0], "Bedankt voor het spelen.");
-      setText(answerTextEntities[1], "Niet alles goed. Probeer opnieuw.");
-      setText(answerTextEntities[2], "Speel opnieuw");
+      setText(answerTextEntities[1], "Niet alles goed. Probeer het opnieuw.");
+      setText(answerTextEntities[2], "Klik hier om opnieuw te spelen.");
       isAwaitingReplayChoice = true;
     };
 

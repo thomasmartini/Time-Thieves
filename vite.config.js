@@ -23,7 +23,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/ar": {
-        target: "http://localhost:9001/",
+        target: "http://localhost:58000/",
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/ar/, ""),

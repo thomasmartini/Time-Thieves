@@ -23,8 +23,7 @@ function normalizeId(value: string | undefined): string {
 
 function shouldHandleItemScene(componentSceneId: string | undefined): boolean {
   if (!requestedSceneId) {
-    // Direct scene preview can omit the query param; keep Item active there.
-    return true;
+    return false;
   }
 
   return normalizeId(componentSceneId) === requestedSceneId;
@@ -178,7 +177,7 @@ function getMissingRequirements(): string[] {
       } else if (dialogueKey === "leya_dialogue") {
         missing.push("gesprek met Leya");
       } else if (dialogueKey === "timethief_dialogue") {
-        missing.push("gesprek met de Time Thief");
+        missing.push("gesprek met de Time Thieves");
       }
     }
   }
