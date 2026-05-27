@@ -54,6 +54,10 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
+        text: "Als je erin slaagt om genoeg herinneringen te herstellen, kunnen we de Time Thieves stoppen en voorkomen dat ze nog meer geschiedenis stelen.",
+      },
+      {
+        speaker: "npc",
         text: "De tijd dringt... welkom bij de strijd tegen de Time Thieves.",
       },
     ],

@@ -108,6 +108,32 @@ function setUiText(entity: ecs.Entity | null, text: string) {
   entity.set(ecs.Ui, { text });
 }
 
+function setEntityEnabledAndVisible(
+  entity: ecs.Entity | null,
+  isActive: boolean,
+) {
+  if (!entity) {
+    return;
+  }
+
+  if (isActive) {
+    if (entity.isHidden()) {
+      entity.show();
+    }
+    if (entity.isDisabled()) {
+      entity.enable();
+    }
+    return;
+  }
+
+  if (!entity.isHidden()) {
+    entity.hide();
+  }
+  if (!entity.isDisabled()) {
+    entity.disable();
+  }
+}
+
 function isDialogueCompleted(dialogueKey: string): boolean {
   return (
     window.sessionStorage.getItem(
@@ -182,6 +208,36 @@ function getProfessorTextEntity(
   );
 }
 
+function getRewardItemId(schema: { rewardItemId?: string }): string {
+  try {
+    return schema.rewardItemId || "mystery-time-thieves";
+  } catch {
+    return "mystery-time-thieves";
+  }
+}
+
+function getRewardItemEntity(
+  world: ecs.World,
+  root: ecs.Entity,
+  schema: { rewardItemTarget?: bigint },
+): ecs.Entity | null {
+  return (
+    resolveTargetEntity(world, schema.rewardItemTarget) ||
+    findByName(root, "Item") ||
+    findByName(root, "Beloning")
+  );
+}
+
+function syncRewardItemVisibility(
+  world: ecs.World,
+  root: ecs.Entity,
+  schema: { rewardItemTarget?: bigint; rewardItemId?: string },
+) {
+  const rewardItemEntity = getRewardItemEntity(world, root, schema);
+  const rewardItemId = getRewardItemId(schema);
+  setEntityEnabledAndVisible(rewardItemEntity, hasInventoryItem(rewardItemId));
+}
+
 function getProfessorMessage(rewardItemId: string): string {
   if (hasInventoryItem(rewardItemId)) {
     return "Uitstekend werk. Met dit voorwerp kun je het mysterie van de Time Thieves ontrafelen.";
@@ -202,6 +258,7 @@ ecs.registerComponent({
     itemRoot: "eid",
     professorTarget: "eid",
     textTarget: "eid",
+    rewardItemTarget: "eid",
     rewardItemId: "string",
     rewardSourceId: "string",
   },
@@ -220,11 +277,10 @@ ecs.registerComponent({
       window.setTimeout(() => {
         const resolvedSchema = component.schema;
         const textEntity = getProfessorTextEntity(world, root, resolvedSchema);
+        syncRewardItemVisibility(world, root, resolvedSchema);
         setUiText(
           textEntity,
-          getProfessorMessage(
-            resolvedSchema.rewardItemId || "mystery-time-thieves",
-          ),
+          getProfessorMessage(getRewardItemId(resolvedSchema)),
         );
       }, 0);
     }
@@ -261,7 +317,7 @@ ecs.registerComponent({
     }) => {
       const root = getItemRoot(world, eid, schemaAttribute.get(eid).itemRoot);
       const textEntity = getProfessorTextEntity(world, root, schema);
-      const rewardItemId = schema.rewardItemId || "mystery-time-thieves";
+      const rewardItemId = getRewardItemId(schema);
       setUiText(textEntity, getProfessorMessage(rewardItemId));
     };
 
@@ -282,6 +338,7 @@ ecs.registerComponent({
           initialized = true;
         }
 
+        syncRewardItemVisibility(world, root, schema);
         updateProfessorText(schema);
       })
       .onEvent(ecs.input.SCREEN_TOUCH_START, "claimReward", {
@@ -296,7 +353,7 @@ ecs.registerComponent({
           return;
         }
 
-        const rewardItemId = schema.rewardItemId || "mystery-time-thieves";
+        const rewardItemId = getRewardItemId(schema);
         const rewardSourceId = schema.rewardSourceId || "de-verwoeste-stad-06";
 
         if (hasInventoryItem(rewardItemId)) {
@@ -315,6 +372,12 @@ ecs.registerComponent({
           sceneId: schema.sceneId,
           rewardType: "final-mystery-item",
         });
+
+        syncRewardItemVisibility(
+          world,
+          getItemRoot(world, eid, schema.itemRoot),
+          schema,
+        );
 
         window.dispatchEvent(
           new CustomEvent("final-mystery-item-earned", {
