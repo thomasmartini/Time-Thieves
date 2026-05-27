@@ -454,7 +454,8 @@ function ensureArOverlay() {
   closeButton.style.padding = "10px 14px";
   closeButton.style.border = "none";
   closeButton.style.borderRadius = "8px";
-  closeButton.style.background = "#1f8fff";
+  closeButton.style.background = "linear-gradient(135deg, #c6f321 0%, #4dabf7 100%)";
+
   closeButton.style.color = "#fff";
   closeButton.style.cursor = "pointer";
   closeButton.addEventListener("click", () => {
@@ -553,11 +554,13 @@ function startAR(zone) {
   backButton.textContent = "Terug naar kaart";
   backButton.style.position = "absolute";
   backButton.style.top = "20px";
+  backButton.style.fontWeight = "700";
   backButton.style.right = "20px";
   backButton.style.zIndex = "1000";
   backButton.style.padding = "10px";
-  backButton.style.background = "#24a0ff";
-  backButton.style.color = "white";
+  backButton.style.background = "linear-gradient(135deg, #c6f321 0%, #4dabf7 100%)";
+
+  backButton.style.color = "#150000";
   backButton.style.border = "none";
   backButton.style.borderRadius = "4px";
   backButton.style.cursor = "pointer";
@@ -622,7 +625,7 @@ function createZoneButtons() {
     button.style.borderRadius = "16px";
     button.style.background =
       "linear-gradient(135deg, #c6f321 0%, #4dabf7 100%)";
-    button.style.color = "1500000";
+    button.style.color = "#150000";
     button.style.cursor = "pointer";
     button.style.boxShadow = "0 10px 24px rgba(0, 0, 0, 0.2)";
     button.style.transition = "transform 0.2s ease, box-shadow 0.2s ease";
