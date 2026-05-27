@@ -82,8 +82,8 @@ const quizIdByNpcId: Record<string, string> = {
 };
 
 const rewardIdByQuizId: Record<string, string> = {
-  quiz1: "rotterdam-monument",
-  quiz2: "rotterdam-river",
+  quiz1: "Zandloper onderdeel 1",
+  quiz2: "Experimenteel zand",
 };
 
 const queryParams = new URLSearchParams(window.location.search);

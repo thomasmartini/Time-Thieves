@@ -640,8 +640,8 @@
         "width": 100,
         "height": 100,
         "image": {
-          "type": "url",
-          "url": ""
+          "type": "asset",
+          "asset": "assets/Item1_Sand.png"
         },
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
@@ -1309,7 +1309,7 @@
     "e128fade-df73-46ab-9785-8e216ef8564c": {
       "id": "e128fade-df73-46ab-9785-8e216ef8564c",
       "position": [
-        3.3288939483022526,
+        3.25764162765803,
         -0.5976547050497646,
         0.3
       ],
@@ -1332,8 +1332,8 @@
         "width": 100,
         "height": 100,
         "image": {
-          "type": "url",
-          "url": ""
+          "type": "asset",
+          "asset": "assets/Item3_Hourglass2.png"
         },
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
@@ -1720,8 +1720,8 @@
         "width": 100,
         "height": 100,
         "image": {
-          "type": "url",
-          "url": ""
+          "type": "asset",
+          "asset": "assets/Item2_Hourglass1.png"
         },
         "backgroundOpacity": 1,
         "backgroundSize": "contain"
@@ -2208,7 +2208,7 @@
               "type": "entity",
               "id": "69dd3f44-9d11-4a6c-90c8-d5e0c24ae39a"
             },
-            "rewardItemId": "mystery-time-thieves",
+            "rewardItemId": "Time Turner",
             "rewardSourceId": "de-verwoeste-stad-06",
             "rewardItemTarget": {
               "type": "entity",
@@ -2219,7 +2219,7 @@
       },
       "name": "De verwoeste stad 06 (item)",
       "order": 35.900573256108096,
-      "hidden": true
+      "hidden": false
     },
     "99dd71b9-2f53-4d9e-b749-f4c6f9b67432": {
       "id": "99dd71b9-2f53-4d9e-b749-f4c6f9b67432",
@@ -2319,7 +2319,7 @@
     "e3292a57-74a6-489c-a1cf-513c9c9645ca": {
       "id": "e3292a57-74a6-489c-a1cf-513c9c9645ca",
       "position": [
-        -0.9670205442467017,
+        -1.041145699051019,
         -0.05732189566328927,
         0.3
       ],
@@ -2342,8 +2342,8 @@
         "width": 100,
         "height": 100,
         "image": {
-          "type": "url",
-          "url": ""
+          "type": "asset",
+          "asset": "assets/Item4_TimeTurner.png"
         },
         "backgroundOpacity": 1,
         "backgroundSize": "contain"

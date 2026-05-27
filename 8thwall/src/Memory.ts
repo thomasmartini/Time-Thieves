@@ -403,10 +403,15 @@ ecs.registerComponent({
             isGameComplete = true;
             showCompletionReward(world, schema);
 
-            addInventoryItem("memory-game-completed", "quiz", schema.sceneId, {
-              moves: gameState.moves,
-              pairs: gameState.matchedPairs,
-            });
+            addInventoryItem(
+              "Zandloper onderdeel 2",
+              "memory",
+              schema.sceneId,
+              {
+                moves: gameState.moves,
+                pairs: gameState.matchedPairs,
+              },
+            );
             window.dispatchEvent(
               new CustomEvent("memory-game-complete", {
                 detail: {
