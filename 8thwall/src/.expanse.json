@@ -2209,13 +2209,17 @@
               "id": "69dd3f44-9d11-4a6c-90c8-d5e0c24ae39a"
             },
             "rewardItemId": "mystery-time-thieves",
-            "rewardSourceId": "de-verwoeste-stad-06"
+            "rewardSourceId": "de-verwoeste-stad-06",
+            "rewardItemTarget": {
+              "type": "entity",
+              "id": "e3292a57-74a6-489c-a1cf-513c9c9645ca"
+            }
           }
         }
       },
       "name": "De verwoeste stad 06 (item)",
       "order": 35.900573256108096,
-      "hidden": false
+      "hidden": true
     },
     "99dd71b9-2f53-4d9e-b749-f4c6f9b67432": {
       "id": "99dd71b9-2f53-4d9e-b749-f4c6f9b67432",
@@ -2258,7 +2262,7 @@
       "position": [
         -2.7116360771272774,
         0.5992900153281184,
-        0.4166566528830282
+        0.5254987407246308
       ],
       "rotation": [
         0,
@@ -2285,6 +2289,69 @@
       },
       "name": "Text",
       "order": -1.0023948067702777
+    },
+    "7703bacb-c547-4260-8383-f861f7a69656": {
+      "id": "7703bacb-c547-4260-8383-f861f7a69656",
+      "position": [
+        6.836,
+        1.78,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
+      "components": {},
+      "name": "De verwoeste stad 07 (finale)",
+      "order": 37.0029631377387,
+      "hidden": true
+    },
+    "e3292a57-74a6-489c-a1cf-513c9c9645ca": {
+      "id": "e3292a57-74a6-489c-a1cf-513c9c9645ca",
+      "position": [
+        -0.9670205442467017,
+        -0.05732189566328927,
+        0.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "geometry": null,
+      "material": null,
+      "components": {},
+      "ui": {
+        "type": "3d",
+        "width": 100,
+        "height": 100,
+        "image": {
+          "type": "url",
+          "url": ""
+        },
+        "backgroundOpacity": 1,
+        "backgroundSize": "contain"
+      },
+      "name": "RewardItem",
+      "order": 2.47367789132751,
+      "hidden": true,
+      "parentId": "c6aa1858-5ace-4e62-947b-3980addabb62"
     }
   },
   "spaces": {
