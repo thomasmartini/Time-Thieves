@@ -3,22 +3,33 @@
     {
       "name": "Leya",
       "imageUrl": "images/ar/leya.png",
-      "sceneId": "01"
+      "sceneId": [
+        "02",
+        "03"
+      ]
     },
     {
       "name": "TimeThieves",
       "imageUrl": "images/ar/timethieves.png",
-      "sceneId": "02"
+      "sceneId": [
+        "04",
+        "06"
+      ]
     },
     {
       "name": "Professor E. Brown",
       "imageUrl": "images/ar/professor.png",
-      "sceneId": "04"
+      "sceneId": [
+        "00",
+        "01"
+      ]
     },
     {
       "name": "Benjamin Philips",
       "imageUrl": "images/ar/benjamin.png",
-      "sceneId": "05"
+      "sceneId": [
+        "05"
+      ]
     }
   ]
 }
