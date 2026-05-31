@@ -2,6 +2,7 @@ import * as Cesium from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 import { getInventoryItems } from "./utils/inventory.js";
 import scenesData from "./utils/scenes.json";
+import { getCompletionData } from "./utils/sceneCompletion.js";
 
 const CHARACTER_DATA = (scenesData && scenesData.characters) || [];
 
@@ -421,12 +422,24 @@ let arFrameEl = null;
 function getArUrlForZone(zone, character) {
   const url = new URL(zone.arUrl || eighthWallSceneUrl, window.location.href);
 
+  const completionData = getCompletionData();
+  const characterKey = character.name.split(" ")[0].toLowerCase();
+
+  const count = (completionData.match(
+    new RegExp(characterKey.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")
+  ) || []).length;
+
+  const characterSceneId =
+    character.sceneId[Math.min(count, character.sceneId.length - 1)] ||
+    character.sceneId[0];
+
   // Without a trailing slash, relative assets (bundle.js, ./external/...) resolve to the app root.
   if (url.origin === window.location.origin && url.pathname === "/ar") {
     url.pathname = "/ar/";
   }
 
-  const sceneId = zone.monumentId + character.sceneId || zone.slug || "default";
+  const sceneId = zone.monumentId + characterSceneId || zone.slug || "default";
+
   url.searchParams.set("scene", sceneId);
   url.searchParams.set("source", "cesium");
   return url.toString();
@@ -525,9 +538,8 @@ function startAR(zone) {
     const character = obj.character || {
       name: character.name,
       imageUrl: `${import.meta.env.BASE_URL}${character.imageUrl}`,
-      sceneId: character.sceneId,
+      sceneId: character.sceneId[0],
     };
-
     const objectEntity = document.createElement("a-entity");
     objectEntity.setAttribute(
       "geometry",
