@@ -2311,8 +2311,40 @@
       "geometry": null,
       "material": null,
       "parentId": "88453035-dc0f-486d-868a-8ff7c2fda864",
-      "components": {},
-      "name": "De verwoeste stad 07 (finale)",
+      "components": {
+        "1efae116-c5ae-42b0-afaa-3cf1a3ad75af": {
+          "id": "1efae116-c5ae-42b0-afaa-3cf1a3ad75af",
+          "name": "TapToStart",
+          "parameters": {
+            "npcId": "de-verwoeste-stad-07",
+            "conversationRoot": {
+              "type": "entity",
+              "id": "7703bacb-c547-4260-8383-f861f7a69656"
+            },
+            "hourglassTarget": {
+              "type": "entity",
+              "id": "ddb9e01a-5184-4c05-b102-eeb0ff670d97"
+            },
+            "npcTextTarget": {
+              "type": "entity",
+              "id": "33b341e3-4177-414b-8be2-842cb7117d7b"
+            },
+            "playerTextTarget": {
+              "type": "entity",
+              "id": "396c18d8-ed1e-4ee0-8f73-fcf4729f9237"
+            },
+            "npcBubbleTarget": {
+              "type": "entity",
+              "id": "8e8e88a2-eb0b-4049-8cf5-f4fc76e81a0c"
+            },
+            "playerBubbleTarget": {
+              "type": "entity",
+              "id": "099f434f-f902-40e9-b402-7224c5a8a237"
+            }
+          }
+        }
+      },
+      "name": "De verwoeste stad 07 (final)",
       "order": 37.0029631377387,
       "hidden": true
     },
@@ -2356,8 +2388,8 @@
     "ddb9e01a-5184-4c05-b102-eeb0ff670d97": {
       "id": "ddb9e01a-5184-4c05-b102-eeb0ff670d97",
       "position": [
-        0,
-        0,
+        -1.6815199479147251,
+        -0.43355369065313276,
         0.2
       ],
       "rotation": [
@@ -2387,7 +2419,8 @@
         "backgroundSize": "contain"
       },
       "name": "Hourglass",
-      "order": 1.359825272167383
+      "order": 1.359825272167383,
+      "hidden": true
     },
     "8e8e88a2-eb0b-4049-8cf5-f4fc76e81a0c": {
       "id": "8e8e88a2-eb0b-4049-8cf5-f4fc76e81a0c",

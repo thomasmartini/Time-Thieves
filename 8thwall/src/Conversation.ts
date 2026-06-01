@@ -34,7 +34,7 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
-        text: "Eén van die verloren herinneringen gaat over het bombardement van Rotterdam in 1940.",
+        text: "Een van die verloren herinneringen gaat over het bombardement van Rotterdam in 1940.",
       },
       {
         speaker: "npc",
@@ -220,6 +220,98 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
     ],
   ],
+  final_dialogue: [
+    [
+      {
+        speaker: "npc",
+        text: "Het is voorbij. Rotterdam zal haar geschiedenis vergeten, net als alle steden voor haar.",
+      },
+      {
+        speaker: "npc",
+        text: "De verhalen vervagen, de herinneringen verdwijnen en niemand zal nog weten wat er ooit is geweest.",
+      },
+      {
+        speaker: "player",
+        text: "Je hebt een ding over het hoofd gezien.",
+      },
+      {
+        speaker: "npc",
+        text: "En wat zou dat moeten zijn?",
+      },
+      {
+        speaker: "player",
+        text: "Dit.",
+      },
+      {
+        speaker: "npc",
+        text: "Nee... Dat is onmogelijk. Het Hourglass of Time!",
+      },
+      {
+        speaker: "player",
+        text: "We hebben een manier gevonden om de verloren herinneringen terug te halen. Je kunt ze niet langer verborgen houden.",
+      },
+      {
+        speaker: "npc",
+        text: "Onmogelijk. Jarenlang hebben wij verhalen uitgewist, foto's verborgen en herinneringen laten vervagen.",
+      },
+      {
+        speaker: "player",
+        text: "En toch zijn ze teruggekeerd. Mensen vergaten ze niet.",
+      },
+      {
+        speaker: "npc",
+        text: "Waarom zouden ze vasthouden aan het verleden? Vergeten is zoveel eenvoudiger.",
+      },
+      {
+        speaker: "player",
+        text: "Omdat geschiedenis ons laat zien wie we zijn en waar we vandaan komen.",
+      },
+      {
+        speaker: "npc",
+        text: "Nee... Stop! Als je de zandloper gebruikt, zal alles wat wij hebben gestolen terugkeren.",
+      },
+      {
+        speaker: "player",
+        text: "Precies daarom doe ik het.",
+      },
+      {
+        speaker: "npc",
+        text: "Wacht... Wat gebeurt er?",
+      },
+      {
+        speaker: "npc",
+        text: "Ik voel het al... De herinneringen herstellen zich. De verhalen keren terug naar hun rechtmatige plaats.",
+      },
+      {
+        speaker: "npc",
+        text: "De Verwoeste Stad... de foto's... de mensen... alles wordt weer herinnerd.",
+      },
+      {
+        speaker: "npc",
+        text: "Onze macht verdwijnt...",
+      },
+      {
+        speaker: "player",
+        text: "De geschiedenis van Rotterdam zal niet worden vergeten.",
+      },
+      {
+        speaker: "npc",
+        text: "De herinneringen zijn hersteld. Onze tijd is voorbij.",
+      },
+      {
+        speaker: "player",
+        text: "Zolang mensen hun verhalen blijven delen, zullen de Time Thieves nooit winnen.",
+      },
+      {
+        speaker: "npc",
+        text: "Dan is dit het einde van de Time Thieves...",
+      },
+      {
+        speaker: "player",
+        text: "Dit was het verhaal van de strijd tegen de Time Thieves. Bedankt dat je hebt meegedaan aan dit avontuur en hebt geholpen om de geschiedenis van Rotterdam te herstellen.",
+      },
+    ],
+  ],
 };
 
 const fallbackDialogueConversations = npcDialogues.introduction_dialogue;
@@ -238,6 +330,7 @@ const dialogueKeyByNpcId: Record<string, string> = {
   "de-verwoeste-stad-00": "introduction_dialogue",
   "de-verwoeste-stad-01": "leya_dialogue",
   "de-verwoeste-stad-03": "timethief_dialogue",
+  "de-verwoeste-stad-07": "final_dialogue",
 };
 
 function normalizeNpcId(npcId: string | undefined): string {
@@ -375,6 +468,46 @@ function findDialogueBubble(
   }
 
   return null;
+}
+
+function findNamedChildEntity(
+  rootEntity: ecs.Entity,
+  targetName: string,
+): ecs.Entity | null {
+  const normalizedTargetName = targetName.trim().toLowerCase();
+  const queue: ecs.Entity[] = [rootEntity];
+
+  while (queue.length > 0) {
+    const entity = queue.shift();
+    if (!entity) {
+      continue;
+    }
+
+    const runtimeName = (entity as unknown as { name?: string }).name;
+    if ((runtimeName || "").trim().toLowerCase() === normalizedTargetName) {
+      return entity;
+    }
+
+    queue.push(...entity.getChildren());
+  }
+
+  return null;
+}
+
+function setHourglassVisibility(
+  world: ecs.World,
+  rootEntity: ecs.Entity,
+  isVisible: boolean,
+  configuredHourglassEid?: bigint,
+) {
+  const hourglassEntity =
+    resolveTextTargetEntity(world, configuredHourglassEid) ||
+    findNamedChildEntity(rootEntity, "Hourglass");
+  if (!hourglassEntity) {
+    return;
+  }
+
+  setTextVisibility(hourglassEntity, isVisible);
 }
 
 function resolveTextTargetEntity(
@@ -625,6 +758,7 @@ function applyInitialConversationVisibility(
   eid: bigint,
   componentNpcId: string | undefined,
   configuredRootEid?: bigint,
+  configuredHourglassEid?: bigint,
 ) {
   const buttonEntity = world.getEntity(eid);
   const rootEntity = getConversationRoot(
@@ -644,6 +778,9 @@ function applyInitialConversationVisibility(
   }
 
   showOnlyActiveConversation(rootEntity);
+  if (normalizeNpcId(componentNpcId) === "de-verwoeste-stad-07") {
+    setHourglassVisibility(world, rootEntity, false, configuredHourglassEid);
+  }
 }
 
 function updateDialogueText(
@@ -654,6 +791,7 @@ function updateDialogueText(
   componentNpcId: string | undefined,
   previousSpeaker: Speaker | null,
   configuredRootEid?: bigint,
+  configuredHourglassEid?: bigint,
   configuredNpcTextEid?: bigint,
   configuredPlayerTextEid?: bigint,
 ): Speaker | null {
@@ -713,6 +851,12 @@ function updateDialogueText(
 
   if (playerTextEntity) {
     playerTextEntity.set(ecs.Ui, { text: currentTurn.text });
+    if (
+      normalizeNpcId(componentNpcId) === "de-verwoeste-stad-07" &&
+      currentTurn.text.trim() === "Dit."
+    ) {
+      setHourglassVisibility(world, rootEntity, true, configuredHourglassEid);
+    }
     switchSpeakerVisibility(
       currentEid,
       previousSpeaker,
@@ -742,6 +886,7 @@ function applyExhaustedConversationState(
   currentEid: bigint,
   componentNpcId: string | undefined,
   configuredRootEid?: bigint,
+  configuredHourglassEid?: bigint,
   configuredNpcTextEid?: bigint,
   configuredPlayerTextEid?: bigint,
 ) {
@@ -764,6 +909,9 @@ function applyExhaustedConversationState(
   }
 
   showOnlyActiveConversation(rootEntity);
+  if (normalizeNpcId(componentNpcId) === "de-verwoeste-stad-07") {
+    setHourglassVisibility(world, rootEntity, false, configuredHourglassEid);
+  }
 
   const dialogueBubble = findDialogueBubble(rootEntity, currentEid);
   const { npcTextEntity, playerTextEntity } = findConversationTextEntities(
@@ -789,6 +937,7 @@ ecs.registerComponent({
   schema: {
     npcId: "string",
     conversationRoot: "eid",
+    hourglassTarget: "eid",
     npcTextTarget: "eid",
     playerTextTarget: "eid",
   },
@@ -804,6 +953,7 @@ ecs.registerComponent({
       component.eid,
       componentNpcId,
       component.schema.conversationRoot,
+      component.schema.hourglassTarget,
     );
   },
   // tick: (world, component) => {
@@ -852,6 +1002,7 @@ ecs.registerComponent({
               eid,
               componentNpcId,
               schema.conversationRoot,
+              schema.hourglassTarget,
               schema.npcTextTarget,
               schema.playerTextTarget,
             );
@@ -887,6 +1038,7 @@ ecs.registerComponent({
           componentNpcId,
           currentSpeaker,
           schema.conversationRoot,
+          schema.hourglassTarget,
           schema.npcTextTarget,
           schema.playerTextTarget,
         );
@@ -966,6 +1118,7 @@ ecs.registerComponent({
               eid,
               componentNpcId,
               schema.conversationRoot,
+              schema.hourglassTarget,
               schema.npcTextTarget,
               schema.playerTextTarget,
             );
@@ -993,6 +1146,7 @@ ecs.registerComponent({
           componentNpcId,
           currentSpeaker,
           schema.conversationRoot,
+          schema.hourglassTarget,
           schema.npcTextTarget,
           schema.playerTextTarget,
         );
