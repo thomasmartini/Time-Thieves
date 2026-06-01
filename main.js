@@ -507,15 +507,20 @@ function getArUrlForZone(zone, character) {
   const url = new URL(zone.arUrl || eighthWallSceneUrl, window.location.href);
 
   const completionData = getCompletionData();
-  const characterKey = character.name.split(" ")[0].toLowerCase();
 
-  const count = (completionData.match(
-    new RegExp(characterKey.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")
-  ) || []).length;
+  const count = completionData.filter((item) => {
+    const value = String(item).toLowerCase();
+
+    return (
+      value.includes(character.name.toLowerCase())
+      && !value.includes("next")
+    );
+  }).length;
 
   const characterSceneId =
     character.sceneId[Math.min(count, character.sceneId.length)] ||
     character.sceneId[0];
+
   // Without a trailing slash, relative assets (bundle.js, ./external/...) resolve to the app root.
   if (url.origin === window.location.origin && url.pathname === "/ar") {
     url.pathname = "/ar/";
