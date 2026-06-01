@@ -348,7 +348,11 @@ function getDialogueKeyForNpc(npcId: string | undefined): string {
 
 function getDialoguesForNpc(npcId: string | undefined): DialogueTurn[][] {
   const dialogueKey = getDialogueKeyForNpc(npcId);
-  const dialogues = npcDialogues[dialogueKey] || fallbackDialogueConversations;
+  const dialogues = npcDialogues[dialogueKey];
+  if (!Array.isArray(dialogues)) {
+    return [];
+  }
+
   return dialogues.filter((dialogue) => dialogue.length > 0);
 }
 
