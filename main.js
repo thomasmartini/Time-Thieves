@@ -430,16 +430,14 @@ function getArUrlForZone(zone, character) {
   ) || []).length;
 
   const characterSceneId =
-    character.sceneId[Math.min(count, character.sceneId.length - 1)] ||
+    character.sceneId[Math.min(count, character.sceneId.length)] ||
     character.sceneId[0];
-
   // Without a trailing slash, relative assets (bundle.js, ./external/...) resolve to the app root.
   if (url.origin === window.location.origin && url.pathname === "/ar") {
     url.pathname = "/ar/";
   }
 
   const sceneId = zone.monumentId + characterSceneId || zone.slug || "default";
-
   url.searchParams.set("scene", sceneId);
   url.searchParams.set("source", "cesium");
   return url.toString();

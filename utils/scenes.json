@@ -4,16 +4,16 @@
       "name": "Leya",
       "imageUrl": "images/ar/leya.png",
       "sceneId": [
-        "02",
-        "03"
+        "01",
+        "05"
       ]
     },
     {
       "name": "TimeThieves",
       "imageUrl": "images/ar/timethieves.png",
       "sceneId": [
-        "04",
-        "06"
+        "03",
+        "07"
       ]
     },
     {
@@ -21,14 +21,15 @@
       "imageUrl": "images/ar/professor.png",
       "sceneId": [
         "00",
-        "01"
+        "02",
+        "06"
       ]
     },
     {
       "name": "Benjamin Philips",
       "imageUrl": "images/ar/benjamin.png",
       "sceneId": [
-        "05"
+        "04"
       ]
     }
   ]
