@@ -2,6 +2,7 @@
 // This component will appear as a custom component in the editor.
 
 import * as ecs from "@8thwall/ecs"; // This is how you access the ecs library.
+import { hasInventoryItem } from "./Inventory";
 
 type Speaker = "npc" | "player";
 type DialogueTurn = {
@@ -220,6 +221,18 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
     ],
   ],
+  timethieves_locked_dialogue: [
+    [
+      {
+        speaker: "npc",
+        text: "Je bent nog niet klaar om ons te confronteren.",
+      },
+      {
+        speaker: "npc",
+        text: "Kom terug wanneer je de Time Turner hebt gevonden.",
+      },
+    ],
+  ],
   timethieves_final_dialogue: [
     [
       {
@@ -341,6 +354,13 @@ function getDialogueKeyForNpc(npcId: string | undefined): string {
   const normalizedId = normalizeNpcId(npcId);
   if (!normalizedId) {
     return "introduction_dialogue";
+  }
+
+  if (
+    normalizedId === "de-verwoeste-stad-07" &&
+    !hasInventoryItem("Time Turner")
+  ) {
+    return "timethieves_locked_dialogue";
   }
 
   return dialogueKeyByNpcId[normalizedId] || normalizedId;
