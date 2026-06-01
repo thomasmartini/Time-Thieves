@@ -64,6 +64,7 @@ const monumentSelectionEl = document.getElementById("monumentSelection");
 const inventoryViewEl = document.getElementById("inventoryView");
 const inventoryBackBtn = document.getElementById("inventoryBackBtn");
 
+// fallback items for testing without AR scene completion
 const ITEM_DISPLAY_DATA = {
   "boek-erasmus": {
     name: "Boek van Erasmus",
@@ -74,6 +75,10 @@ const ITEM_DISPLAY_DATA = {
     icon: "📚",
   },
 };
+
+/**
+ * Monument zones with GPS coordinates, radius, and associated AR scene data (slug, munumentId and objects).
+ */
 
 const monumentZones = [
   {
@@ -154,6 +159,12 @@ navigator.geolocation.watchPosition(
 
 let selectedMonument = null;
 
+/**
+ * Get display data for an inventory item, with fallback for unknown items.
+ * @param {string} itemId - The ID of the inventory item.
+ * @returns {Object} An object containing the name and icon for the item.
+ */
+
 function getItemDisplay(itemId) {
   return (
     ITEM_DISPLAY_DATA[itemId] || {
@@ -163,11 +174,19 @@ function getItemDisplay(itemId) {
   );
 }
 
+/** Show the monument selection view in the inventory panel.
+ * Resets the selected monument and updates the UI to show the monument selection and hide the inventory view.
+ */
+
 function showMonumentSelection() {
   selectedMonument = null;
   if (monumentSelectionEl) monumentSelectionEl.style.display = "grid";
   if (inventoryViewEl) inventoryViewEl.style.display = "none";
 }
+
+/** Show the inventory view for the selected monument.
+ * Hides the monument selection and displays the inventory view, then refreshes the inventory UI to show the items collected for the selected monument.
+ */
 
 function showInventoryView() {
   if (monumentSelectionEl) monumentSelectionEl.style.display = "none";
@@ -175,10 +194,19 @@ function showInventoryView() {
   refreshInventoryUI();
 }
 
+/** Handle monument selection by setting the selected monument and showing the inventory view for that monument.
+ * @param {string} monumentSlug - The slug identifier for the selected monument.
+ */
+
 function selectMonument(monumentSlug) {
   selectedMonument = monumentSlug;
   showInventoryView();
 }
+
+/** Get the progress for a specific monument based on the number of items collected for that monument.
+ * @param {string} monumentSlug - The slug identifier for the monument to get progress for.
+ * @returns {Object} An object containing the progress percentage, number of items collected, and maximum items for the monument.
+ */
 
 function getMonumentProgress(monumentSlug) {
   const items = getInventoryItems();
@@ -191,6 +219,10 @@ function getMonumentProgress(monumentSlug) {
     maxItems,
   };
 }
+
+/** Render the monument selection UI by creating HTML elements for each monument and adding event listeners for selection.
+ * @param {Array} monuments - An array of monument objects to render in the selection UI.
+ */
 
 function renderMonumentSelection(monuments) {
   if (!monumentSelectionEl) return;
@@ -220,6 +252,10 @@ function renderMonumentSelection(monuments) {
     });
 }
 
+/** Refresh the inventory UI to show the current items collected for the selected monument and update the progress bars in the monument selection.
+ * Gets the inventory items, updates the inventory list in the UI, and updates the progress bars for each monument in the selection view.
+ */
+
 function refreshInventoryUI() {
   const items = getInventoryItems();
   if (!inventoryItemsEl) return;
@@ -247,6 +283,11 @@ function refreshInventoryUI() {
   renderMonumentSelection(monumentZones);
 }
 
+/** Set the inventory panel to open or closed state and update the UI accordingly.
+ * @param {boolean} open - Whether to open (true) or close (false) the inventory panel.
+ * If opening and no monument is currently selected, it will show the monument selection view.
+ */
+
 function setInventoryPanelOpen(open) {
   if (!inventoryPanel || !inventoryToggle) return;
   inventoryPanel.classList.toggle("inventory-expanded", open);
@@ -257,6 +298,10 @@ function setInventoryPanelOpen(open) {
     showMonumentSelection();
   }
 }
+
+/** Toggle the inventory panel open or closed when the inventory toggle button is clicked.
+ * If the panel is currently closed, it will open it; if it's open, it will close it.
+ */
 
 function toggleInventoryPanel() {
   if (!inventoryPanel) return;
@@ -302,6 +347,11 @@ function getCharacterImageUrl(character) {
     `${import.meta.env.BASE_URL}images/image27.png`
   );
 }
+
+/** Spawn objects in the monument zones based on the CHARACTER_DATA.
+ * For each monument zone, it calculates the area based on the radius and spawns objects with random positions within that area.
+ * Each object is associated with a character from the CHARACTER_DATA and added to the Cesium viewer as an entity with a billboard and label.
+ */
 
 function spawnObjectsInMonumentZones() {
   for (const zone of monumentZones) {
@@ -350,6 +400,13 @@ function kilometersToMeters(km) {
   return km * 1000;
 }
 
+/** Calculate the meters per degree of latitude and longitude at a given geographic location.
+ * This is used to convert between geographic coordinates and distances in meters for accurate placement of objects and zones on the map.
+ * @param {number} longitude - The longitude of the location to calculate for.
+ * @param {number} latitude - The latitude of the location to calculate for.
+ * @return {Object} An object containing the meters per degree of latitude (metersPerDegLat) and longitude (metersPerDegLon) at the specified location.
+ */
+
 function getMetersPerDegree(longitude, latitude) {
   const latRad = Cesium.Math.toRadians(latitude);
   const metersPerDegLat =
@@ -358,6 +415,11 @@ function getMetersPerDegree(longitude, latitude) {
     (Math.PI / 180) * Cesium.Ellipsoid.WGS84.maximumRadius * Math.cos(latRad);
   return { metersPerDegLat, metersPerDegLon };
 }
+
+/** Get the corner positions of a square zone based on its center and radius.
+ * @param {Object} zone - The zone object containing center coordinates and radius.
+ * @return {Array} An array of Cartesian3 positions representing the corners of the square zone.
+ */
 
 function getSquareCorners(zone) {
   const { metersPerDegLat, metersPerDegLon } = getMetersPerDegree(
@@ -374,6 +436,12 @@ function getSquareCorners(zone) {
   ];
 }
 
+/** Check if the user's current location is within a specified zone.
+ * This function calculates the distance from the user's current location to the center of the zone and checks if it is within the zone's radius.
+ * @param {Object} zone - The zone object containing center coordinates and radius.
+ * @return {boolean} True if the user is within the zone, false otherwise.
+ */
+
 function isInZone(zone) {
   const { metersPerDegLat, metersPerDegLon } = getMetersPerDegree(
     currentLon,
@@ -389,6 +457,11 @@ function distanceToZone(zone) {
   const zonePosition = Cesium.Cartesian3.fromDegrees(zone.lon, zone.lat, 0);
   return Cesium.Cartesian3.distance(userPosition, zonePosition);
 }
+
+/** Create visual zones on the Cesium map for each monument zone defined in the monumentZones array.
+ * Each zone is represented as a polygon with a specified color and an outline, along with a label displaying the zone's name.
+ * The zones are added to the Cesium viewer as entities, allowing users to see the areas where they can activate AR experiences.
+ */
 
 function createMonumentZones() {
   for (const zone of monumentZones) {
@@ -419,6 +492,12 @@ function createMonumentZones() {
 let arOverlayEl = null;
 let arFrameEl = null;
 
+/** Generate the URL for the 8th Wall AR scene based on the zone and character data, as well as the completion data stored in sessionStorage.
+ * @param {Object} zone - The zone object containing the AR URL and other properties.
+ * @param {Object} character - The character object containing the scene ID and other properties.
+ * @return {string} The generated URL for the 8th Wall AR scene.
+ */
+
 function getArUrlForZone(zone, character) {
   const url = new URL(zone.arUrl || eighthWallSceneUrl, window.location.href);
 
@@ -442,6 +521,10 @@ function getArUrlForZone(zone, character) {
   url.searchParams.set("source", "cesium");
   return url.toString();
 }
+
+/** Ensure that the AR overlay and iframe elements are created and added to the DOM.
+  * If the elements already exist, it does nothing. If they do not exist, it creates a full-screen overlay with a close button and an iframe for loading the 8th Wall AR scene.
+ */
 
 function ensureArOverlay() {
   if (arOverlayEl && arFrameEl) {
@@ -490,6 +573,12 @@ function ensureArOverlay() {
   document.body.appendChild(arOverlayEl);
 }
 
+/** Open the 8th Wall AR scene for a specific zone and character.
+ * @param {Object} zone - The zone object containing the AR URL and other properties.
+ * @param {Object} character - The character object containing the scene ID and other properties.
+ * @param {string} source - The source of the AR scene activation (default is "manual").
+ */
+
 function open8thWallScene(zone, character, source = "manual") {
   const targetUrl = getArUrlForZone(zone, character);
   ensureArOverlay();
@@ -504,6 +593,9 @@ function activateAR(zone) {
   } else { return }
 }
 
+/** Start the AR experience for a specific zone by hiding the Cesium view and UI, creating an A-Frame scene with AR.js, and adding entities for the objects in the zone.
+ * @param {Object} zone - The zone object containing the AR URL and other properties.
+ */
 
 function startAR(zone) {
   // hide Cesium view and UI
@@ -580,6 +672,9 @@ function startAR(zone) {
   document.body.appendChild(arScene);
 }
 
+/** Stop the AR experience by removing the AR scene and back button, showing the Cesium view and UI again, and refreshing the inventory UI.
+ * This function is called when the user clicks the back button in the AR view or when they click on an object to open the 8th Wall scene.
+ */
 function stopAR() {
   // Remove AR scene and back button
   const arScene = document.querySelector("a-scene");
@@ -599,6 +694,11 @@ function stopAR() {
   refreshInventoryUI();
 }
 
+/** Update the visibility of the zone buttons based on whether the user is currently within each zone.
+ * This function iterates through each monument zone and checks if the user is within that zone using the isInZone function.
+ * If the user is within the zone, the corresponding button is shown; otherwise, it is hidden.
+ */
+
 function updateZoneButtonsVisibility() {
   const infoEl = document.getElementById("zoneMessage");
   let visibleCount = 0;
@@ -613,6 +713,10 @@ function updateZoneButtonsVisibility() {
     }
   });
 }
+
+/** Create buttons for each monument zone and add them to the zone panel in the UI. Each button is styled and has an event listener that activates the AR experience for the corresponding zone when clicked.
+ * The buttons are initially hidden and will be shown based on the user's location relative to the zones.
+ */
 
 function createZoneButtons() {
   const panel = document.getElementById("zonePanel");
