@@ -19,7 +19,7 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "player",
-        text: "Natuurlijk, ik help graag. Wat is er aan de hand?",
+        text: "Hallo! Natuurlijk help ik graag. Wat is er aan de hand?",
       },
       {
         speaker: "npc",
@@ -141,10 +141,6 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
         speaker: "player",
         text: "Maakt u zich geen zorgen. Bedankt dat u het verhaal van uw oma wilde delen.",
       },
-      {
-        speaker: "npc",
-        text: "Graag gedaan!",
-      },
     ],
     [
       {
@@ -192,12 +188,16 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
   timethieves_dialogue: [
     [
       {
+        speaker: "player",
+        text: "Hallo daar! Ik heb gehoord dat jullie de geschiedenis van Rotterdam stelen. Waarom?",
+      },
+      {
         speaker: "npc",
         text: "Waarom zouden mensen zich pijn en verdriet moeten blijven herinneren?",
       },
       {
         speaker: "npc",
-        text: "Kijk naar dit monument... een hart weggerukt uit een lichaam. Een eeuwige herinnering aan verlies.",
+        text: "Kijk naar dit monument... een hart ontnomen uit een lichaam. Een eeuwige herinnering aan verlies.",
       },
       {
         speaker: "npc",
@@ -229,11 +229,11 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
-        text: "De Duitsers gebruikten het bombardement om Nederland te dwingen zich over te geven.",
+        text: "De Duitsers gebruikten het bombardement om Nederland tot overgave te dwingen. Het kostte veel onschuldige levens en verwoestte de stad.",
       },
       {
         speaker: "npc",
-        text: "Maar wij geloven dat sommige herinneringen beter verborgen kunnen blijven.",
+        text: "Wij geloven dat sommige herinneringen beter verborgen kunnen blijven.",
       },
       {
         speaker: "player",
@@ -242,6 +242,10 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       {
         speaker: "npc",
         text: "Dan zul je de verloren herinneringen moeten herstellen... voordat ze voorgoed verdwijnen.",
+      },
+      {
+        speaker: "player",
+        text: "Ik ben niet bang voor jullie. Ik zal de geschiedenis van Rotterdam terughalen, wat er ook voor nodig is.",
       },
     ],
   ],
