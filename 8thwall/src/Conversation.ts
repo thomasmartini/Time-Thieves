@@ -18,8 +18,16 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
         text: "Hey jij daar vreemdeling! Kun je mij helpen? Ik heb al dagen een vreemd onderbuikgevoel. Alsof ik iets belangrijks vergeten ben.",
       },
       {
+        speaker: "player",
+        text: "Natuurlijk, ik help graag. Wat is er aan de hand?",
+      },
+      {
         speaker: "npc",
-        text: "Soms flitsen er beelden door mijn hoofd. Oude gebouwen, mensen op straat, vuur, rook... maar zodra ik probeer te begrijpen wat ik zie, verdwijnen de herinneringen weer.",
+        text: "Soms flitsen er beelden door mijn hoofd. Oude gebouwen, mensen op straat, vuur, rook...",
+      },
+      {
+        speaker: "npc",
+        text: "Maar zodra ik probeer te begrijpen wat ik zie, verdwijnen de herinneringen weer.",
       },
       {
         speaker: "npc",
@@ -32,6 +40,10 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       {
         speaker: "npc",
         text: "Maar zonder geschiedenis verliest Rotterdam zijn identiteit.",
+      },
+      {
+        speaker: "player",
+        text: "Dat klinkt vreselijk.",
       },
       {
         speaker: "npc",
@@ -50,12 +62,20 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
         text: "En er zijn nog inwoners die zich delen van het verleden herinneren.",
       },
       {
-        speaker: "npc",
-        text: "Samen met mij, professor E. Brown ga je op onderzoek uit. Jullie moeten puzzels oplossen, historische voorwerpen vinden en de verloren herinneringen herstellen.",
+        speaker: "player",
+        text: "Wat kunnen we doen om de Time Thieves tegen te houden?",
       },
       {
         speaker: "npc",
-        text: "Als je erin slaagt om genoeg herinneringen te herstellen, kunnen we de Time Thieves stoppen en voorkomen dat ze nog meer geschiedenis stelen.",
+        text: "Ga met mij mee op onderzoek uit, los puzzels op, vind historische voorwerpen en herstel verloren herinneringen.",
+      },
+      {
+        speaker: "npc",
+        text: "Als het je lukt om genoeg herinneringen te herstellen, kunnen we de Time Thieves stoppen en voorkomen dat ze nog meer geschiedenis stelen.",
+      },
+      {
+        speaker: "player",
+        text: "Ik ben er klaar voor. Laten we de geschiedenis van Rotterdam terughalen!",
       },
       {
         speaker: "npc",
