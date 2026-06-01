@@ -10,7 +10,7 @@ type DialogueTurn = {
 };
 
 const npcDialogues: Record<string, DialogueTurn[][]> = {
-  introduction_dialogue: [
+  professor_introduction_dialogue: [
     [
       {
         speaker: "npc",
@@ -164,7 +164,7 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
     ],
   ],
-  timethief_dialogue: [
+  timethieves_dialogue: [
     [
       {
         speaker: "npc",
@@ -220,7 +220,7 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
     ],
   ],
-  final_dialogue: [
+  timethieves_final_dialogue: [
     [
       {
         speaker: "npc",
@@ -327,10 +327,10 @@ const CONVERSATION_COMPLETED_STORAGE_KEY_PREFIX = "conversation-completed";
 const CONVERSATION_NEXT_INDEX_STORAGE_KEY_PREFIX = "conversation-next-index";
 
 const dialogueKeyByNpcId: Record<string, string> = {
-  "de-verwoeste-stad-00": "introduction_dialogue",
+  "de-verwoeste-stad-00": "professor_introduction_dialogue",
   "de-verwoeste-stad-01": "leya_dialogue",
-  "de-verwoeste-stad-03": "timethief_dialogue",
-  "de-verwoeste-stad-07": "final_dialogue",
+  "de-verwoeste-stad-03": "timethieves_dialogue",
+  "de-verwoeste-stad-07": "timethieves_final_dialogue",
 };
 
 function normalizeNpcId(npcId: string | undefined): string {

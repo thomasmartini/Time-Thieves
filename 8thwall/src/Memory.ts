@@ -54,7 +54,7 @@ const CARD_IMAGE_MAP: Record<string, string> = {
 };
 
 // Storage key for persisting game state
-const MEMORY_GAME_STATE_KEY = "time-thieves-memory-game-state";
+const MEMORY_GAME_STATE_KEY = "leya-memory-game-state";
 const MEMORY_GAME_JUST_COMPLETED_TEXT =
   "Goed gedaan! Je hebt Memory voltooid en een item als beloning ontvangen.";
 const MEMORY_GAME_ALREADY_COMPLETED_TEXT =
