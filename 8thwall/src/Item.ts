@@ -14,7 +14,7 @@ const REQUIRED_DIALOGUE_KEYS = [
   "leya_dialogue",
   "timethieves_dialogue",
 ];
-const REQUIRED_QUIZ_IDS = ["quiz1", "quiz2"];
+const REQUIRED_QUIZ_IDS = ["professor_quiz", "benjamin_quiz"];
 const MEMORY_REWARD_ITEM_ID = "Zandloper onderdeel 2";
 
 function normalizeId(value: string | undefined): string {
@@ -184,7 +184,7 @@ function getMissingRequirements(): string[] {
 
   for (const quizId of REQUIRED_QUIZ_IDS) {
     if (!isQuizCompleted(quizId)) {
-      missing.push(quizId === "quiz1" ? "quiz 1" : "quiz 2");
+      missing.push(quizId === "professor_quiz" ? "quiz 1" : "quiz 2");
     }
   }
 
