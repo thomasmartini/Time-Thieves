@@ -508,11 +508,13 @@ function getArUrlForZone(zone, character) {
 
   const completionData = getCompletionData();
 
+  const characterKey = character.name.split(" ")[0].toLowerCase();
+
   const count = completionData.filter((key) => {
     const value = key.toLowerCase();
 
     return (
-      value.includes(character.name.toLowerCase()) &&
+      value.includes(characterKey) &&
       !value.includes("next")
     );
   }).length;
