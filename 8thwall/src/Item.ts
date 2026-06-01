@@ -7,14 +7,14 @@ const requestedSceneId =
 
 const CONVERSATION_COMPLETED_STORAGE_KEY_PREFIX = "conversation-completed";
 const QUIZ_ITEM_GRANTED_STORAGE_KEY_PREFIX = "time-thieves-quiz-item-granted";
-const MEMORY_GAME_STATE_KEY = "leya-memory-game-state";
+const MEMORY_GAME_STATE_KEY = "time-thieves-memory-game-state";
 
 const REQUIRED_DIALOGUE_KEYS = [
   "professor_introduction_dialogue",
   "leya_dialogue",
   "timethieves_dialogue",
 ];
-const REQUIRED_QUIZ_IDS = ["professor_quiz1", "benjamin_quiz2"];
+const REQUIRED_QUIZ_IDS = ["quiz1", "quiz2"];
 const MEMORY_REWARD_ITEM_ID = "Zandloper onderdeel 2";
 
 function normalizeId(value: string | undefined): string {
@@ -184,7 +184,7 @@ function getMissingRequirements(): string[] {
 
   for (const quizId of REQUIRED_QUIZ_IDS) {
     if (!isQuizCompleted(quizId)) {
-      missing.push(quizId === "professor_quiz1" ? "quiz 1" : "quiz 2");
+      missing.push(quizId === "quiz1" ? "quiz 1" : "quiz 2");
     }
   }
 

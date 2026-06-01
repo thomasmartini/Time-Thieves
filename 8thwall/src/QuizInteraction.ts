@@ -8,7 +8,7 @@ type QuizQuestion = {
 };
 
 const quizQuestionsById: Record<string, QuizQuestion[]> = {
-  professor_quiz1: [
+  quiz1: [
     {
       question: "Welke gebeurtenis verwoestte een groot deel van Rotterdam?",
       answers: [
@@ -39,7 +39,7 @@ const quizQuestionsById: Record<string, QuizQuestion[]> = {
       correctAnswerIndex: 1,
     },
   ],
-  benjamin_quiz2: [
+  quiz2: [
     {
       question:
         "Hoeveel dagen na het begin van de Duitse aanval werd Rotterdam gebombardeerd?",
@@ -77,13 +77,13 @@ const quizQuestionsById: Record<string, QuizQuestion[]> = {
 };
 
 const quizIdByNpcId: Record<string, string> = {
-  "de-verwoeste-stad-02": "professor_quiz1",
-  "de-verwoeste-stad-04": "benjamin_quiz2",
+  "de-verwoeste-stad-02": "quiz1",
+  "de-verwoeste-stad-04": "quiz2",
 };
 
 const rewardIdByQuizId: Record<string, string> = {
-  professor_quiz1: "Zandloper onderdeel 1",
-  benjamin_quiz2: "Experimenteel zand",
+  quiz1: "Zandloper onderdeel 1",
+  quiz2: "Experimenteel zand",
 };
 
 const queryParams = new URLSearchParams(window.location.search);
@@ -98,12 +98,12 @@ function normalizeId(value: string | undefined): string {
 
 function getQuizIdForSchema(componentNpcId: string | undefined): string {
   const resolvedQuizId = quizIdByNpcId[normalizeId(componentNpcId)];
-  return resolvedQuizId || "professor_quiz1";
+  return resolvedQuizId || "quiz1";
 }
 
 function getQuizQuestionsForSchema(schema: { npcId?: string }): QuizQuestion[] {
   const quizId = getQuizIdForSchema(schema.npcId);
-  return quizQuestionsById[quizId] || quizQuestionsById.professor_quiz1;
+  return quizQuestionsById[quizId] || quizQuestionsById.quiz1;
 }
 
 function getRewardIdForSchema(componentNpcId: string | undefined): string {
