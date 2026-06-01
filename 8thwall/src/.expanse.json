@@ -2382,7 +2382,7 @@
       },
       "name": "RewardItem",
       "order": 2.47367789132751,
-      "hidden": true,
+      "hidden": false,
       "parentId": "c6aa1858-5ace-4e62-947b-3980addabb62"
     },
     "ddb9e01a-5184-4c05-b102-eeb0ff670d97": {
