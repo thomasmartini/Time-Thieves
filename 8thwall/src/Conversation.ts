@@ -99,11 +99,11 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "player",
-        text: "Zie je, ik geloof dat dit standbeeld, en veel andere in de stad, herinneringen bevatten aan belangrijke historische gebeurtenissen.",
+        text: "Ik geloof dat dit standbeeld herinneringen bevat aan een belangrijke historische gebeurtenis.",
       },
       {
         speaker: "player",
-        text: "Wat weet u over deze?",
+        text: "Wat kunt u me hierover vertellen?",
       },
       {
         speaker: "npc",
@@ -123,7 +123,7 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
-        text: "Ik herinner me een foto die mijn oma tijdens de oorlog maakte. De oorlog heeft Rotterdam enorm veranderd. Het liet een litteken achter in het hart van de stad.",
+        text: "Ik herinner me een reeks foto's die mijn oma tijdens de oorlog maakte. De oorlog heeft Rotterdam enorm veranderd. Het liet een litteken achter in het hart van de stad.",
       },
       {
         speaker: "player",
@@ -149,11 +149,11 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
     [
       {
         speaker: "npc",
-        text: "Oh, jullie zijn terug. Sinds ons vorige gesprek blijf ik maar denken aan de verhalen van mijn oma.",
+        text: "Oh, je bent er weer. Sinds ons vorige gesprek blijf ik maar denken aan de verhalen van mijn oma.",
       },
       {
         speaker: "npc",
-        text: "Het is vreemd... hoe meer ik hierover praat, hoe meer herinneringen lijken terug te komen.",
+        text: "Het is vreemd... hoe meer ik hierover praat, hoe meer herinneringen terug lijken te komen.",
       },
       {
         speaker: "player",
@@ -169,7 +169,7 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
-        text: "Ze vertelde vroeger ook vaak over het monument 'De Verwoeste Stad'. Volgens mij staat het op Plein 1940.",
+        text: "Ze vertelde vroeger ook vaak over het monument.",
       },
       {
         speaker: "npc",
@@ -177,11 +177,15 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "player",
-        text: "Elke herinnering helpt ons om de geschiedenis terug te brengen.",
+        text: "Elke herinnering helpt om de geschiedenis terug te brengen.",
       },
       {
         speaker: "npc",
-        text: "Blijf dan zoeken. Het voelt alsof de stad haar verleden langzaam begint terug te krijgen.",
+        text: "Blijf verder zoeken. Het voelt alsof de stad haar verleden langzaam begint terug te krijgen.",
+      },
+      {
+        speaker: "player",
+        text: "Ik zal mijn best doen om nog meer herinneringen te vinden en te herstellen.",
       },
     ],
   ],
