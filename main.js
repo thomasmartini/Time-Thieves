@@ -347,10 +347,12 @@ function getCharacterImageUrl(character) {
     `${import.meta.env.BASE_URL}images/image27.png`
   );
 }
+
 /** Spawn objects in the monument zones based on the CHARACTER_DATA.
  * For each monument zone, it calculates the area based on the radius and spawns objects with random positions within that area.
  * Each object is associated with a character from the CHARACTER_DATA and added to the Cesium viewer as an entity with a billboard and label.
  */
+
 function spawnObjectsInMonumentZones() {
   for (const zone of monumentZones) {
     const { metersPerDegLat, metersPerDegLon } = getMetersPerDegree(
@@ -397,12 +399,14 @@ let currentActiveMonument = null;
 function kilometersToMeters(km) {
   return km * 1000;
 }
+
 /** Calculate the meters per degree of latitude and longitude at a given geographic location.
  * This is used to convert between geographic coordinates and distances in meters for accurate placement of objects and zones on the map.
  * @param {number} longitude - The longitude of the location to calculate for.
  * @param {number} latitude - The latitude of the location to calculate for.
  * @return {Object} An object containing the meters per degree of latitude (metersPerDegLat) and longitude (metersPerDegLon) at the specified location.
  */
+
 function getMetersPerDegree(longitude, latitude) {
   const latRad = Cesium.Math.toRadians(latitude);
   const metersPerDegLat =
@@ -411,10 +415,12 @@ function getMetersPerDegree(longitude, latitude) {
     (Math.PI / 180) * Cesium.Ellipsoid.WGS84.maximumRadius * Math.cos(latRad);
   return { metersPerDegLat, metersPerDegLon };
 }
+
 /** Get the corner positions of a square zone based on its center and radius.
  * @param {Object} zone - The zone object containing center coordinates and radius.
  * @return {Array} An array of Cartesian3 positions representing the corners of the square zone.
  */
+
 function getSquareCorners(zone) {
   const { metersPerDegLat, metersPerDegLon } = getMetersPerDegree(
     zone.lon,
@@ -429,11 +435,13 @@ function getSquareCorners(zone) {
     Cesium.Cartesian3.fromDegrees(zone.lon - deltaLon, zone.lat + deltaLat, 0),
   ];
 }
+
 /** Check if the user's current location is within a specified zone.
  * This function calculates the distance from the user's current location to the center of the zone and checks if it is within the zone's radius.
  * @param {Object} zone - The zone object containing center coordinates and radius.
  * @return {boolean} True if the user is within the zone, false otherwise.
  */
+
 function isInZone(zone) {
   const { metersPerDegLat, metersPerDegLon } = getMetersPerDegree(
     currentLon,
@@ -449,10 +457,12 @@ function distanceToZone(zone) {
   const zonePosition = Cesium.Cartesian3.fromDegrees(zone.lon, zone.lat, 0);
   return Cesium.Cartesian3.distance(userPosition, zonePosition);
 }
+
 /** Create visual zones on the Cesium map for each monument zone defined in the monumentZones array.
  * Each zone is represented as a polygon with a specified color and an outline, along with a label displaying the zone's name.
  * The zones are added to the Cesium viewer as entities, allowing users to see the areas where they can activate AR experiences.
  */
+
 function createMonumentZones() {
   for (const zone of monumentZones) {
     viewer.entities.add({
@@ -481,11 +491,13 @@ function createMonumentZones() {
 
 let arOverlayEl = null;
 let arFrameEl = null;
+
 /** Generate the URL for the 8th Wall AR scene based on the zone and character data, as well as the completion data stored in sessionStorage.
  * @param {Object} zone - The zone object containing the AR URL and other properties.
  * @param {Object} character - The character object containing the scene ID and other properties.
  * @return {string} The generated URL for the 8th Wall AR scene.
  */
+
 function getArUrlForZone(zone, character) {
   const url = new URL(zone.arUrl || eighthWallSceneUrl, window.location.href);
 
@@ -509,9 +521,11 @@ function getArUrlForZone(zone, character) {
   url.searchParams.set("source", "cesium");
   return url.toString();
 }
+
 /** Ensure that the AR overlay and iframe elements are created and added to the DOM.
   * If the elements already exist, it does nothing. If they do not exist, it creates a full-screen overlay with a close button and an iframe for loading the 8th Wall AR scene.
  */
+
 function ensureArOverlay() {
   if (arOverlayEl && arFrameEl) {
     return;
@@ -558,11 +572,13 @@ function ensureArOverlay() {
   arOverlayEl.appendChild(arFrameEl);
   document.body.appendChild(arOverlayEl);
 }
+
 /** Open the 8th Wall AR scene for a specific zone and character.
  * @param {Object} zone - The zone object containing the AR URL and other properties.
  * @param {Object} character - The character object containing the scene ID and other properties.
  * @param {string} source - The source of the AR scene activation (default is "manual").
  */
+
 function open8thWallScene(zone, character, source = "manual") {
   const targetUrl = getArUrlForZone(zone, character);
   ensureArOverlay();
@@ -580,6 +596,7 @@ function activateAR(zone) {
 /** Start the AR experience for a specific zone by hiding the Cesium view and UI, creating an A-Frame scene with AR.js, and adding entities for the objects in the zone.
  * @param {Object} zone - The zone object containing the AR URL and other properties.
  */
+
 function startAR(zone) {
   // hide Cesium view and UI
   document.getElementById("cesiumContainer").style.display = "none";
@@ -654,6 +671,7 @@ function startAR(zone) {
 
   document.body.appendChild(arScene);
 }
+
 /** Stop the AR experience by removing the AR scene and back button, showing the Cesium view and UI again, and refreshing the inventory UI.
  * This function is called when the user clicks the back button in the AR view or when they click on an object to open the 8th Wall scene.
  */
@@ -675,10 +693,12 @@ function stopAR() {
 
   refreshInventoryUI();
 }
+
 /** Update the visibility of the zone buttons based on whether the user is currently within each zone.
  * This function iterates through each monument zone and checks if the user is within that zone using the isInZone function.
  * If the user is within the zone, the corresponding button is shown; otherwise, it is hidden.
  */
+
 function updateZoneButtonsVisibility() {
   const infoEl = document.getElementById("zoneMessage");
   let visibleCount = 0;
@@ -693,9 +713,11 @@ function updateZoneButtonsVisibility() {
     }
   });
 }
+
 /** Create buttons for each monument zone and add them to the zone panel in the UI. Each button is styled and has an event listener that activates the AR experience for the corresponding zone when clicked.
  * The buttons are initially hidden and will be shown based on the user's location relative to the zones.
  */
+
 function createZoneButtons() {
   const panel = document.getElementById("zonePanel");
   if (!panel) return;
