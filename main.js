@@ -68,11 +68,11 @@ const inventoryBackBtn = document.getElementById("inventoryBackBtn");
 const ITEM_DISPLAY_DATA = {
   "boek-erasmus": {
     name: "Boek van Erasmus",
-    icon: "📖",
+    icon: `${import.meta.env.BASE_URL}images/items/boek-erasmus.png`,
   },
   "bakstenen-verwoeste-stad": {
     name: "Bakstenen van De Verwoeste Stad",
-    icon: "📚",
+    icon: `${import.meta.env.BASE_URL}images/items/bakstenen-verwoeste-stad.png`,
   },
 };
 
@@ -169,7 +169,7 @@ function getItemDisplay(itemId) {
   return (
     ITEM_DISPLAY_DATA[itemId] || {
       name: itemId,
-      icon: "📦",
+      icon: `${import.meta.env.BASE_URL}images/items/${itemId.split('').filter(e => e.trim().length).join('').toLowerCase()}.png`,
     }
   );
 }
@@ -268,9 +268,14 @@ function refreshInventoryUI() {
       .map((item) => {
         const display = getItemDisplay(item.itemId);
         return `<div class="inventory-item">
-          <div class="inventory-item-icon">${display.icon}</div>
-          <div class="inventory-item-name">${display.name}</div>
-        </div>`;
+  <div class="inventory-item-icon">
+    <img src="${display.icon}" alt="${display.name}" style="
+      width: 64px;
+      height: 64px;
+      object-fit: contain;">
+  </div>
+  <div class="inventory-item-name">${display.name}</div>
+</div>`;
       })
       .join("");
   }
@@ -550,12 +555,13 @@ function ensureArOverlay() {
   closeButton.style.borderRadius = "8px";
   closeButton.style.background = "linear-gradient(135deg, #c6f321 0%, #4dabf7 100%)";
 
-  closeButton.style.color = "#fff";
+  closeButton.style.color = "#150000";
   closeButton.style.cursor = "pointer";
   closeButton.addEventListener("click", () => {
     if (!arOverlayEl || !arFrameEl) return;
     arOverlayEl.style.display = "none";
     arFrameEl.src = "about:blank";
+    refreshInventoryUI();
   });
 
   arFrameEl = document.createElement("iframe");
