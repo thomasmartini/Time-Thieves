@@ -18,8 +18,7 @@ Before running the application, ensure you have:
 
 * Node.js 18+ installed
 * npm, pnpm, or yarn
-* An active 8th Wall developer account
-* Valid 8th Wall application key
+* CesiumIon token
 * Modern browser with WebGL and camera access support
 
 ## Installation
