@@ -119,19 +119,7 @@ Cesium.Ion.defaultAccessToken =
 const viewer = new Cesium.Viewer('cesiumContainer')
 ```
 
-## AR.js Integration
 
-Example marker configuration:
-
-```html
-<a-scene embedded arjs>
-  <a-marker preset="hiro">
-    <a-box position="0 0.5 0"></a-box>
-  </a-marker>
-
-  <a-entity camera></a-entity>
-</a-scene>
-```
 ## Deployment
 
 The application can be deployed to:
@@ -180,15 +168,9 @@ Requirements:
 * Verify the Cesium access token
 * Inspect browser console for WebGL errors
 
-### 8th Wall Tracking Issues
-
-* Verify the application key
-* Ensure the device supports WebAR
-* Test in adequate lighting conditions
-
 ## License
 
-Specify your project's license here.
+standard MIT license
 
 ## Acknowledgements
 
