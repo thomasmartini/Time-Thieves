@@ -237,19 +237,55 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
     [
       {
         speaker: "npc",
-        text: "Het is voorbij. Rotterdam zal haar geschiedenis vergeten, net als alle steden voor haar.",
-      },
-      {
-        speaker: "npc",
-        text: "De verhalen vervagen, de herinneringen verdwijnen en niemand zal nog weten wat er ooit is geweest.",
+        text: "Ha! Je bent terug. Er is niets wat je kunt doen om ons te stoppen. Je kunt de geschiedenis niet terugdraaien.",
       },
       {
         speaker: "player",
-        text: "Je hebt een ding over het hoofd gezien.",
+        text: "Als jullie denken dat ik zomaar zou toekijken, dan hebben jullie het mis. Samen met Professor E. Brown heb ik een plan bedacht.",
       },
       {
         speaker: "npc",
-        text: "En wat zou dat moeten zijn?",
+        text: "Een plan? Hahaha! Jullie zijn te laat. De herinneringen zijn verdwenen en binnenkort zal niemand zich nog herinneren wat hier ooit is gebeurd.",
+      },
+      {
+        speaker: "player",
+        text: "Niet alleen de professor heeft geholpen. Ook de mensen in de stad hebben geholpen om verloren herinneringen terug te vinden.",
+      },
+      {
+        speaker: "npc",
+        text: "Dat kan niet! Wij hebben alles uitgewist. De herinneringen zijn verdwenen!",
+      },
+      {
+        speaker: "player",
+        text: "En daar gingen jullie de fout in.",
+      },
+      {
+        speaker: "player",
+        text: "De monumenten van Rotterdam dragen de verhalen van het verleden met zich mee. Herinneringen verdwijnen niet zomaar zolang er iets is dat ze bewaart.",
+      },
+      {
+        speaker: "npc",
+        text: "Nee... Dat is onmogelijk.",
+      },
+      {
+        speaker: "player",
+        text: "De Verwoeste Stad, historische foto's, gebouwen en monumenten. Ze bewaren allemaal een stukje geschiedenis.",
+      },
+      {
+        speaker: "npc",
+        text: "Maar... die herinneringen... daar kun je toch niets mee doen?",
+      },
+      {
+        speaker: "player",
+        text: "Dat dachten jullie.",
+      },
+      {
+        speaker: "player",
+        text: "Met behulp van deze herinneringen hebben Professor E. Brown en ik iets gebouwd.",
+      },
+      {
+        speaker: "npc",
+        text: "Wat bedoel je?",
       },
       {
         speaker: "player",
@@ -261,55 +297,51 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "player",
-        text: "We hebben een manier gevonden om de verloren herinneringen terug te halen. Je kunt ze niet langer verborgen houden.",
+        text: "Met deze zandloper kunnen de verloren herinneringen worden hersteld en kunnen jullie je niet langer verschuilen achter leugens en vergetelheid.",
       },
       {
         speaker: "npc",
-        text: "Onmogelijk. Jarenlang hebben wij verhalen uitgewist, foto's verborgen en herinneringen laten vervagen.",
+        text: "Stop! Als je dat gebruikt, komt alles terug wat wij hebben gestolen!",
       },
       {
         speaker: "player",
-        text: "En toch zijn ze teruggekeerd. Mensen vergaten ze niet.",
-      },
-      {
-        speaker: "npc",
-        text: "Waarom zouden ze vasthouden aan het verleden? Vergeten is zoveel eenvoudiger.",
+        text: "Precies daarom gebruik ik het.",
       },
       {
         speaker: "player",
-        text: "Omdat geschiedenis ons laat zien wie we zijn en waar we vandaan komen.",
+        text: "*Draait het Hourglass of Time om*",
       },
       {
         speaker: "npc",
-        text: "Nee... Stop! Als je de zandloper gebruikt, zal alles wat wij hebben gestolen terugkeren.",
+        text: "Wat gebeurt er?!",
+      },
+      {
+        speaker: "npc",
+        text: "Onze dekmantels... ze verdwijnen!",
+      },
+      {
+        speaker: "npc",
+        text: "Ik voel het... De herinneringen herstellen zich. De verhalen keren terug.",
+      },
+      {
+        speaker: "npc",
+        text: "De Verwoeste Stad... de foto's... de monumenten... alles wordt weer herinnerd!",
       },
       {
         speaker: "player",
-        text: "Precies daarom doe ik het.",
+        text: "De geschiedenis van Rotterdam hoort bij de mensen. Jullie kunnen die niet stelen.",
       },
       {
         speaker: "npc",
-        text: "Wacht... Wat gebeurt er?",
+        text: "Al die positiviteit... gatver.",
       },
       {
         speaker: "npc",
-        text: "Ik voel het al... De herinneringen herstellen zich. De verhalen keren terug naar hun rechtmatige plaats.",
+        text: "Dit is niet de laatste keer dat jullie van ons horen.",
       },
       {
         speaker: "npc",
-        text: "De Verwoeste Stad... de foto's... de mensen... alles wordt weer herinnerd.",
-      },
-      {
-        speaker: "npc",
-        text: "Onze macht verdwijnt...",
-      },
-      {
-        speaker: "player",
-        text: "De geschiedenis van Rotterdam zal niet worden vergeten.",
-      },
-      {
-        speaker: "npc",
-        text: "De herinneringen zijn hersteld. Onze tijd is voorbij.",
+        text: "Deze stad draagt nog steeds pijn en verdriet met zich mee. Vroeg of laat keren wij terug.",
       },
       {
         speaker: "player",
@@ -317,7 +349,15 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
-        text: "Dan is dit het einde van de Time Thieves...",
+        text: "We zullen zien of de tijd ons inhaalt...",
+      },
+      {
+        speaker: "npc",
+        text: "Maar voor nu... is dit het einde van de Time Thieves.",
+      },
+      {
+        speaker: "npc",
+        text: "*De Time Thieves verdwijnen langzaam in de tijd*",
       },
       {
         speaker: "player",
