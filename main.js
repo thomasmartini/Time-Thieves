@@ -508,12 +508,12 @@ function getArUrlForZone(zone, character) {
 
   const completionData = getCompletionData();
 
-  const count = completionData.filter((item) => {
-    const value = String(item).toLowerCase();
+  const count = completionData.filter((key) => {
+    const value = key.toLowerCase();
 
     return (
-      value.includes(character.name.toLowerCase())
-      && !value.includes("next")
+      value.includes(character.name.toLowerCase()) &&
+      !value.includes("next")
     );
   }).length;
 
@@ -526,12 +526,14 @@ function getArUrlForZone(zone, character) {
     url.pathname = "/ar/";
   }
 
-  const sceneId = zone.monumentId + characterSceneId || zone.slug || "default";
+  const sceneId = (zone.monumentId + characterSceneId) || zone.slug || "default";
+
   url.searchParams.set("scene", sceneId);
   url.searchParams.set("source", "cesium");
+
   return url.toString();
 }
-
+console.log(getCompletionData());
 /** Ensure that the AR overlay and iframe elements are created and added to the DOM.
   * If the elements already exist, it does nothing. If they do not exist, it creates a full-screen overlay with a close button and an iframe for loading the 8th Wall AR scene.
  */

@@ -1,6 +1,6 @@
 /**
  * This module provides a function to retrieve completion data for the scenes.
- * It gathers the keys from sessionStorage and returns them as a JavaScript object.
+ * It gathers the keys from sessionStorage and returns them as a JSON string.
  */
 
 export function getCompletionData() {
