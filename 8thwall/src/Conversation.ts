@@ -337,7 +337,7 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "player",
-        text: "*Draait de Zandloper der Tijden om*",
+        text: "*Draait De Zandloper der Tijden om*",
       },
       {
         speaker: "npc",
@@ -422,7 +422,8 @@ function getDialogueKeyForNpc(npcId: string | undefined): string {
 
   if (
     normalizedId === "de-verwoeste-stad-07" &&
-    !hasInventoryItem("Time Turner")
+    !hasInventoryItem("De Zandloper der Tijden") &&
+    !hasInventoryItem("Zandloper onderdeel 2")
   ) {
     return "timethieves_locked_dialogue";
   }
