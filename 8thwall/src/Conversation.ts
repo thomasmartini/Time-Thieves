@@ -422,7 +422,7 @@ function getDialogueKeyForNpc(npcId: string | undefined): string {
 
   if (
     normalizedId === "de-verwoeste-stad-07" &&
-    !hasInventoryItem("De Zandloper der Tijden") &&
+    !hasInventoryItem("Zandloper onderdeel 3") &&
     !hasInventoryItem("Zandloper onderdeel 2")
   ) {
     return "timethieves_locked_dialogue";
