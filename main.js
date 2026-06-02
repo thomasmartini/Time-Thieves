@@ -33,7 +33,7 @@ try {
   viewer._cesiumWidget._creditContainer.style.display = "none";
 }
 
-// USER LOCATION + MODEL
+// Initial coordinates set to Rotterdam for fallback if GPS is unavailable
 let currentLon = 4.4845575;
 let currentLat = 51.9122727;
 
@@ -48,7 +48,7 @@ let userPlayer = viewer.entities.add({
   },
 });
 
-// GPS TRACKING + CAMERA FOLLOW
+// gps tracking + camera control
 let cameraFollow = true;
 let touchStartX = 0;
 let touchStartY = 0;
@@ -118,6 +118,10 @@ canvas.addEventListener("dblclick", () => {
   cameraFollow = true;
 });
 
+/** GPS Tracking  */
+let cameraTargetPosition = null;
+let smoothCameraPosition = null;
+
 navigator.geolocation.watchPosition(
   (position) => {
     currentLon = position.coords.longitude;
@@ -138,25 +142,64 @@ navigator.geolocation.watchPosition(
     );
 
     // Player direction based on GPS heading
-    userPlayer.orientation = Cesium.Transforms.headingPitchRollQuaternion(
-      playerPosition,
-      new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(heading - 90), 0, 0),
-    );
+    userPlayer.orientation =
+      Cesium.Transforms.headingPitchRollQuaternion(
+        playerPosition,
+        new Cesium.HeadingPitchRoll(
+          Cesium.Math.toRadians(heading - 90),
+          0,
+          0,
+        ),
+      );
 
-    if (cameraFollow) {
-      viewer.camera.lookAt(playerPosition, offset);
-    }
+    // 👉 ADD THIS: store target for smoothing
+    cameraTargetPosition = playerPosition;
+
     updateZoneButtonsVisibility();
   },
   (error) => {
     console.warn("GPS error, using fallback Rotterdam", error);
+
     currentLon = 4.47917;
     currentLat = 51.9225;
+
+    cameraTargetPosition = Cesium.Cartesian3.fromDegrees(
+      currentLon,
+      currentLat,
+      5,
+    );
+
     updateZoneButtonsVisibility();
   },
   { enableHighAccuracy: true, maximumAge: 1000, timeout: 2000 },
 );
 
+
+// 👉 ADD THIS BLOCK (camera smoothing loop)
+viewer.scene.preRender.addEventListener(() => {
+  if (!cameraFollow || !cameraTargetPosition) return;
+
+  if (!smoothCameraPosition) {
+    smoothCameraPosition = Cesium.Cartesian3.clone(cameraTargetPosition);
+  }
+
+  Cesium.Cartesian3.lerp(
+    smoothCameraPosition,
+    cameraTargetPosition,
+    0.05, // smoothing (lower = smoother)
+    smoothCameraPosition,
+  );
+
+  const heading = 0; // (intentionally minimal change; uses your original GPS logic indirectly)
+
+  const offset = new Cesium.HeadingPitchRange(
+    Cesium.Math.toRadians(heading),
+    Cesium.Math.toRadians(-15),
+    20,
+  );
+
+  viewer.camera.lookAt(smoothCameraPosition, offset);
+});
 let selectedMonument = null;
 
 /**
@@ -620,73 +663,102 @@ function startAR(zone) {
 
   // create AR scene
   const arScene = document.createElement("a-scene");
+
   arScene.setAttribute("xr-mode-ui", "enabled: false");
   arScene.setAttribute(
     "arjs",
-    "sourceType: webcam; videoTexture: true; debugUIEnabled: false",
+    "sourceType: webcam; videoTexture: true; debugUIEnabled: false"
   );
   arScene.setAttribute("renderer", "antialias: true; alpha: true");
+
   arScene.style.width = "100%";
   arScene.style.height = "100%";
   arScene.style.position = "absolute";
   arScene.style.top = "0";
   arScene.style.left = "0";
 
-  // Camera
+  // Camera (GPS AR camera)
   const camera = document.createElement("a-camera");
   camera.setAttribute("gps-new-camera", "gpsMinDistance: 5");
   camera.setAttribute("cursor", "rayOrigin: mouse; fuse: false");
   arScene.appendChild(camera);
 
-  // Entities for objects in the zone
+  // Custom component to make entities face the camera while keeping them upright (no tilt)
+  AFRAME.registerComponent("face-camera-flat", {
+    tick: function () {
+      const cam = document.querySelector("[camera]");
+      if (!cam) return;
+
+      // face camera
+      this.el.object3D.lookAt(cam.object3D.position);
+
+      // lock tilt (important for AR GPS stability)
+      this.el.object3D.rotation.x = 0;
+      this.el.object3D.rotation.z = 0;
+    }
+  });
+
+  // Add objects to AR scene
   zone.objects.forEach((obj) => {
     const character = obj.character || {
       name: character.name,
       imageUrl: `${import.meta.env.BASE_URL}${character.imageUrl}`,
-      sceneId: character.sceneId[0],
+      sceneId: null
     };
+
     const objectEntity = document.createElement("a-entity");
+
+    // visual plane (sprite-style)
     objectEntity.setAttribute(
       "geometry",
-      "primitive: plane; width: 5; height: 5",
+      "primitive: plane; width: 5; height: 5"
     );
+
     objectEntity.setAttribute(
       "material",
-      `src: ${getCharacterImageUrl(character)}; transparent: true; opacity: 1`,
+      `src:${import.meta.env.BASE_URL}${character.imageUrl} ; transparent: true; opacity: 1`
     );
-    objectEntity.setAttribute("look-at", "[gps-camera]");
+
+    // GPS placement
     objectEntity.setAttribute(
       "gps-new-entity-place",
-      `latitude: ${obj.lat}; longitude: ${obj.lon}`,
+      `latitude: ${obj.lat}; longitude: ${obj.lon}`
     );
+
+    // IMPORTANT: stable camera-facing behavior
+    objectEntity.setAttribute("face-camera-flat", "");
+
+    // interaction
     objectEntity.addEventListener("click", () => {
       stopAR();
       open8thWallScene(zone, character);
     });
+
     arScene.appendChild(objectEntity);
   });
 
   const backButton = document.createElement("button");
   backButton.id = "arBackButton";
   backButton.textContent = "Terug naar kaart";
+
   backButton.style.position = "absolute";
   backButton.style.top = "20px";
-  backButton.style.fontWeight = "700";
   backButton.style.right = "20px";
   backButton.style.zIndex = "1000";
   backButton.style.padding = "10px";
-  backButton.style.background = "linear-gradient(135deg, #c6f321 0%, #4dabf7 100%)";
-
-  backButton.style.color = "#150000";
+  backButton.style.fontWeight = "700";
   backButton.style.border = "none";
   backButton.style.borderRadius = "4px";
   backButton.style.cursor = "pointer";
-  backButton.addEventListener("click", stopAR);
-  document.body.appendChild(backButton);
+  backButton.style.background =
+    "linear-gradient(135deg, #c6f321 0%, #4dabf7 100%)";
+  backButton.style.color = "#150000";
 
+  backButton.addEventListener("click", stopAR);
+
+  document.body.appendChild(backButton);
   document.body.appendChild(arScene);
 }
-
 /** Stop the AR experience by removing the AR scene and back button, showing the Cesium view and UI again, and refreshing the inventory UI.
  * This function is called when the user clicks the back button in the AR view or when they click on an object to open the 8th Wall scene.
  */
