@@ -495,10 +495,6 @@ ecs.registerComponent({
             world,
             schema.rewardTextTarget,
           );
-          if (rewardTextEntity) {
-            if (!rewardTextEntity.isHidden()) rewardTextEntity.hide();
-            if (!rewardTextEntity.isDisabled()) rewardTextEntity.disable();
-          }
         }
 
         // Update all card visuals

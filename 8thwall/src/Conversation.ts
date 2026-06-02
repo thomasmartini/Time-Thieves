@@ -18,8 +18,16 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
         text: "Hey jij daar vreemdeling! Kun je mij helpen? Ik heb al dagen een vreemd onderbuikgevoel. Alsof ik iets belangrijks vergeten ben.",
       },
       {
+        speaker: "player",
+        text: "Hallo! Natuurlijk help ik graag. Wat is er aan de hand?",
+      },
+      {
         speaker: "npc",
-        text: "Soms flitsen er beelden door mijn hoofd. Oude gebouwen, mensen op straat, vuur, rook... maar zodra ik probeer te begrijpen wat ik zie, verdwijnen de herinneringen weer.",
+        text: "Soms flitsen er beelden door mijn hoofd. Oude gebouwen, mensen op straat, vuur, rook...",
+      },
+      {
+        speaker: "npc",
+        text: "Maar zodra ik probeer te begrijpen wat ik zie, verdwijnen de herinneringen weer.",
       },
       {
         speaker: "npc",
@@ -32,6 +40,10 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       {
         speaker: "npc",
         text: "Maar zonder geschiedenis verliest Rotterdam zijn identiteit.",
+      },
+      {
+        speaker: "player",
+        text: "Dat klinkt vreselijk.",
       },
       {
         speaker: "npc",
@@ -50,12 +62,20 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
         text: "En er zijn nog inwoners die zich delen van het verleden herinneren.",
       },
       {
-        speaker: "npc",
-        text: "Samen met mij, professor E. Brown ga je op onderzoek uit. Jullie moeten puzzels oplossen, historische voorwerpen vinden en de verloren herinneringen herstellen.",
+        speaker: "player",
+        text: "Wat kunnen we doen om de Time Thieves tegen te houden?",
       },
       {
         speaker: "npc",
-        text: "Als je erin slaagt om genoeg herinneringen te herstellen, kunnen we de Time Thieves stoppen en voorkomen dat ze nog meer geschiedenis stelen.",
+        text: "Ga met mij mee op onderzoek uit, los puzzels op, vind historische voorwerpen en herstel verloren herinneringen.",
+      },
+      {
+        speaker: "npc",
+        text: "Als het je lukt om genoeg herinneringen te herstellen, kunnen we de Time Thieves stoppen en voorkomen dat ze nog meer geschiedenis stelen.",
+      },
+      {
+        speaker: "player",
+        text: "Ik ben er klaar voor. Laten we de geschiedenis van Rotterdam terughalen!",
       },
       {
         speaker: "npc",
@@ -79,11 +99,11 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "player",
-        text: "Zie je, ik geloof dat dit standbeeld, en veel andere in de stad, herinneringen bevatten aan belangrijke historische gebeurtenissen.",
+        text: "Ik geloof dat dit standbeeld herinneringen bevat aan een belangrijke historische gebeurtenis.",
       },
       {
         speaker: "player",
-        text: "Wat weet u over deze?",
+        text: "Wat kunt u me hierover vertellen?",
       },
       {
         speaker: "npc",
@@ -103,7 +123,7 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
-        text: "Ik herinner me een foto die mijn oma tijdens de oorlog maakte. De oorlog heeft Rotterdam enorm veranderd. Het liet een litteken achter in het hart van de stad.",
+        text: "Ik herinner me een reeks foto's die mijn oma tijdens de oorlog maakte. De oorlog heeft Rotterdam enorm veranderd. Het liet een litteken achter in het hart van de stad.",
       },
       {
         speaker: "player",
@@ -121,19 +141,15 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
         speaker: "player",
         text: "Maakt u zich geen zorgen. Bedankt dat u het verhaal van uw oma wilde delen.",
       },
-      {
-        speaker: "npc",
-        text: "Graag gedaan!",
-      },
     ],
     [
       {
         speaker: "npc",
-        text: "Oh, jullie zijn terug. Sinds ons vorige gesprek blijf ik maar denken aan de verhalen van mijn oma.",
+        text: "Oh, je bent er weer. Sinds ons vorige gesprek blijf ik maar denken aan de verhalen van mijn oma.",
       },
       {
         speaker: "npc",
-        text: "Het is vreemd... hoe meer ik hierover praat, hoe meer herinneringen lijken terug te komen.",
+        text: "Het is vreemd... hoe meer ik hierover praat, hoe meer herinneringen terug lijken te komen.",
       },
       {
         speaker: "player",
@@ -149,7 +165,7 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
-        text: "Ze vertelde vroeger ook vaak over het monument 'De Verwoeste Stad'. Volgens mij staat het op Plein 1940.",
+        text: "Ze vertelde vroeger ook vaak over het monument.",
       },
       {
         speaker: "npc",
@@ -157,23 +173,31 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "player",
-        text: "Elke herinnering helpt ons om de geschiedenis terug te brengen.",
+        text: "Elke herinnering helpt om de geschiedenis terug te brengen.",
       },
       {
         speaker: "npc",
-        text: "Blijf dan zoeken. Het voelt alsof de stad haar verleden langzaam begint terug te krijgen.",
+        text: "Blijf verder zoeken. Het voelt alsof de stad haar verleden langzaam begint terug te krijgen.",
+      },
+      {
+        speaker: "player",
+        text: "Ik zal mijn best doen om nog meer herinneringen te vinden en te herstellen.",
       },
     ],
   ],
   timethieves_dialogue: [
     [
       {
+        speaker: "player",
+        text: "Hallo daar! Ik heb gehoord dat jullie de geschiedenis van Rotterdam stelen. Waarom?",
+      },
+      {
         speaker: "npc",
         text: "Waarom zouden mensen zich pijn en verdriet moeten blijven herinneren?",
       },
       {
         speaker: "npc",
-        text: "Kijk naar dit monument... een hart weggerukt uit een lichaam. Een eeuwige herinnering aan verlies.",
+        text: "Kijk naar dit monument... een hart ontnomen uit een lichaam. Een eeuwige herinnering aan verlies.",
       },
       {
         speaker: "npc",
@@ -205,11 +229,11 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
-        text: "De Duitsers gebruikten het bombardement om Nederland te dwingen zich over te geven.",
+        text: "De Duitsers gebruikten het bombardement om Nederland tot overgave te dwingen. Het kostte veel onschuldige levens en verwoestte de stad.",
       },
       {
         speaker: "npc",
-        text: "Maar wij geloven dat sommige herinneringen beter verborgen kunnen blijven.",
+        text: "Wij geloven dat sommige herinneringen beter verborgen kunnen blijven.",
       },
       {
         speaker: "player",
@@ -218,6 +242,10 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       {
         speaker: "npc",
         text: "Dan zul je de verloren herinneringen moeten herstellen... voordat ze voorgoed verdwijnen.",
+      },
+      {
+        speaker: "player",
+        text: "Ik ben niet bang voor jullie. Ik zal de geschiedenis van Rotterdam terughalen, wat er ook voor nodig is.",
       },
     ],
   ],
