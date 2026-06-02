@@ -253,11 +253,11 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
     [
       {
         speaker: "npc",
-        text: "Je bent nog niet klaar om ons te confronteren.",
+        text: "Je bent er nog niet klaar voor om ons te confronteren.",
       },
       {
         speaker: "npc",
-        text: "Kom terug wanneer je de Time Turner hebt gevonden.",
+        text: "Kom terug wanneer je meer herinneringen hebt hersteld en items hebt verzameld.",
       },
     ],
   ],
@@ -285,11 +285,11 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "player",
-        text: "En daar gingen jullie de fout in.",
+        text: "Dat dachten jullie. De herinneringen zijn misschien verborgen, maar ze zijn niet verdwenen.",
       },
       {
         speaker: "player",
-        text: "De monumenten van Rotterdam dragen de verhalen van het verleden met zich mee. Herinneringen verdwijnen niet zomaar zolang er iets is dat ze bewaart.",
+        text: "De monumenten van Rotterdam dragen de verhalen van het verleden met zich mee. Herinneringen verdwijnen niet zolang er iets is dat ze bewaart.",
       },
       {
         speaker: "npc",
@@ -297,11 +297,11 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "player",
-        text: "De Verwoeste Stad, historische foto's, gebouwen en monumenten. Ze bewaren allemaal een stukje geschiedenis.",
+        text: "De historische foto's, gebouwen en monumenten. Ze bewaren allemaal een stukje geschiedenis.",
       },
       {
         speaker: "npc",
-        text: "Maar... die herinneringen... daar kun je toch niets mee doen?",
+        text: "Maar... die herinneringen... daar kun je toch niets mee?",
       },
       {
         speaker: "player",
@@ -309,7 +309,7 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "player",
-        text: "Met behulp van deze herinneringen hebben Professor E. Brown en ik iets gebouwd.",
+        text: "Met behulp van deze herinneringen hebben Professor E. Brown en ik iets in elkaar gezet.",
       },
       {
         speaker: "npc",
@@ -321,7 +321,7 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
-        text: "Nee... Dat is onmogelijk. Het Hourglass of Time!",
+        text: "Nee... Dat is onmogelijk. De Zandloper der Tijden!",
       },
       {
         speaker: "player",
@@ -329,15 +329,15 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
-        text: "Stop! Als je dat gebruikt, komt alles terug wat wij hebben gestolen!",
+        text: "Stop! Als je de zandloper omdraait, komt alles terug wat wij hebben gestolen!",
       },
       {
         speaker: "player",
-        text: "Precies daarom gebruik ik het.",
+        text: "En dat is precies wat ik ga doen.",
       },
       {
         speaker: "player",
-        text: "*Draait het Hourglass of Time om*",
+        text: "*Draait de Zandloper der Tijden om*",
       },
       {
         speaker: "npc",
@@ -353,15 +353,11 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
-        text: "De Verwoeste Stad... de foto's... de monumenten... alles wordt weer herinnerd!",
+        text: "De foto's... de monumenten... alles wordt weer herinnerd!",
       },
       {
         speaker: "player",
         text: "De geschiedenis van Rotterdam hoort bij de mensen. Jullie kunnen die niet stelen.",
-      },
-      {
-        speaker: "npc",
-        text: "Al die positiviteit... gatver.",
       },
       {
         speaker: "npc",
@@ -389,7 +385,7 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "player",
-        text: "Dit was het verhaal van de strijd tegen de Time Thieves. Bedankt dat je hebt meegedaan aan dit avontuur en hebt geholpen om de geschiedenis van Rotterdam te herstellen.",
+        text: "Dit was het verhaal van de strijd tegen de Time Thieves. Bedankt dat je hebt geholpen om de geschiedenis van Rotterdam te herstellen.",
       },
     ],
   ],
