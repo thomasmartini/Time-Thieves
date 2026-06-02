@@ -683,21 +683,6 @@ function startAR(zone) {
   camera.setAttribute("cursor", "rayOrigin: mouse; fuse: false");
   arScene.appendChild(camera);
 
-  // Custom component to make entities face the camera while keeping them upright (no tilt)
-  AFRAME.registerComponent("face-camera-flat", {
-    tick: function () {
-      const cam = document.querySelector("[camera]");
-      if (!cam) return;
-
-      // face camera
-      this.el.object3D.lookAt(cam.object3D.position);
-
-      // lock tilt (important for AR GPS stability)
-      this.el.object3D.rotation.x = 0;
-      this.el.object3D.rotation.z = 0;
-    }
-  });
-
   // Add objects to AR scene
   zone.objects.forEach((obj) => {
     const character = obj.character || {
@@ -759,21 +744,69 @@ function startAR(zone) {
   document.body.appendChild(backButton);
   document.body.appendChild(arScene);
 }
+
+if (typeof AFRAME !== "undefined" && !AFRAME.components["face-camera-flat"]) {
+  AFRAME.registerComponent("face-camera-flat", {
+    tick: function () {
+      const cam = document.querySelector("[camera]");
+      if (!cam) return;
+
+      this.el.object3D.lookAt(cam.object3D.position);
+      this.el.object3D.rotation.x = 0;
+      this.el.object3D.rotation.z = 0;
+    }
+  });
+}
 /** Stop the AR experience by removing the AR scene and back button, showing the Cesium view and UI again, and refreshing the inventory UI.
  * This function is called when the user clicks the back button in the AR view or when they click on an object to open the 8th Wall scene.
  */
 function stopAR() {
-  // Remove AR scene and back button
+  // -----------------------------
+  // 1. Remove AR scene safely
+  // -----------------------------
   const arScene = document.querySelector("a-scene");
-  if (arScene) document.body.removeChild(arScene);
-  const backButton = document.getElementById("arBackButton");
-  if (backButton) document.body.removeChild(backButton);
 
-  // Go back to Cesium view
+  if (arScene) {
+    // stop A-Frame rendering loop
+    arScene.sceneEl?.pause();
+
+    // remove scene from DOM
+    arScene.remove();
+  }
+
+  // -----------------------------
+  // 2. Stop webcam stream (CRITICAL)
+  // -----------------------------
+  const video = document.querySelector("video");
+  if (video && video.srcObject) {
+    video.srcObject.getTracks().forEach(track => track.stop());
+    video.srcObject = null;
+  }
+
+  // -----------------------------
+  // 3. Clear AR.js attributes (important reset)
+  // -----------------------------
+  const arjsEl = document.querySelector("[arjs]");
+  if (arjsEl) {
+    arjsEl.removeAttribute("arjs");
+  }
+
+  // -----------------------------
+  // 4. Remove back button
+  // -----------------------------
+  const backButton = document.getElementById("arBackButton");
+  if (backButton) backButton.remove();
+
+  // -----------------------------
+  // 5. Restore Cesium UI
+  // -----------------------------
   document.getElementById("cesiumContainer").style.display = "block";
   document.getElementById("zonePanel").style.display = "block";
   document.getElementById("inventoryPanel").style.display = "block";
 
+  // -----------------------------
+  // 6. Cesium refresh
+  // -----------------------------
   if (viewer && typeof viewer.resize === "function") {
     viewer.resize();
   }
