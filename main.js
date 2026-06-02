@@ -87,7 +87,7 @@ const monumentZones = [
     monumentId: "de-verwoeste-stad-", // matches 8th wall scene id for testing, will be set in AR.js for production
     lon: 4.4830665,
     lat: 51.9176368,
-    radius: 100,
+    radius: 20,
     color: Cesium.Color.ORANGE.withAlpha(0.35),
     objects: [],
   },
