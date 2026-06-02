@@ -239,15 +239,15 @@ function syncRewardItemVisibility(
 
 function getProfessorMessage(rewardItemId: string): string {
   if (hasInventoryItem(rewardItemId)) {
-    return "Uitstekend werk. Met dit voorwerp kun je het mysterie van de Time Thieves ontrafelen.";
+    return "Uitstekend werk. Met dit voorwerp kun je de Time Thieves confronteren en het mysterie ontrafelen.";
   }
 
   const missingRequirements = getMissingRequirements();
   if (missingRequirements.length > 0) {
-    return `Je bent er bijna. Rond eerst dit af: ${missingRequirements.join(", ")}.`;
+    return `Je bent er bijna. Rond eerst dit nog af: ${missingRequirements.join(", ")}.`;
   }
 
-  return "Fantastisch! Alles is voltooid. Tik op mij om het laatste item te ontvangen.";
+  return "Fantastisch! Alle opdrachten zijn voltooid. Tik op mij om het laatste item te ontvangen.";
 }
 
 ecs.registerComponent({

@@ -157,7 +157,7 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
       },
       {
         speaker: "npc",
-        text: "Misschien wel. Ik blijf steeds denken aan de rook boven de stad op die oude foto's.",
+        text: "Misschien wel. Ik blijf steeds denken aan de rook boven de stad op die oude foto's. Ik kan je hulp gebruiken om meer van die foto's te vinden.",
       },
       {
         speaker: "npc",
