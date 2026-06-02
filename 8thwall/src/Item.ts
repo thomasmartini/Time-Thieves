@@ -390,7 +390,7 @@ ecs.registerComponent({
         const textEntity = resolveTargetEntity(world, schema.textTarget);
         setUiText(
           textEntity,
-          "Hier is het laatste item. Gebruik het om de waarheid achter de Time Thieves te ontdekken.",
+          "Hier is het laatste voorwerp. Met dit voorwerp kun je de Time Thieves confronteren en het mysterie ontrafelen.",
         );
       })
       .onEvent(ecs.input.SCREEN_TOUCH_END, "default", {
