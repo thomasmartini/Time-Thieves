@@ -1,7 +1,4 @@
-// This is a component file. You can use this file to define a custom component for your project.
-// This component will appear as a custom component in the editor.
-
-import * as ecs from "@8thwall/ecs"; // This is how you access the ecs library.
+import * as ecs from "@8thwall/ecs";
 import { hasInventoryItem } from "./Inventory";
 
 type Speaker = "npc" | "player";
@@ -391,7 +388,6 @@ const npcDialogues: Record<string, DialogueTurn[][]> = {
   ],
 };
 
-const fallbackDialogueConversations = npcDialogues.introduction_dialogue;
 const queryParams = new URLSearchParams(window.location.search);
 const requestedSceneId =
   queryParams.get("scene")?.trim().toLowerCase() || undefined;
@@ -417,7 +413,7 @@ function normalizeNpcId(npcId: string | undefined): string {
 function getDialogueKeyForNpc(npcId: string | undefined): string {
   const normalizedId = normalizeNpcId(npcId);
   if (!normalizedId) {
-    return "introduction_dialogue";
+    return "professor_introduction_dialogue";
   }
 
   if (
@@ -442,11 +438,11 @@ function getDialoguesForNpc(npcId: string | undefined): DialogueTurn[][] {
 }
 
 function getConversationCompletedStorageKey(dialogueKey: string): string {
-  return `${CONVERSATION_COMPLETED_STORAGE_KEY_PREFIX}:${dialogueKey || "introduction_dialogue"}`;
+  return `${CONVERSATION_COMPLETED_STORAGE_KEY_PREFIX}:${dialogueKey || "professor_introduction_dialogue"}`;
 }
 
 function markDialogueCompleted(dialogueKey: string) {
-  const normalizedKey = dialogueKey || "introduction_dialogue";
+  const normalizedKey = dialogueKey || "professor_introduction_dialogue";
   completedDialogueKeys.add(normalizedKey);
   window.localStorage.setItem(
     getConversationCompletedStorageKey(normalizedKey),
@@ -455,7 +451,7 @@ function markDialogueCompleted(dialogueKey: string) {
 }
 
 function isDialogueCompleted(dialogueKey: string): boolean {
-  const normalizedKey = dialogueKey || "introduction_dialogue";
+  const normalizedKey = dialogueKey || "professor_introduction_dialogue";
   if (completedDialogueKeys.has(normalizedKey)) {
     return true;
   }
@@ -474,7 +470,7 @@ function isDialogueCompleted(dialogueKey: string): boolean {
 }
 
 function getConversationNextIndexStorageKey(dialogueKey: string): string {
-  return `${CONVERSATION_NEXT_INDEX_STORAGE_KEY_PREFIX}:${dialogueKey || "introduction_dialogue"}`;
+  return `${CONVERSATION_NEXT_INDEX_STORAGE_KEY_PREFIX}:${dialogueKey || "professor_introduction_dialogue"}`;
 }
 
 function getStoredNextConversationIndex(dialogueKey: string): number {
@@ -491,7 +487,7 @@ function getStoredNextConversationIndex(dialogueKey: string): number {
 }
 
 function storeNextConversationIndex(dialogueKey: string, nextIndex: number) {
-  const normalizedKey = dialogueKey || "introduction_dialogue";
+  const normalizedKey = dialogueKey || "professor_introduction_dialogue";
   window.localStorage.setItem(
     getConversationNextIndexStorageKey(normalizedKey),
     String(Math.max(0, Math.floor(nextIndex))),
@@ -499,7 +495,7 @@ function storeNextConversationIndex(dialogueKey: string, nextIndex: number) {
 }
 
 function clearStoredNextConversationIndex(dialogueKey: string) {
-  const normalizedKey = dialogueKey || "introduction_dialogue";
+  const normalizedKey = dialogueKey || "professor_introduction_dialogue";
   window.localStorage.removeItem(
     getConversationNextIndexStorageKey(normalizedKey),
   );
@@ -653,7 +649,6 @@ function findConversationTextEntities(
       const runtimeName = (entity as unknown as { name?: string }).name;
       const entityName = (runtimeName || "").toLowerCase().trim();
 
-      // Primary mapping: explicit named text entities in the scene graph.
       if (!npcTextEntity && entityName === "tekst npc") {
         npcTextEntity = entity;
       }
@@ -668,7 +663,6 @@ function findConversationTextEntities(
       }
 
       if (textValue === "klik hier") {
-        // Ignore the button label.
       } else if (!npcTextEntity && ui.text && ui.background && !ui.image) {
         npcTextEntity = entity;
       } else if (!playerTextEntity && ui.text && !ui.background && !ui.image) {
@@ -821,7 +815,6 @@ function isPrimaryConversationController(
 }
 
 function showOnlyActiveConversation(activeRoot: ecs.Entity) {
-  // Always unhide and enable the selected root first, even during early scene init.
   setConversationInteractionState(activeRoot, true);
 
   const parent = activeRoot.getParent();
@@ -957,7 +950,6 @@ function updateDialogueText(
     return "player";
   }
 
-  // Fallback when no separate player text field exists.
   dialogueBubble.set(ecs.Ui, { text: `Jij: ${currentTurn.text}` });
   switchSpeakerVisibility(
     currentEid,
@@ -1031,10 +1023,8 @@ ecs.registerComponent({
     playerTextTarget: "eid",
   },
   schemaDefaults: {
-    npcId: "introduction_dialogue",
+    npcId: "professor_introduction_dialogue",
   },
-  // data: {
-  // },
   add: (world, component) => {
     const componentNpcId = component.schema.npcId;
     applyInitialConversationVisibility(
@@ -1045,18 +1035,14 @@ ecs.registerComponent({
       component.schema.hourglassTarget,
     );
   },
-  // tick: (world, component) => {
-  // },
-  // remove: (world, component) => {
-  // },
-  stateMachine: ({ world, eid, schemaAttribute, dataAttribute }) => {
+  stateMachine: ({ world, eid, schemaAttribute }) => {
     let initialized = false;
     let currentConversationIndex = 0;
     let currentDialogueLineIndex = 0;
     let hasRemainingConversations = true;
     let isWaitingForReopenToStartNextConversation = false;
     let skipExhaustedMessageOnce = false;
-    let activeDialogueKey = "introduction_dialogue";
+    let activeDialogueKey = "professor_introduction_dialogue";
     let exhaustedStateApplied = false;
     let currentSpeaker: Speaker | null = null;
 

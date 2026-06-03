@@ -1,7 +1,6 @@
 import * as ecs from "@8thwall/ecs";
 import { addInventoryItem } from "./Inventory";
 
-// Types for memory game
 interface CardState {
   isFlipped: boolean;
   imageId: string;
@@ -10,14 +9,12 @@ interface CardState {
 
 interface MemoryGameStateData {
   cards: CardState[];
-  flippedCards: number[]; // Store indices of currently flipped cards
+  flippedCards: number[];
   moves: number;
   matchedPairs: number;
-  isProcessing: boolean; // Prevent clicking while comparing
+  isProcessing: boolean;
 }
 
-// Card pairs - Each pair has the same imageId (4x4 grid = 8 pairs)
-// These are the actual image asset paths from your scene
 const CARD_PAIRS: string[] = [
   "image-1",
   "image-1",
@@ -37,11 +34,8 @@ const CARD_PAIRS: string[] = [
   "image-8",
 ];
 
-// Back of card image - solid color
 const BACK_IMAGE_URL = "#4a5568";
 
-// Map card IDs to asset paths
-// Update these to match your actual 8th Wall asset URLs
 const CARD_IMAGE_MAP: Record<string, string> = {
   "image-1": "assets/Memory_Bosjeskerk.png",
   "image-2": "assets/Memory_Dijkstraat.png",
@@ -53,16 +47,12 @@ const CARD_IMAGE_MAP: Record<string, string> = {
   "image-8": "assets/Memory_Tivoli.png",
 };
 
-// Storage key for persisting game state
 const MEMORY_GAME_STATE_KEY = "time-thieves-memory-game-state";
 const MEMORY_GAME_JUST_COMPLETED_TEXT =
   "Goed gedaan! Je hebt Memory voltooid en een item als beloning ontvangen.";
 const MEMORY_GAME_ALREADY_COMPLETED_TEXT =
   "Je hebt Memory al uitgespeeld en deze beloning al verdiend.";
 
-/**
- * Initialize memory game state
- */
 function initializeGameState(): MemoryGameStateData {
   const shuffledCards = shuffleArray(CARD_PAIRS).map((imageId) => ({
     isFlipped: false,
@@ -79,9 +69,6 @@ function initializeGameState(): MemoryGameStateData {
   };
 }
 
-/**
- * Fisher-Yates shuffle algorithm
- */
 function shuffleArray(array: string[]): string[] {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -91,9 +78,6 @@ function shuffleArray(array: string[]): string[] {
   return shuffled;
 }
 
-/**
- * Load or create game state
- */
 function loadGameState(): MemoryGameStateData {
   const stored = localStorage.getItem(MEMORY_GAME_STATE_KEY);
   if (stored) {
@@ -106,9 +90,6 @@ function loadGameState(): MemoryGameStateData {
   return initializeGameState();
 }
 
-/**
- * Save game state to localStorage
- */
 function saveGameState(state: MemoryGameStateData): void {
   localStorage.setItem(MEMORY_GAME_STATE_KEY, JSON.stringify(state));
 }
@@ -148,33 +129,6 @@ function showCompletionReward(
   showCompletionText(world, schema, text);
 }
 
-/**
- * Find an entity by name in the scene hierarchy
- */
-function findByName(root: ecs.Entity, targetName: string): ecs.Entity | null {
-  const normalizedTargetName = targetName.trim().toLowerCase();
-  const queue: ecs.Entity[] = [root];
-
-  while (queue.length > 0) {
-    const current = queue.shift();
-    if (!current) {
-      continue;
-    }
-
-    const runtimeName = (current as unknown as { name?: string }).name;
-    if ((runtimeName || "").trim().toLowerCase() === normalizedTargetName) {
-      return current;
-    }
-
-    queue.push(...current.getChildren());
-  }
-
-  return null;
-}
-
-/**
- * Resolve an entity ID to an actual entity
- */
 function resolveTargetEntity(
   world: ecs.World,
   targetEid?: bigint,
@@ -186,9 +140,6 @@ function resolveTargetEntity(
   return world.getEntity(targetEid);
 }
 
-/**
- * Get all card entities (gets them directly as children of root)
- */
 function getCardEntities(
   world: ecs.World,
   eid: bigint,
@@ -201,7 +152,6 @@ function getCardEntities(
 
   const cardEntities: ecs.Entity[] = [];
 
-  // If card EIDs are provided in schema, use them
   if (schema.cardEids && schema.cardEids.length > 0) {
     for (const cardEid of schema.cardEids) {
       const entity = resolveTargetEntity(world, cardEid);
@@ -212,14 +162,10 @@ function getCardEntities(
     return cardEntities;
   }
 
-  // Otherwise, get the direct children of root (they are the card entities in order)
   const children = root.getChildren();
-  return children.slice(0, 16); // Return up to 16 children as cards
+  return children.slice(0, 16);
 }
 
-/**
- * Update card visual appearance using 8th Wall Ui component
- */
 function updateCardVisual(
   cardEntity: ecs.Entity,
   card: CardState,
@@ -245,22 +191,16 @@ function updateCardVisual(
 
   console.log(`Card ${card.imageId} visual update:`, uiUpdate);
 
-  // Add visual feedback for matched cards
   if (card.isMatched) {
     uiUpdate.opacity = 0.6;
   } else {
     uiUpdate.opacity = 1;
   }
 
-  // Selected state shows the actual card image as background (no border styling)
-
   cardEntity.set(ecs.Ui, uiUpdate);
   console.log(`Card visual updated`);
 }
 
-/**
- * Get the game root entity
- */
 function getGameRoot(
   world: ecs.World,
   eid: bigint,
@@ -273,9 +213,6 @@ function getGameRoot(
   return world.getEntity(eid);
 }
 
-/**
- * Check if this memory game scene should be active
- */
 const queryParams = new URLSearchParams(window.location.search);
 const requestedSceneId =
   queryParams.get("scene")?.trim().toLowerCase() || undefined;
@@ -294,15 +231,14 @@ function shouldHandleMemoryScene(
   return normalizeId(componentSceneId) === requestedSceneId;
 }
 
-// Register the MemoryGame component with ECS
 ecs.registerComponent({
   name: "MemoryGame",
   schema: {
-    sceneId: "string", // e.g., "de-verwoeste-stad-05"
+    sceneId: "string",
     gameRoot: "eid",
-    cardEids: ["eid"], // Optional: direct entity references for cards
-    rewardItemTarget: "eid", // Optional: item to show on completion
-    rewardTextTarget: "eid", // Optional: text to show on completion
+    cardEids: ["eid"],
+    rewardItemTarget: "eid",
+    rewardTextTarget: "eid",
   },
   schemaDefaults: {
     sceneId: "de-verwoeste-stad-05",
@@ -313,7 +249,6 @@ ecs.registerComponent({
     const root = getGameRoot(world, component.eid, schema.gameRoot);
     const shouldHandle = shouldHandleMemoryScene(schema.sceneId);
 
-    // Hide/show the game root based on whether this scene is active
     if (shouldHandle) {
       if (root.isHidden()) {
         root.show();
@@ -360,7 +295,6 @@ ecs.registerComponent({
       const card = gameState.cards[cardIndex];
       const cardEntity = cardEntities[cardIndex];
 
-      // Prevent clicking if already matched, already flipped, or still processing
       if (
         card.isMatched ||
         gameState.flippedCards.includes(cardIndex) ||
@@ -374,7 +308,6 @@ ecs.registerComponent({
       gameState.flippedCards.push(cardIndex);
       updateCardVisual(cardEntity, card, true);
 
-      // Check if we have two cards flipped
       if (gameState.flippedCards.length === 2) {
         isLocked = true;
         gameState.isProcessing = true;
@@ -384,9 +317,7 @@ ecs.registerComponent({
         const firstCard = gameState.cards[firstIndex];
         const secondCard = gameState.cards[secondIndex];
 
-        // Compare the two cards
         if (firstCard.imageId === secondCard.imageId) {
-          // Match found!
           firstCard.isMatched = true;
           secondCard.isMatched = true;
           gameState.matchedPairs++;
@@ -398,7 +329,6 @@ ecs.registerComponent({
           gameState.isProcessing = false;
           isLocked = false;
 
-          // Check if game is complete
           if (gameState.matchedPairs === CARD_PAIRS.length / 2) {
             isGameComplete = true;
             showCompletionReward(world, schema);
@@ -425,7 +355,6 @@ ecs.registerComponent({
 
           saveGameState(gameState);
         } else {
-          // No match, flip cards back after a delay
           setTimeout(() => {
             firstCard.isFlipped = false;
             secondCard.isFlipped = false;
@@ -444,7 +373,6 @@ ecs.registerComponent({
       }
     };
 
-    // Define default state
     const defaultStateBuilder = ecs
       .defineState("default")
       .initial()
@@ -462,7 +390,6 @@ ecs.registerComponent({
         gameState = loadGameState();
         isGameComplete = isGameStateComplete(gameState);
 
-        // FIND CARDS HERE - not in add(), because scene entities aren't ready yet
         const root = getGameRoot(world, eid, schema.gameRoot);
         cardEntities = getCardEntities(world, eid, schema);
         console.log(`Found ${cardEntities.length} card entities in onEnter`);
@@ -473,7 +400,7 @@ ecs.registerComponent({
 
         if (cardEntities.length === 0) {
           console.warn("No cards found - checking available entities:");
-          // Log all children of root to debug
+
           const children = root.getChildren();
           console.warn(
             `Root has ${children.length} children:`,
@@ -497,7 +424,6 @@ ecs.registerComponent({
           );
         }
 
-        // Update all card visuals
         cardEntities.forEach((cardEntity, index) => {
           if (index < gameState.cards.length) {
             console.log(`Initialized card ${index + 1}`);
@@ -505,7 +431,6 @@ ecs.registerComponent({
           }
         });
 
-        // NOW set up event handlers for each found card
         console.log("Setting up event listeners for found cards...");
         for (let i = 0; i < cardEntities.length && i < 16; i++) {
           const cardEntity = cardEntities[i];

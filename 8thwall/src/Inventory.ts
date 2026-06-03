@@ -3,9 +3,9 @@ export type ItemSource = "quiz" | "npc" | "pickup" | "memory";
 export interface InventoryItem {
   itemId: string;
   source: ItemSource;
-  sourceId: string; // quiz1, npc-id, location-id, etc.
-  acquiredAt: number; // timestamp
-  metadata?: Record<string, unknown>; // arbitrary data (score, dialogue node, etc.)
+  sourceId: string;
+  acquiredAt: number;
+  metadata?: Record<string, unknown>;
 }
 
 const INVENTORY_STORAGE_KEY = "time-thieves-inventory";
@@ -23,9 +23,6 @@ function saveInventory(items: InventoryItem[]): void {
   window.localStorage.setItem(INVENTORY_STORAGE_KEY, JSON.stringify(items));
 }
 
-/**
- * Add an item to the player's inventory
- */
 export function addInventoryItem(
   itemId: string,
   source: ItemSource,
@@ -34,10 +31,8 @@ export function addInventoryItem(
 ): InventoryItem {
   const inventory = getInventory();
 
-  // Check if item already exists
   const existingIndex = inventory.findIndex((item) => item.itemId === itemId);
   if (existingIndex >= 0) {
-    // Item already in inventory, don't duplicate
     return inventory[existingIndex];
   }
 
@@ -52,7 +47,6 @@ export function addInventoryItem(
   inventory.push(newItem);
   saveInventory(inventory);
 
-  // Dispatch event for other systems to react to
   window.dispatchEvent(
     new CustomEvent("inventory-item-added", {
       detail: newItem,
@@ -62,17 +56,11 @@ export function addInventoryItem(
   return newItem;
 }
 
-/**
- * Check if player has a specific item
- */
 export function hasInventoryItem(itemId: string): boolean {
   const inventory = getInventory();
   return inventory.some((item) => item.itemId === itemId);
 }
 
-/**
- * Get all items from a specific source
- */
 export function getInventoryItemsBySource(
   source: ItemSource,
   sourceId?: string,
@@ -84,16 +72,10 @@ export function getInventoryItemsBySource(
   );
 }
 
-/**
- * Get the entire inventory
- */
 export function getFullInventory(): InventoryItem[] {
   return getInventory();
 }
 
-/**
- * Remove an item from inventory
- */
 export function removeInventoryItem(itemId: string): boolean {
   const inventory = getInventory();
   const index = inventory.findIndex((item) => item.itemId === itemId);
