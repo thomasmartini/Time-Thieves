@@ -1,4 +1,4 @@
-# Vite + CesiumJS + AR.js + 8th Wall
+# TimeThieves
 
 A modern web application built with **Vite**, combining **CesiumJS** for 3D geospatial visualization, **AR.js** for marker-based and location-based augmented reality, and **8th Wall** for advanced WebAR experiences.
 
@@ -170,7 +170,8 @@ Requirements:
 ## License
 
 standard MIT license
-
+## JSDOC
+This application uses JSDOC for comments and documentation. There is a HTML file in the out folder that contains a full overview of all functions with explanations
 ## Acknowledgements
 
 * CesiumJS
