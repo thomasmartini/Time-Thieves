@@ -178,7 +178,9 @@
 
 
 <div class="description">
-    Create visual zones on the Cesium map for each monument zone defined in the monumentZones array.Each zone is represented as a polygon with a specified color and an outline, along with a label displaying the zone's name.The zones are added to the Cesium viewer as entities, allowing users to see the areas where they can activate AR experiences.
+    Create visual zones on the Cesium map for each monument zone defined in the monumentZones array.
+Each zone is represented as a polygon with a specified color and an outline, along with a label displaying the zone's name.
+The zones are added to the Cesium viewer as entities, allowing users to see the areas where they can activate AR experiences.
 </div>
 
 
@@ -266,7 +268,8 @@
 
 
 <div class="description">
-    Create buttons for each monument zone and add them to the zone panel in the UI. Each button is styled and has an event listener that activates the AR experience for the corresponding zone when clicked.The buttons are initially hidden and will be shown based on the user's location relative to the zones.
+    Create buttons for each monument zone and add them to the zone panel in the UI. Each button is styled and has an event listener that activates the AR experience for the corresponding zone when clicked.
+The buttons are initially hidden and will be shown based on the user's location relative to the zones.
 </div>
 
 
@@ -354,7 +357,8 @@
 
 
 <div class="description">
-    Ensure that the AR overlay and iframe elements are created and added to the DOM.If the elements already exist, it does nothing. If they do not exist, it creates a full-screen overlay with a close button and an iframe for loading the 8th Wall AR scene.
+    Ensure that the AR overlay and iframe elements are created and added to the DOM.
+If the elements already exist, it does nothing. If they do not exist, it creates a full-screen overlay with a close button and an iframe for loading the 8th Wall AR scene.
 </div>
 
 
@@ -442,7 +446,7 @@
 
 
 <div class="description">
-    Generate the URL for the 8th Wall AR scene based on the zone and character data, as well as the completion data stored in sessionStorage.
+    Generate the URL for the 8th Wall AR scene based on the zone and character data, as well as the completion data stored in localStorage.
 </div>
 
 
@@ -783,7 +787,8 @@
 
 
 <div class="description">
-    Calculate the meters per degree of latitude and longitude at a given geographic location.This is used to convert between geographic coordinates and distances in meters for accurate placement of objects and zones on the map.
+    Calculate the meters per degree of latitude and longitude at a given geographic location.
+This is used to convert between geographic coordinates and distances in meters for accurate placement of objects and zones on the map.
 </div>
 
 
@@ -1283,7 +1288,8 @@
 
 
 <div class="description">
-    Check if the user's current location is within a specified zone.This function calculates the distance from the user's current location to the center of the zone and checks if it is within the zone's radius.
+    Check if the user's current location is within a specified zone.
+This function calculates the distance from the user's current location to the center of the zone and checks if it is within the zone's radius.
 </div>
 
 
@@ -1641,7 +1647,8 @@
 
 
 <div class="description">
-    Refresh the inventory UI to show the current items collected for the selected monument and update the progress bars in the monument selection.Gets the inventory items, updates the inventory list in the UI, and updates the progress bars for each monument in the selection view.
+    Refresh the inventory UI to show the current items collected for the selected monument and update the progress bars in the monument selection.
+Gets the inventory items, updates the inventory list in the UI, and updates the progress bars for each monument in the selection view.
 </div>
 
 
@@ -2055,7 +2062,8 @@
 
             
 
-            <td class="description last">Whether to open (true) or close (false) the inventory panel.If opening and no monument is currently selected, it will show the monument selection view.</td>
+            <td class="description last">Whether to open (true) or close (false) the inventory panel.
+If opening and no monument is currently selected, it will show the monument selection view.</td>
         </tr>
 
     
@@ -2140,7 +2148,8 @@
 
 
 <div class="description">
-    Show the inventory view for the selected monument.Hides the monument selection and displays the inventory view, then refreshes the inventory UI to show the items collected for the selected monument.
+    Show the inventory view for the selected monument.
+Hides the monument selection and displays the inventory view, then refreshes the inventory UI to show the items collected for the selected monument.
 </div>
 
 
@@ -2228,7 +2237,8 @@
 
 
 <div class="description">
-    Show the monument selection view in the inventory panel.Resets the selected monument and updates the UI to show the monument selection and hide the inventory view.
+    Show the monument selection view in the inventory panel.
+Resets the selected monument and updates the UI to show the monument selection and hide the inventory view.
 </div>
 
 
@@ -2316,7 +2326,9 @@
 
 
 <div class="description">
-    Spawn objects in the monument zones based on the CHARACTER_DATA.For each monument zone, it calculates the area based on the radius and spawns objects with random positions within that area.Each object is associated with a character from the CHARACTER_DATA and added to the Cesium viewer as an entity with a billboard and label.
+    Spawn objects in the monument zones based on the CHARACTER_DATA.
+For each monument zone, it calculates the area based on the radius and spawns objects with random positions within that area.
+Each object is associated with a character from the CHARACTER_DATA and added to the Cesium viewer as an entity with a billboard and label.
 </div>
 
 
@@ -2541,7 +2553,8 @@
 
 
 <div class="description">
-    Stop the AR experience by removing the AR scene and back button, showing the Cesium view and UI again, and refreshing the inventory UI.This function is called when the user clicks the back button in the AR view or when they click on an object to open the 8th Wall scene.
+    Stop the AR experience by removing the AR scene and back button, showing the Cesium view and UI again, and refreshing the inventory UI.
+This function is called when the user clicks the back button in the AR view or when they click on an object to open the 8th Wall scene.
 </div>
 
 
@@ -2629,7 +2642,8 @@
 
 
 <div class="description">
-    Toggle the inventory panel open or closed when the inventory toggle button is clicked.If the panel is currently closed, it will open it; if it's open, it will close it.
+    Toggle the inventory panel open or closed when the inventory toggle button is clicked.
+If the panel is currently closed, it will open it; if it's open, it will close it.
 </div>
 
 
@@ -2717,7 +2731,9 @@
 
 
 <div class="description">
-    Update the visibility of the zone buttons based on whether the user is currently within each zone.This function iterates through each monument zone and checks if the user is within that zone using the isInZone function.If the user is within the zone, the corresponding button is shown; otherwise, it is hidden.
+    Update the visibility of the zone buttons based on whether the user is currently within each zone.
+This function iterates through each monument zone and checks if the user is within that zone using the isInZone function.
+If the user is within the zone, the corresponding button is shown; otherwise, it is hidden.
 </div>
 
 

@@ -135,7 +135,7 @@ function setEntityEnabledAndVisible(
 
 function isDialogueCompleted(dialogueKey: string): boolean {
   return (
-    window.sessionStorage.getItem(
+    window.localStorage.getItem(
       `${CONVERSATION_COMPLETED_STORAGE_KEY_PREFIX}:${dialogueKey}`,
     ) === "1"
   );
@@ -143,7 +143,7 @@ function isDialogueCompleted(dialogueKey: string): boolean {
 
 function isQuizCompleted(quizId: string): boolean {
   return (
-    window.sessionStorage.getItem(
+    window.localStorage.getItem(
       `${QUIZ_ITEM_GRANTED_STORAGE_KEY_PREFIX}:${quizId}`,
     ) === "1"
   );
@@ -154,7 +154,7 @@ function isMemoryGameCompleted(): boolean {
     return true;
   }
 
-  const rawState = window.sessionStorage.getItem(MEMORY_GAME_STATE_KEY);
+  const rawState = window.localStorage.getItem(MEMORY_GAME_STATE_KEY);
   if (!rawState) {
     return false;
   }

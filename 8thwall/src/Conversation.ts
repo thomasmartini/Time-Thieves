@@ -448,7 +448,7 @@ function getConversationCompletedStorageKey(dialogueKey: string): string {
 function markDialogueCompleted(dialogueKey: string) {
   const normalizedKey = dialogueKey || "introduction_dialogue";
   completedDialogueKeys.add(normalizedKey);
-  window.sessionStorage.setItem(
+  window.localStorage.setItem(
     getConversationCompletedStorageKey(normalizedKey),
     "1",
   );
@@ -461,7 +461,7 @@ function isDialogueCompleted(dialogueKey: string): boolean {
   }
 
   const isCompletedFromStorage =
-    window.sessionStorage.getItem(
+    window.localStorage.getItem(
       getConversationCompletedStorageKey(normalizedKey),
     ) === "1";
 
@@ -478,7 +478,7 @@ function getConversationNextIndexStorageKey(dialogueKey: string): string {
 }
 
 function getStoredNextConversationIndex(dialogueKey: string): number {
-  const rawValue = window.sessionStorage.getItem(
+  const rawValue = window.localStorage.getItem(
     getConversationNextIndexStorageKey(dialogueKey),
   );
   const parsedValue = Number(rawValue);
@@ -492,7 +492,7 @@ function getStoredNextConversationIndex(dialogueKey: string): number {
 
 function storeNextConversationIndex(dialogueKey: string, nextIndex: number) {
   const normalizedKey = dialogueKey || "introduction_dialogue";
-  window.sessionStorage.setItem(
+  window.localStorage.setItem(
     getConversationNextIndexStorageKey(normalizedKey),
     String(Math.max(0, Math.floor(nextIndex))),
   );
@@ -500,7 +500,7 @@ function storeNextConversationIndex(dialogueKey: string, nextIndex: number) {
 
 function clearStoredNextConversationIndex(dialogueKey: string) {
   const normalizedKey = dialogueKey || "introduction_dialogue";
-  window.sessionStorage.removeItem(
+  window.localStorage.removeItem(
     getConversationNextIndexStorageKey(normalizedKey),
   );
 }

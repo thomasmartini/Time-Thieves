@@ -12,7 +12,7 @@ const INVENTORY_STORAGE_KEY = "time-thieves-inventory";
 
 function getInventory(): InventoryItem[] {
   try {
-    const stored = window.sessionStorage.getItem(INVENTORY_STORAGE_KEY);
+    const stored = window.localStorage.getItem(INVENTORY_STORAGE_KEY);
     return stored ? JSON.parse(stored) : [];
   } catch {
     return [];
@@ -20,7 +20,7 @@ function getInventory(): InventoryItem[] {
 }
 
 function saveInventory(items: InventoryItem[]): void {
-  window.sessionStorage.setItem(INVENTORY_STORAGE_KEY, JSON.stringify(items));
+  window.localStorage.setItem(INVENTORY_STORAGE_KEY, JSON.stringify(items));
 }
 
 /**

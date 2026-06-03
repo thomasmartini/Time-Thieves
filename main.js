@@ -540,7 +540,7 @@ function createMonumentZones() {
 let arOverlayEl = null;
 let arFrameEl = null;
 
-/** Generate the URL for the 8th Wall AR scene based on the zone and character data, as well as the completion data stored in sessionStorage.
+/** Generate the URL for the 8th Wall AR scene based on the zone and character data, as well as the completion data stored in localStorage.
  * @param {Object} zone - The zone object containing the AR URL and other properties.
  * @param {Object} character - The character object containing the scene ID and other properties.
  * @return {string} The generated URL for the 8th Wall AR scene.
